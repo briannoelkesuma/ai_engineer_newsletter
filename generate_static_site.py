@@ -10,24 +10,7 @@ def fetch_data():
     
     # Fetch processed videos
     videos_res = supabase.table("videos").select("*").eq("status", "processed").order("upload_date", desc=True).execute()
-    videos = videos_res.data
-    
-    # Fetch insights
-    insights_res = supabase.table("insights").select("video_id, newsletter_text").execute()
-    insights_map = {item['video_id']: item for item in insights_res.data}
-    
-    merged_data = []
-    for v in videos:
-        vid_id = v['video_id']
-        if vid_id in insights_map:
-            merged_data.append({
-                'video_id': vid_id,
-                'title': v['title'],
-                'upload_date': v['upload_date'],
-                'newsletter_text': insights_map[vid_id].get('newsletter_text', ''),
-            })
-            
-    return merged_data
+    return videos_res.data
 
 def generate_html(data):
     html = """<!DOCTYPE html>

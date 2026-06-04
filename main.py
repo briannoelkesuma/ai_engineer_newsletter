@@ -5,7 +5,7 @@ from ingestor import get_recent_videos
 from transcript_fetcher import fetch_transcript
 from llm_analyzer import analyze_transcript
 from telegram_bot import send_telegram_message, send_admin_alert
-from db import add_video, get_pending_videos, update_video_status, insert_insights, reset_stuck_videos, get_db_client
+from db import add_video, get_pending_videos, update_video_status, reset_stuck_videos, get_db_client
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -97,16 +97,11 @@ def run_pipeline(target_video_id=None):
             failed_count += 1
             continue
             
-        insert_insights(
-            video_id, 
-            insights.newsletter_text
-        )
-        
         logging.info(f"Publishing to Telegram...")
         final_message = f"📺 <b>{title}</b>\n\n{insights.newsletter_text}\n\n🔗 https://youtube.com/watch?v={video_id}"
         send_telegram_message(final_message)
         
-        update_video_status(video_id, "processed", model=model_name)
+        update_video_status(video_id, "processed", model=model_name, newsletter_text=insights.newsletter_text)
         processed_count += 1
         
         # Throttling to respect OpenRouter API limits

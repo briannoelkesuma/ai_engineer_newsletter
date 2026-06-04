@@ -8,7 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from transcript_fetcher import fetch_transcript
 from llm_analyzer import analyze_transcript
 from telegram_bot import send_telegram_message
-from db import add_video, update_video_status, insert_insights, get_db_client, get_pending_videos
+from db import add_video, update_video_status, get_db_client, get_pending_videos
 from generate_static_site import build_site
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -95,19 +95,13 @@ def run_backfill():
             update_video_status(video_id, "failed")
             continue
             
-        # Save insights
-        insert_insights(
-            video_id,
-            insights.newsletter_text
-        )
-        
         # Publish to Telegram
         logging.info("Publishing to Telegram channel...")
         final_message = f"📺 <b>{title}</b>\n\n{insights.newsletter_text}\n\n🔗 https://youtube.com/watch?v={video_id}"
         send_telegram_message(final_message)
         
         # Update status to processed
-        update_video_status(video_id, "processed", model=model_name)
+        update_video_status(video_id, "processed", model=model_name, newsletter_text=insights.newsletter_text)
         processed_count += 1
         
         # Respect rate limits
