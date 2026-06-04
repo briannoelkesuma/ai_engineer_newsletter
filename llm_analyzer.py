@@ -184,12 +184,37 @@ def chunk_transcript(transcript: str, chunk_size_tokens: int = 20000) -> list[st
         chunks.append(encoding.decode(chunk_tokens))
     return chunks
 
+def get_model_limits(model_name: str) -> tuple[int, int]:
+    """
+    Returns (map_reduce_threshold, chunk_size_tokens) for a given model.
+    """
+    model_lower = model_name.lower()
+    
+    # Native Gemini API or Gemini model on OpenRouter
+    if "gemini" in model_lower:
+        # Gemini context window is 1M+, so we can safely do single-pass up to 500k tokens
+        return 500000, 100000
+    # Smaller models or local models on OpenRouter (typically 8k context)
+    elif any(x in model_lower for x in ["llama-3-8b", "llama3-8b", "gemma", "mistral-7b"]):
+        return 6000, 4000
+    # Large context models (Llama 3.1 / 3.2 / 3.3 typically have 128k)
+    elif any(x in model_lower for x in ["llama-3.1", "llama-3.2", "llama-3.3", "hermes-3", "nemotron"]):
+        return 80000, 30000
+    # openrouter/free (safer default for routing)
+    elif "openrouter/free" in model_lower:
+        return 30000, 20000
+    
+    # Safe fallback
+    return 30000, 20000
+
 def analyze_transcript(title: str, description: str, upload_date: str, transcript: str, model: str = "openrouter/free") -> tuple[VideoInsights | None, str]:
     token_count = count_tokens(transcript)
     logging.info(f"Transcript estimated token count: {token_count}")
     
-    # Threshold for Map-Reduce: 30,000 tokens (approx. 120,000 characters)
-    map_reduce_threshold = 30000
+    # Determine the model being targeted
+    target_model = "native_gemini_2.5_flash" if GEMINI_API_KEY else model
+    map_reduce_threshold, chunk_size = get_model_limits(target_model)
+    logging.info(f"Model limits for '{target_model}' -> Threshold: {map_reduce_threshold} tokens, Chunk size: {chunk_size} tokens")
     
     if token_count <= map_reduce_threshold:
         logging.info("Transcript size within limit. Running single-pass analysis...")
@@ -234,8 +259,8 @@ Transcript:
         logging.info(f"Transcript ({token_count} tokens) exceeds single-pass threshold ({map_reduce_threshold}). Initiating Map-Reduce...")
         
         # 1. Map phase: Chunk and summarize
-        chunks = chunk_transcript(transcript, chunk_size_tokens=20000)
-        logging.info(f"Split transcript into {len(chunks)} chunks.")
+        chunks = chunk_transcript(transcript, chunk_size_tokens=chunk_size)
+        logging.info(f"Split transcript into {len(chunks)} chunks using chunk size {chunk_size} tokens.")
         
         summaries = []
         for i, chunk in enumerate(chunks):
