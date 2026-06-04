@@ -28,7 +28,7 @@ class VideoInsights(BaseModel):
     retry=retry_if_exception_type(Exception),
     before_sleep=lambda retry_state: logging.warning(f"Rate limited or API error. Retrying in {retry_state.next_action.sleep} seconds...")
 )
-def ask_llm(prompt: str, schema: type[BaseModel], model: str = "google/gemini-2.0-flash-001") -> BaseModel:
+def ask_llm(prompt: str, schema: type[BaseModel], model: str = "openrouter/free") -> BaseModel:
     logging.info(f"Attempting LLM call with model: {model}")
     
     # We use a simplified template guide instead of the raw JSON schema because small models

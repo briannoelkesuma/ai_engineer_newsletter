@@ -26,6 +26,7 @@ def fetch_data():
                 'upload_date': v['upload_date'],
                 'high_level_summary': insights_map[vid_id].get('high_level_summary', ''),
                 'detailed_learnings': insights_map[vid_id].get('detailed_learnings', ''),
+                'newsletter_text': insights_map[vid_id].get('newsletter_text', ''),
             })
             
     return merged_data
@@ -202,12 +203,18 @@ def generate_html(data):
 """
     
     for item in data:
-        # Simple string escaping for safety
+        # Simple string escaping for safety on title
         title = str(item['title']).replace('<', '&lt;').replace('>', '&gt;')
         date = item['upload_date']
         video_id = item['video_id']
-        summary = str(item['high_level_summary']).replace('<', '&lt;').replace('>', '&gt;')
-        learnings = str(item['detailed_learnings']).replace('<', '&lt;').replace('>', '&gt;')
+        
+        # Display the full Telegram newsletter text (safely allowing HTML tags like <b>, <i>, <code>, <pre>, <a>)
+        newsletter_text = item.get('newsletter_text') or ""
+        if not newsletter_text:
+            # Fallback to high level summary + detailed learnings if newsletter_text is empty
+            summary = str(item.get('high_level_summary', '')).replace('<', '&lt;').replace('>', '&gt;')
+            learnings = str(item.get('detailed_learnings', '')).replace('<', '&lt;').replace('>', '&gt;')
+            newsletter_text = f"<h3>High-Level Summary</h3><p>{summary}</p><h3>Detailed Learnings</h3><div class='detailed-learnings'>{learnings}</div>"
         
         html += f"""
         <article class="card">
@@ -216,11 +223,7 @@ def generate_html(data):
                 <span class="date">{date}</span>
             </div>
             
-            <h3>High-Level Summary</h3>
-            <p>{summary}</p>
-            
-            <h3>Detailed Learnings</h3>
-            <div class="detailed-learnings">{learnings}</div>
+            <div class="newsletter-content" style="white-space: pre-wrap; font-size: 0.95rem; color: #2d2a25;">{newsletter_text}</div>
             
             <a href="https://youtube.com/watch?v={video_id}" target="_blank" class="youtube-link">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
