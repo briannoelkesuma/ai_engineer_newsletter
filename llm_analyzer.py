@@ -14,6 +14,7 @@ OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 client = OpenAI(
   base_url="https://openrouter.ai/api/v1",
   api_key=OPENROUTER_API_KEY,
+  max_retries=0,
 )
 
 class VideoInsights(BaseModel):
@@ -23,7 +24,7 @@ class VideoInsights(BaseModel):
 
 # Retry logic for 429 Too Many Requests (Rate Limits)
 @retry(
-    wait=wait_exponential(multiplier=2, min=4, max=60), 
+    wait=wait_exponential(multiplier=2, min=15, max=120), 
     stop=stop_after_attempt(5),
     retry=retry_if_exception_type(Exception),
     before_sleep=lambda retry_state: logging.warning(f"Rate limited or API error. Retrying in {retry_state.next_action.sleep} seconds...")
