@@ -9,3 +9,4 @@ crons = [ "0 0 * * *" ] # Run once a day at midnight UTC to renew WebSub subscri
 CHANNEL_ID = "UCLKPca3kwwd-B59HNr-_lvA"
 GITHUB_OWNER = "briannoelkesuma"
 GITHUB_REPO = "ai_engineer_newsletter"
+WORKER_URL = "https://youtube-websub-worker.2612brian.workers.dev"
