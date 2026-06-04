@@ -87,6 +87,12 @@ def generate_html(data):
             box-shadow: 0 8px 24px rgba(20,17,13,.08);
         }
         
+        .card:target {
+            border-color: var(--accent);
+            box-shadow: 0 0 16px rgba(215, 122, 58, 0.25);
+            scroll-margin-top: 40px;
+        }
+        
         .card-header {
             display: flex;
             justify-content: space-between;
@@ -193,7 +199,7 @@ def generate_html(data):
         newsletter_text = item.get('newsletter_text') or ""
         
         html += f"""
-        <article class="card">
+        <article class="card" id="video-{video_id}">
             <div class="card-header">
                 <h2>{title}</h2>
                 <span class="date">{date}</span>

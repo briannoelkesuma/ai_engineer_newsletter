@@ -9,6 +9,7 @@ CREATE TABLE videos (
     upload_date TEXT,
     status TEXT DEFAULT 'pending',
     model TEXT,
+    summary_text TEXT,
     newsletter_text TEXT,
     created_at TIMESTAMPTZ DEFAULT now()
 );
