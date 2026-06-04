@@ -13,7 +13,7 @@ def fetch_data():
     videos = videos_res.data
     
     # Fetch insights
-    insights_res = supabase.table("insights").select("*").execute()
+    insights_res = supabase.table("insights").select("video_id, newsletter_text").execute()
     insights_map = {item['video_id']: item for item in insights_res.data}
     
     merged_data = []
@@ -24,8 +24,6 @@ def fetch_data():
                 'video_id': vid_id,
                 'title': v['title'],
                 'upload_date': v['upload_date'],
-                'high_level_summary': insights_map[vid_id].get('high_level_summary', ''),
-                'detailed_learnings': insights_map[vid_id].get('detailed_learnings', ''),
                 'newsletter_text': insights_map[vid_id].get('newsletter_text', ''),
             })
             
@@ -210,11 +208,6 @@ def generate_html(data):
         
         # Display the full Telegram newsletter text (safely allowing HTML tags like <b>, <i>, <code>, <pre>, <a>)
         newsletter_text = item.get('newsletter_text') or ""
-        if not newsletter_text:
-            # Fallback to high level summary + detailed learnings if newsletter_text is empty
-            summary = str(item.get('high_level_summary', '')).replace('<', '&lt;').replace('>', '&gt;')
-            learnings = str(item.get('detailed_learnings', '')).replace('<', '&lt;').replace('>', '&gt;')
-            newsletter_text = f"<h3>High-Level Summary</h3><p>{summary}</p><h3>Detailed Learnings</h3><div class='detailed-learnings'>{learnings}</div>"
         
         html += f"""
         <article class="card">

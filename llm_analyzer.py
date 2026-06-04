@@ -19,9 +19,7 @@ client = OpenAI(
 )
 
 class VideoInsights(BaseModel):
-    high_level_summary: str = Field(description="A comprehensive, detailed summary explaining the core theme, problem statement, and solution discussed in the video.")
-    detailed_learnings: str = Field(description="Extremely comprehensive, highly detailed technical deep-dive of the architecture, code, and theories discussed. Act as an elite technical tutor who explains every key concept, architectural pattern, code logic, or framework in granular detail. Be exhaustive so the reader learns everything without watching the video.")
-    newsletter_text: str = Field(description="A fully detailed technical newsletter in Telegram HTML format (using only HTML tags: <b>bold</b>, <i>italic</i>, <code>inline code</code>, <pre>code block</pre>, and <a href='url'>links</a>). Combine the high-level summary and detailed learnings in full technical depth with no word limits. Do NOT include the video date or video link (they are appended programmatically). Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes.")
+    newsletter_text: str = Field(description="A fully detailed technical newsletter in Telegram HTML format (using only HTML tags: <b>bold</b>, <i>italic</i>, <code>inline code</code>, <pre>code block</pre>, and <a href='url'>links</a>). Act as an elite technical tutor who explains every key concept, architectural pattern, code logic, or framework in granular detail. Summarize the video sequentially for EACH timestamp/section in full detail so that readers learn everything without watching the video. Do NOT include the video date or video link (they are appended programmatically). Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes.")
 
 def is_retryable_exception(exception: Exception) -> bool:
     if isinstance(exception, NotFoundError):
@@ -43,15 +41,11 @@ def ask_llm(prompt: str, schema: type[BaseModel], model: str = "google/gemini-2.
     
     # We use a simplified template guide instead of the raw JSON schema because small models
     # can get confused and output the schema structure itself rather than filling fields.
-    system_content = """You are an expert AI Engineer and technical tutor. You must output a JSON object with the following exact keys:
-- "high_level_summary": A comprehensive, detailed summary explaining the core theme, problem statement, and solution discussed in the video.
-- "detailed_learnings": Extremely comprehensive, highly detailed technical deep-dive of the architecture, code, and theories discussed. Act as an elite technical tutor who explains every key concept, architectural pattern, code logic, or framework in granular detail. Be exhaustive so the reader learns everything without watching the video. Summarize the video sequentially for EACH timestamp/section in detail.
-- "newsletter_text": A fully detailed technical newsletter in Telegram HTML format. Combine the high-level summary and detailed learnings in full technical depth with no word limits. You must structure the newsletter by providing a detailed summary for EACH timestamp/section of the video. Do NOT include the video date or video link. Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes. CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
+    system_content = """You are an expert AI Engineer and technical tutor. You must output a JSON object with the following exact key:
+- "newsletter_text": A fully detailed technical newsletter in Telegram HTML format. Act as an elite technical tutor who explains every key concept, architectural pattern, code logic, or framework in granular detail. You must structure the newsletter by providing a detailed summary for EACH timestamp/section of the video sequentially so that readers learn everything without watching the video. Do NOT include the video date or video link. Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes. CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
 
 You must output ONLY a valid JSON object matching this structure:
 {
-  "high_level_summary": "...",
-  "detailed_learnings": "...",
   "newsletter_text": "..."
 }"""
 
