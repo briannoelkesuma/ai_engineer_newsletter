@@ -38,7 +38,7 @@ def is_retryable_exception(exception: Exception) -> bool:
     retry=retry_if_exception(is_retryable_exception),
     before_sleep=lambda retry_state: logging.warning(f"Rate limited or API error. Retrying in {retry_state.next_action.sleep} seconds...")
 )
-def ask_llm(prompt: str, schema: type[BaseModel], model: str = "google/gemini-2.5-flash:free") -> BaseModel:
+def ask_llm(prompt: str, schema: type[BaseModel], model: str = "openrouter/free") -> BaseModel:
     logging.info(f"Attempting LLM call with model: {model}")
     
     # We use a simplified template guide instead of the raw JSON schema because small models
@@ -143,7 +143,7 @@ def count_tokens(text: str) -> int:
         # Fallback estimation
         return len(text) // 4
 
-def analyze_transcript(title: str, description: str, upload_date: str, transcript: str, model: str = "google/gemini-2.5-flash:free") -> tuple[VideoInsights | None, str]:
+def analyze_transcript(title: str, description: str, upload_date: str, transcript: str, model: str = "openrouter/free") -> tuple[VideoInsights | None, str]:
     token_count = count_tokens(transcript)
     logging.info(f"Transcript estimated token count: {token_count}")
     
@@ -175,10 +175,11 @@ Transcript:
     try:
         return ask_llm(prompt, VideoInsights, model=model), model
     except Exception as e:
-        logging.warning(f"Primary model {model} failed: {e}. Falling back to openrouter/free...")
-        try:
-            fallback_model = "openrouter/free"
-            return ask_llm(prompt, VideoInsights, model=fallback_model), fallback_model
-        except Exception as fallback_err:
-            logging.error(f"Fallback model failed as well: {fallback_err}")
-            return None, model
+        logging.error(f"OpenRouter model {model} failed: {e}")
+        if model != "openrouter/free":
+            try:
+                logging.info("Falling back to openrouter/free...")
+                return ask_llm(prompt, VideoInsights, model="openrouter/free"), "openrouter/free"
+            except Exception as fallback_err:
+                logging.error(f"Fallback to openrouter/free failed: {fallback_err}")
+        return None, model
