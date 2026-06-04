@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+import time
 import requests
 from openai import OpenAI
 from pydantic import BaseModel, Field
@@ -23,6 +24,9 @@ client = OpenAI(
 class VideoInsights(BaseModel):
     newsletter_text: str = Field(description="A fully detailed technical newsletter in Telegram HTML format (using only HTML tags: <b>bold</b>, <i>italic</i>, <code>inline code</code>, <pre>code block</pre>, and <a href='url'>links</a>). Act as an elite technical tutor who explains every key concept, architectural pattern, code logic, or framework in granular detail. Summarize the video sequentially for EACH timestamp/section in full detail so that readers learn everything without watching the video. Do NOT include the video date or video link (they are appended programmatically). Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes.")
 
+class ChunkSummary(BaseModel):
+    summary: str = Field(description="A highly detailed technical summary and key insights extracted from this transcript chunk.")
+
 def is_retryable_exception(exception: Exception) -> bool:
     if isinstance(exception, NotFoundError):
         return False
@@ -41,14 +45,20 @@ def is_retryable_exception(exception: Exception) -> bool:
 def ask_llm(prompt: str, schema: type[BaseModel], model: str = "openrouter/free") -> BaseModel:
     logging.info(f"Attempting LLM call with model: {model}")
     
-    # We use a simplified template guide instead of the raw JSON schema because small models
-    # can get confused and output the schema structure itself rather than filling fields.
-    system_content = """You are an expert AI Engineer and technical tutor. You must output a JSON object with the following exact key:
+    if schema == VideoInsights:
+        system_content = """You are an expert AI Engineer and technical tutor. You must output a JSON object with the following exact key:
 - "newsletter_text": A fully detailed technical newsletter in Telegram HTML format. Act as an elite technical tutor who explains every key concept, architectural pattern, code logic, or framework in granular detail. You must structure the newsletter by providing a detailed summary for EACH timestamp/section of the video sequentially so that readers learn everything without watching the video. Do NOT include the video date or video link. Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes. CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
 
 You must output ONLY a valid JSON object matching this structure:
 {
   "newsletter_text": "..."
+}"""
+    else:
+        system_content = """You are an expert AI Engineer. Extract all detailed key points, architecture, code, and technical insights from the transcript chunk as a comprehensive detailed summary text. You must output a JSON object with the key 'summary'.
+
+You must output ONLY a valid JSON object matching this structure:
+{
+  "summary": "..."
 }"""
 
     completion = client.chat.completions.create(
@@ -97,10 +107,35 @@ def ask_gemini_direct(prompt: str, schema: type[BaseModel]) -> BaseModel:
     headers = {"Content-Type": "application/json"}
     params = {"key": GEMINI_API_KEY}
     
+    if schema == VideoInsights:
+        system_text = "You are an expert AI Engineer and technical tutor. You must output a JSON object with the following exact key:\n- \"newsletter_text\": A fully detailed technical newsletter in Telegram HTML format. Act as an elite technical tutor who explains every key concept, architectural pattern, code logic, or framework in granular detail. You must structure the newsletter by providing a detailed summary for EACH timestamp/section of the video sequentially so that readers learn everything without watching the video. Do NOT include the video date or video link. Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes. CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.\n\nYou must output ONLY a valid JSON object matching this structure:\n{\n  \"newsletter_text\": \"...\"\n}"
+        resp_schema = {
+            "type": "OBJECT",
+            "properties": {
+                "newsletter_text": {
+                    "type": "STRING",
+                    "description": "A fully detailed technical newsletter in Telegram HTML format."
+                }
+            },
+            "required": ["newsletter_text"]
+        }
+    else:
+        system_text = "You are an expert AI Engineer. Extract all detailed key points, architecture, code, and technical insights from the transcript chunk as a comprehensive detailed summary text.\n\nYou must output ONLY a valid JSON object matching this structure:\n{\n  \"summary\": \"...\"\n}"
+        resp_schema = {
+            "type": "OBJECT",
+            "properties": {
+                "summary": {
+                    "type": "STRING",
+                    "description": "A highly detailed technical summary and key insights extracted from this transcript chunk."
+                }
+            },
+            "required": ["summary"]
+        }
+        
     payload = {
         "systemInstruction": {
             "parts": [{
-                "text": "You are an expert AI Engineer and technical tutor. You must output a JSON object with the following exact key:\n- \"newsletter_text\": A fully detailed technical newsletter in Telegram HTML format. Act as an elite technical tutor who explains every key concept, architectural pattern, code logic, or framework in granular detail. You must structure the newsletter by providing a detailed summary for EACH timestamp/section of the video sequentially so that readers learn everything without watching the video. Do NOT include the video date or video link. Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes. CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.\n\nYou must output ONLY a valid JSON object matching this structure:\n{\n  \"newsletter_text\": \"...\"\n}"
+                "text": system_text
             }]
         },
         "contents": [{
@@ -110,16 +145,7 @@ def ask_gemini_direct(prompt: str, schema: type[BaseModel]) -> BaseModel:
         }],
         "generationConfig": {
             "responseMimeType": "application/json",
-            "responseSchema": {
-                "type": "OBJECT",
-                "properties": {
-                    "newsletter_text": {
-                        "type": "STRING",
-                        "description": "A fully detailed technical newsletter in Telegram HTML format."
-                    }
-                },
-                "required": ["newsletter_text"]
-            },
+            "responseSchema": resp_schema,
             "temperature": 0.3
         }
     }
@@ -143,18 +169,31 @@ def count_tokens(text: str) -> int:
         # Fallback estimation
         return len(text) // 4
 
-def analyze_transcript(title: str, description: str, upload_date: str, transcript: str, model: str = "openrouter/free") -> tuple[VideoInsights | None, str]:
-    # Safety limit: truncate excessively long transcripts to avoid hitting model context limits
-    max_safe_tokens = 60000
-    token_count = count_tokens(transcript)
-    if token_count > max_safe_tokens:
-        logging.warning(f"Transcript estimated token count ({token_count}) exceeds safe limit of {max_safe_tokens}. Truncating transcript...")
-        transcript = transcript[:max_safe_tokens * 4] + "\n\n[Transcript truncated to fit LLM context limits]"
-        token_count = count_tokens(transcript)
+def chunk_transcript(transcript: str, chunk_size_tokens: int = 20000) -> list[str]:
+    try:
+        encoding = tiktoken.get_encoding("cl100k_base")
+        tokens = encoding.encode(transcript)
+    except Exception:
+        # Fallback character-based chunking if tiktoken fails
+        chunk_size_chars = chunk_size_tokens * 4
+        return [transcript[i:i + chunk_size_chars] for i in range(0, len(transcript), chunk_size_chars)]
         
+    chunks = []
+    for i in range(0, len(tokens), chunk_size_tokens):
+        chunk_tokens = tokens[i:i + chunk_size_tokens]
+        chunks.append(encoding.decode(chunk_tokens))
+    return chunks
+
+def analyze_transcript(title: str, description: str, upload_date: str, transcript: str, model: str = "openrouter/free") -> tuple[VideoInsights | None, str]:
+    token_count = count_tokens(transcript)
     logging.info(f"Transcript estimated token count: {token_count}")
     
-    prompt = f"""
+    # Threshold for Map-Reduce: 30,000 tokens (approx. 120,000 characters)
+    map_reduce_threshold = 30000
+    
+    if token_count <= map_reduce_threshold:
+        logging.info("Transcript size within limit. Running single-pass analysis...")
+        prompt = f"""
 Video Title: {title}
 Video Description: {description}
 
@@ -168,25 +207,106 @@ Transcript:
 {transcript}
 """
 
-    if GEMINI_API_KEY:
-        try:
-            return ask_gemini_direct(prompt, VideoInsights), "native_gemini_2.5_flash"
-        except Exception as gemini_err:
-            logging.warning(f"Native Gemini API failed: {gemini_err}. Falling back to OpenRouter...")
-            
-    if not OPENROUTER_API_KEY:
-        logging.error("OpenRouter API key missing.")
-        return None, model
-        
-    logging.info(f"Using OpenRouter single-pass analysis (model: {model}).")
-    try:
-        return ask_llm(prompt, VideoInsights, model=model), model
-    except Exception as e:
-        logging.error(f"OpenRouter model {model} failed: {e}")
-        if model != "openrouter/free":
+        if GEMINI_API_KEY:
             try:
-                logging.info("Falling back to openrouter/free...")
-                return ask_llm(prompt, VideoInsights, model="openrouter/free"), "openrouter/free"
-            except Exception as fallback_err:
-                logging.error(f"Fallback to openrouter/free failed: {fallback_err}")
+                return ask_gemini_direct(prompt, VideoInsights), "native_gemini_2.5_flash"
+            except Exception as gemini_err:
+                logging.warning(f"Native Gemini API failed: {gemini_err}. Falling back to OpenRouter...")
+                
+        if not OPENROUTER_API_KEY:
+            logging.error("OpenRouter API key missing.")
+            return None, model
+            
+        logging.info(f"Using OpenRouter single-pass analysis (model: {model}).")
+        try:
+            return ask_llm(prompt, VideoInsights, model=model), model
+        except Exception as e:
+            logging.error(f"OpenRouter model {model} failed: {e}")
+            if model != "openrouter/free":
+                try:
+                    logging.info("Falling back to openrouter/free...")
+                    return ask_llm(prompt, VideoInsights, model="openrouter/free"), "openrouter/free"
+                except Exception as fallback_err:
+                    logging.error(f"Fallback to openrouter/free failed: {fallback_err}")
+            return None, model
+
+    else:
+        logging.info(f"Transcript ({token_count} tokens) exceeds single-pass threshold ({map_reduce_threshold}). Initiating Map-Reduce...")
+        
+        # 1. Map phase: Chunk and summarize
+        chunks = chunk_transcript(transcript, chunk_size_tokens=20000)
+        logging.info(f"Split transcript into {len(chunks)} chunks.")
+        
+        summaries = []
+        for i, chunk in enumerate(chunks):
+            logging.info(f"Mapping chunk {i+1}/{len(chunks)}...")
+            chunk_prompt = f"""
+You are mapping a segment of a video transcript. Extract extremely comprehensive, highly detailed technical points, architecture design patterns, code logic, and takeaways from this segment.
+Do not omit details; act as an elite technical transcriber.
+
+Transcript Segment:
+{chunk}
+"""
+            chunk_summary = None
+            if GEMINI_API_KEY:
+                try:
+                    chunk_summary = ask_gemini_direct(chunk_prompt, ChunkSummary)
+                except Exception as gemini_err:
+                    logging.warning(f"Native Gemini failed on chunk {i+1}: {gemini_err}. Trying OpenRouter...")
+            
+            if not chunk_summary and OPENROUTER_API_KEY:
+                try:
+                    chunk_summary = ask_llm(chunk_prompt, ChunkSummary, model=model)
+                except Exception as e:
+                    logging.warning(f"Primary model {model} failed on chunk {i+1}: {e}. Trying fallback openrouter/free...")
+                    try:
+                        chunk_summary = ask_llm(chunk_prompt, ChunkSummary, model="openrouter/free")
+                    except Exception as fallback_err:
+                        logging.error(f"Map phase failed entirely on chunk {i+1}: {fallback_err}")
+                        
+            if not chunk_summary:
+                logging.error(f"Could not map chunk {i+1}. Aborting Map-Reduce.")
+                return None, model
+                
+            summaries.append(chunk_summary.summary)
+            # Short sleep to prevent hitting prompt rate limits
+            time.sleep(5)
+            
+        # 2. Reduce phase: Combine and format the final newsletter
+        logging.info("Entering Reduce phase...")
+        combined_summaries = "\n\n--- NEXT SECTION SUMMARY ---\n\n".join(summaries)
+        
+        reduce_prompt = f"""
+Video Title: {title}
+Video Description: {description}
+
+You are provided with several sequential detailed technical summaries of different parts of a video transcript.
+Your task is to combine and synthesize these summaries into a single, fully detailed technical newsletter in Telegram HTML format.
+Do not truncate; provide detailed technical coverage of the entire video sequentially so that readers learn everything.
+Do NOT include the video date or link in the newsletter text itself. Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes.
+CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
+
+Summaries:
+{combined_summaries}
+"""
+        reduced = None
+        if GEMINI_API_KEY:
+            try:
+                reduced = ask_gemini_direct(reduce_prompt, VideoInsights)
+                return reduced, "native_gemini_2.5_flash"
+            except Exception as gemini_err:
+                logging.warning(f"Native Gemini failed on reduce phase: {gemini_err}. Trying OpenRouter...")
+                
+        if OPENROUTER_API_KEY:
+            try:
+                reduced = ask_llm(reduce_prompt, VideoInsights, model=model)
+                return reduced, model
+            except Exception as e:
+                logging.warning(f"Primary model failed on reduce phase: {e}. Trying fallback openrouter/free...")
+                try:
+                    reduced = ask_llm(reduce_prompt, VideoInsights, model="openrouter/free")
+                    return reduced, "openrouter/free"
+                except Exception as fallback_err:
+                    logging.error(f"Reduce phase failed entirely: {fallback_err}")
+                    
         return None, model
