@@ -99,8 +99,6 @@ def run_pipeline(target_video_id=None):
             
         insert_insights(
             video_id, 
-            insights.high_level_summary, 
-            insights.detailed_learnings, 
             insights.newsletter_text
         )
         

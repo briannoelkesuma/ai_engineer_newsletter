@@ -98,8 +98,6 @@ def run_backfill():
         # Save insights
         insert_insights(
             video_id,
-            insights.high_level_summary,
-            insights.detailed_learnings,
             insights.newsletter_text
         )
         
