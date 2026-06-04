@@ -112,8 +112,8 @@ def run_pipeline(target_video_id=None):
         processed_count += 1
         
         # Throttling to respect OpenRouter API limits
-        logging.info("Sleeping for 20 seconds to respect API rate limits...")
-        time.sleep(20)
+        logging.info("Sleeping for 65 seconds to respect API rate limits...")
+        time.sleep(65)
         
     logging.info("Pipeline run complete.")
     if processed_count > 0 or failed_count > 0:

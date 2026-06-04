@@ -114,8 +114,8 @@ def run_backfill():
         
         # Respect rate limits
         if idx < len(pending) - 1:
-            logging.info("Sleeping for 20 seconds to respect API rate limits...")
-            time.sleep(20)
+            logging.info("Sleeping for 65 seconds to respect API rate limits...")
+            time.sleep(65)
             
     logging.info(f"Backfill complete! Rebuilt website with {processed_count} backfilled entries.")
     if processed_count > 0:

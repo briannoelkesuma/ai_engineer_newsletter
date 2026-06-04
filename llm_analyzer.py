@@ -34,7 +34,7 @@ def is_retryable_exception(exception: Exception) -> bool:
 # Retry logic for 429 Too Many Requests (Rate Limits)
 @retry(
     wait=wait_exponential(multiplier=2, min=15, max=120), 
-    stop=stop_after_attempt(4),
+    stop=stop_after_attempt(6),
     retry=retry_if_exception(is_retryable_exception),
     before_sleep=lambda retry_state: logging.warning(f"Rate limited or API error. Retrying in {retry_state.next_action.sleep} seconds...")
 )
