@@ -4,7 +4,8 @@ import logging
 from openai import OpenAI
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
-from tenacity import retry, wait_exponential, stop_after_attempt, retry_if_exception_type
+from openai import NotFoundError
+from tenacity import retry, wait_exponential, stop_after_attempt, retry_if_exception
 import tiktoken
 
 load_dotenv()
@@ -22,11 +23,19 @@ class VideoInsights(BaseModel):
     detailed_learnings: str = Field(description="Extremely comprehensive, highly detailed technical deep-dive of the architecture, code, and theories discussed. Act as an elite technical tutor who explains every key concept, architectural pattern, code logic, or framework in granular detail. Be exhaustive so the reader learns everything without watching the video.")
     newsletter_text: str = Field(description="A fully detailed technical newsletter in Telegram HTML format (using only HTML tags: <b>bold</b>, <i>italic</i>, <code>inline code</code>, <pre>code block</pre>, and <a href='url'>links</a>). Combine the high-level summary and detailed learnings in full technical depth with no word limits. Do NOT include the video date or video link (they are appended programmatically). Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes.")
 
+def is_retryable_exception(exception: Exception) -> bool:
+    if isinstance(exception, NotFoundError):
+        return False
+    # Check for HTTP status codes that shouldn't be retried
+    if hasattr(exception, "status_code") and exception.status_code in (400, 401, 402, 403, 404):
+        return False
+    return True
+
 # Retry logic for 429 Too Many Requests (Rate Limits)
 @retry(
     wait=wait_exponential(multiplier=2, min=15, max=120), 
     stop=stop_after_attempt(4),
-    retry=retry_if_exception_type(Exception),
+    retry=retry_if_exception(is_retryable_exception),
     before_sleep=lambda retry_state: logging.warning(f"Rate limited or API error. Retrying in {retry_state.next_action.sleep} seconds...")
 )
 def ask_llm(prompt: str, schema: type[BaseModel], model: str = "google/gemini-2.5-flash:free") -> BaseModel:
