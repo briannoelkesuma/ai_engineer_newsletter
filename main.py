@@ -21,8 +21,9 @@ def format_date(date_str):
 def run_pipeline(target_video_id=None):
     logging.info("Starting ingestion pipeline...")
     
-    # Self-Healing: Reset stuck processing videos from prior crashed runs
-    reset_stuck_videos()
+    # Self-Healing: Reset stuck processing videos from prior crashed runs (only on batch runs)
+    if not target_video_id:
+        reset_stuck_videos()
     
     if target_video_id:
         logging.info(f"Triggered for specific video ID: {target_video_id}")
@@ -88,7 +89,7 @@ def run_pipeline(target_video_id=None):
             continue
             
         logging.info("Sending to LLM...")
-        insights = analyze_transcript(title, description, upload_date, transcript)
+        insights, model_name = analyze_transcript(title, description, upload_date, transcript)
         
         if not insights:
             logging.error(f"LLM analysis failed for {video_id}. Marking as failed.")
@@ -98,7 +99,6 @@ def run_pipeline(target_video_id=None):
             
         insert_insights(
             video_id, 
-            "", 
             insights.high_level_summary, 
             insights.detailed_learnings, 
             insights.newsletter_text
@@ -108,7 +108,7 @@ def run_pipeline(target_video_id=None):
         final_message = f"📺 <b>{title}</b>\n\n{insights.newsletter_text}\n\n🔗 https://youtube.com/watch?v={video_id}"
         send_telegram_message(final_message)
         
-        update_video_status(video_id, "processed")
+        update_video_status(video_id, "processed", model=model_name)
         processed_count += 1
         
         # Throttling to respect OpenRouter API limits

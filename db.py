@@ -29,16 +29,18 @@ def add_video(video_id: str, title: str, description: str, upload_date: str):
     response = supabase.table("videos").upsert(data, ignore_duplicates=True).execute()
     return response.data
 
-def update_video_status(video_id: str, status: str):
+def update_video_status(video_id: str, status: str, model: str = None):
     supabase = get_db_client()
-    response = supabase.table("videos").update({"status": status}).eq("video_id", video_id).execute()
+    data = {"status": status}
+    if model:
+        data["model"] = model
+    response = supabase.table("videos").update(data).eq("video_id", video_id).execute()
     return response.data
 
-def insert_insights(video_id: str, company: str, high_level_summary: str, detailed_learnings: str, newsletter_text: str):
+def insert_insights(video_id: str, high_level_summary: str, detailed_learnings: str, newsletter_text: str):
     supabase = get_db_client()
     data = {
         "video_id": video_id,
-        "company": company,
         "high_level_summary": high_level_summary,
         "detailed_learnings": detailed_learnings,
         "newsletter_text": newsletter_text

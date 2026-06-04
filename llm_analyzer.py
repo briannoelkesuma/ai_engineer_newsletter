@@ -25,7 +25,7 @@ class VideoInsights(BaseModel):
 # Retry logic for 429 Too Many Requests (Rate Limits)
 @retry(
     wait=wait_exponential(multiplier=2, min=15, max=120), 
-    stop=stop_after_attempt(5),
+    stop=stop_after_attempt(10),
     retry=retry_if_exception_type(Exception),
     before_sleep=lambda retry_state: logging.warning(f"Rate limited or API error. Retrying in {retry_state.next_action.sleep} seconds...")
 )
@@ -82,10 +82,10 @@ def count_tokens(text: str) -> int:
         # Fallback estimation
         return len(text) // 4
 
-def analyze_transcript(title: str, description: str, upload_date: str, transcript: str) -> VideoInsights | None:
+def analyze_transcript(title: str, description: str, upload_date: str, transcript: str, model: str = "google/gemma-4-31b-it:free") -> tuple[VideoInsights | None, str]:
     if not OPENROUTER_API_KEY:
         logging.error("OpenRouter API key missing.")
-        return None
+        return None, model
         
     token_count = count_tokens(transcript)
     logging.info(f"Transcript estimated token count: {token_count}")
@@ -105,7 +105,7 @@ Transcript:
 {transcript}
 """
     try:
-        return ask_llm(prompt, VideoInsights)
+        return ask_llm(prompt, VideoInsights, model=model), model
     except Exception as e:
         logging.error(f"Failed single-pass LLM Analysis: {e}")
-        return None
+        return None, model
