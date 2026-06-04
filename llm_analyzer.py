@@ -29,7 +29,7 @@ class VideoInsights(BaseModel):
     retry=retry_if_exception_type(Exception),
     before_sleep=lambda retry_state: logging.warning(f"Rate limited or API error. Retrying in {retry_state.next_action.sleep} seconds...")
 )
-def ask_llm(prompt: str, schema: type[BaseModel], model: str = "meta-llama/llama-3.2-3b-instruct:free") -> BaseModel:
+def ask_llm(prompt: str, schema: type[BaseModel], model: str = "google/gemma-4-31b-it:free") -> BaseModel:
     logging.info(f"Attempting LLM call with model: {model}")
     
     # We use a simplified template guide instead of the raw JSON schema because small models
