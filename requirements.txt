@@ -1,0 +1,9 @@
+yt-dlp
+youtube-transcript-api
+supabase
+openai
+python-dotenv
+requests
+pydantic
+tenacity
+tiktoken

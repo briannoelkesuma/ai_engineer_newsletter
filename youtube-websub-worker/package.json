@@ -1,0 +1,13 @@
+{
+  "name": "youtube-websub-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker to handle YouTube WebSub webhooks and trigger GitHub Actions",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

@@ -1,0 +1,30 @@
+# Virtual environments
+venv/
+ENV/
+env/
+
+# Node dependencies (Cloudflare Worker)
+youtube-websub-worker/node_modules/
+youtube-websub-worker/.wrangler/
+
+# Local configuration / secrets
+.env
+.env.local
+
+# Python cache / builds
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Local logs
+*.log
+cron.log
+
+# Transcripts cache
+transcripts/
+
+# OS specific files
+.DS_Store
+Thumbs.db
