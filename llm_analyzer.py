@@ -42,7 +42,7 @@ def is_retryable_exception(exception: Exception) -> bool:
     retry=retry_if_exception(is_retryable_exception),
     before_sleep=lambda retry_state: logging.warning(f"Rate limited or API error. Retrying in {retry_state.next_action.sleep} seconds...")
 )
-def ask_llm(prompt: str, schema: type[BaseModel], model: str = "openrouter/free") -> BaseModel:
+def ask_llm(prompt: str, schema: type[BaseModel], model: str = "meta-llama/llama-3.3-70b-instruct:free") -> BaseModel:
     logging.info(f"Attempting LLM call with model: {model}")
     
     if schema == VideoInsights:
@@ -207,7 +207,7 @@ def get_model_limits(model_name: str) -> tuple[int, int]:
     # Safe fallback
     return 30000, 20000
 
-def analyze_transcript(title: str, description: str, upload_date: str, transcript: str, model: str = "openrouter/free") -> tuple[VideoInsights | None, str]:
+def analyze_transcript(title: str, description: str, upload_date: str, transcript: str, model: str = "meta-llama/llama-3.3-70b-instruct:free") -> tuple[VideoInsights | None, str]:
     token_count = count_tokens(transcript)
     logging.info(f"Transcript estimated token count: {token_count}")
     
