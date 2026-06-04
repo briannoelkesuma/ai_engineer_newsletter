@@ -72,15 +72,43 @@ Instead of running an expensive server 24/7 that repeatedly queries (polls) the 
 
 ---
 
+## Detailed Execution Flow (Under the Hood)
+
+When a new video is published on YouTube, the following sequence occurs automatically:
+
+1. **Webhook Reception & Signature Verification**:
+   The Cloudflare Worker receives the XML payload from Google's Hub. It computes an HMAC-SHA1 signature of the body using the `WEBHOOK_SECRET` to verify that the request is genuinely from YouTube.
+2. **Deduplication Check**:
+   The Worker extracts the `video_id` and pings your Supabase database using a `POST` request with the header `Prefer: resolution=ignore-duplicates`. If the video already exists, it skips triggering the runner (preventing duplicate processing). If it's new, it creates a database row with `status = 'pending'`.
+3. **Trigger GitHub Action**:
+   The Worker sends a `Repository Dispatch` request to the GitHub API, passing the `video_id` and `title` in the client payload.
+4. **Environment Setup & Run**:
+   A GitHub Actions virtual machine boots up, checks out your code, installs Python dependencies, and runs:
+   ```bash
+   python main.py --video_id <VIDEO_ID>
+   ```
+5. **Transcript Download (`transcript_fetcher.py`)**:
+   The script invokes `yt-dlp` to download the English subtitles. It attempts to fetch manually uploaded subtitles first, falling back to auto-generated subtitles if necessary, and formats the output into clean timestamps.
+6. **LLM Synthesis (`llm_analyzer.py`)**:
+   The transcript text is sent to OpenRouter (using Google's Gemini Flash model). The LLM processes the transcript using a system prompt to extract startup names, core technologies discussed, timeline breakdowns, and key takeaways.
+7. **Telegram Broadcast (`telegram_bot.py`)**:
+   The generated summary is formatted into HTML and sent directly to your Telegram channel via the Telegram Bot API.
+8. **Static Rebuild (`generate_static_site.py`)**:
+   The script queries all `processed` videos from Supabase, compiles them into a premium, responsive static HTML digest page (`public/index.html`), and commits the changes back to your GitHub repository.
+9. **Instant Deployment**:
+   Vercel detects the new Git commit to `public/index.html` and redeploys the site automatically.
+
+---
+
 ## Verification & Troubleshooting
 
 Here is how you can verify that each part of your pipeline is working:
 
 ### 1. Verify the WebSub Subscription
 You can check if Google's Hub has successfully registered your Cloudflare Worker:
-1. Open this link in your browser:
-   👉 **[PubSubHubbub Diagnostics Portal](https://pubsubhubbub.appspot.com/subscription-details?hub.callback=https://youtube-websub-worker.2612brian.workers.dev&hub.topic=https://www.youtube.com/xml/feeds/videos.xml?channel_id=UCLKPca3kwwd-B59HNr-_lvA)**
-2. Verify that **State** says `active`.
+1. Open this link in your browser (it contains your secure verification secret):
+   👉 **[PubSubHubbub Diagnostics Portal](https://pubsubhubbub.appspot.com/subscription-details?hub.callback=https://youtube-websub-worker.2612brian.workers.dev&hub.topic=https://www.youtube.com/xml/feeds/videos.xml?channel_id=UCLKPca3kwwd-B59HNr-_lvA&hub.secret=54117b8f2a3df29c2d79d7f5a03496f8c7e2d9a3)**
+2. Verify that **State** says `active` or `verified`.
 3. Check the **Last Verification** date and verify that the callback points to your worker.
 
 ### 2. Verify Database Ingestion
@@ -114,7 +142,7 @@ You can check if Google's Hub has successfully registered your Cloudflare Worker
 To make your static site live:
 1. Go to [Vercel](https://vercel.com) and click **Add New -> Project**.
 2. Import the `ai_engineer_newsletter` repository.
-3. In the Build and Development Settings, set the **Root Directory** or build output directory to `public` (so it serves `public/index.html` as the homepage).
+3. In the Build and Development Settings, set the **Root Directory` or build output directory to `public` (so it serves `public/index.html` as the homepage).
 4. Deploy the project. Vercel will automatically redeploy the site on every automatic commit pushed by the GitHub Actions runner.
 
 ---
