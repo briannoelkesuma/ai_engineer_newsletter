@@ -47,7 +47,7 @@ def ask_llm(prompt: str, schema: type[BaseModel], model: str = "meta-llama/llama
     
     if schema == VideoInsights:
         system_content = """You are an expert AI Engineer and technical tutor. You must output a JSON object with the following exact key:
-- "newsletter_text": A fully detailed technical newsletter in Telegram HTML format. Act as an elite technical tutor who explains every key concept, architectural pattern, code logic, or framework in granular detail. You must structure the newsletter by providing a detailed summary for EACH timestamp/section of the video sequentially so that readers learn everything without watching the video. Do NOT include the video date or video link. Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes. CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
+- "newsletter_text": A fully detailed, technical, deep-dive newsletter in Telegram HTML format. Act as an elite technical tutor who explains every key concept, architectural pattern, code logic, framework, library, and system design decision in granular detail. The newsletter must be highly detailed and comprehensive, explaining the exact technical 'how' and 'why'. Structure the newsletter by providing a highly detailed coverage of EACH section/timestamp sequentially so that readers learn everything without watching the video. Do NOT skip any details, do NOT write a high-level summary, and be as verbose and detailed as possible. Do NOT include the video date or video link. Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes. CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
 
 You must output ONLY a valid JSON object matching this structure:
 {
@@ -108,7 +108,7 @@ def ask_gemini_direct(prompt: str, schema: type[BaseModel]) -> BaseModel:
     params = {"key": GEMINI_API_KEY}
     
     if schema == VideoInsights:
-        system_text = "You are an expert AI Engineer and technical tutor. You must output a JSON object with the following exact key:\n- \"newsletter_text\": A fully detailed technical newsletter in Telegram HTML format. Act as an elite technical tutor who explains every key concept, architectural pattern, code logic, or framework in granular detail. You must structure the newsletter by providing a detailed summary for EACH timestamp/section of the video sequentially so that readers learn everything without watching the video. Do NOT include the video date or video link. Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes. CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.\n\nYou must output ONLY a valid JSON object matching this structure:\n{\n  \"newsletter_text\": \"...\"\n}"
+        system_text = "You are an expert AI Engineer and technical tutor. You must output a JSON object with the following exact key:\n- \"newsletter_text\": A fully detailed, technical, deep-dive newsletter in Telegram HTML format. Act as an elite technical tutor who explains every key concept, architectural pattern, code logic, framework, library, and system design decision in granular detail. The newsletter must be highly detailed and comprehensive, explaining the exact technical 'how' and 'why'. Structure the newsletter by providing a highly detailed coverage of EACH section/timestamp sequentially so that readers learn everything without watching the video. Do NOT skip any details, do NOT write a high-level summary, and be as verbose and detailed as possible. Do NOT include the video date or video link. Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes. CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.\n\nYou must output ONLY a valid JSON object matching this structure:\n{\n  \"newsletter_text\": \"...\"\n}"
         resp_schema = {
             "type": "OBJECT",
             "properties": {
@@ -222,9 +222,9 @@ def analyze_transcript(title: str, description: str, upload_date: str, transcrip
 Video Title: {title}
 Video Description: {description}
 
-Your task is to provide a comprehensive explanation and write detailed, granular technical 'Deep Dive' teachings.
+Your task is to provide an extensive, deep-dive explanation and write highly detailed, granular technical 'Deep Dive' teachings.
 Synthesize a Telegram Newsletter in HTML format containing all this information in full detail.
-Do not truncate; provide detailed technical coverage of EACH timestamp/section sequentially so that readers learn everything without watching the video.
+Do not truncate, summarize, or simplify; provide maximum detailed technical coverage of EACH timestamp/section sequentially so that readers learn everything without watching the video. Cover all code listings, design patterns, and systems discussed.
 Do NOT include the video date or link in the newsletter text itself. Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes.
 CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
 
@@ -266,8 +266,8 @@ Transcript:
         for i, chunk in enumerate(chunks):
             logging.info(f"Mapping chunk {i+1}/{len(chunks)}...")
             chunk_prompt = f"""
-You are mapping a segment of a video transcript. Extract extremely comprehensive, highly detailed technical points, architecture design patterns, code logic, and takeaways from this segment.
-Do not omit details; act as an elite technical transcriber.
+You are mapping a segment of a video transcript. Extract extremely comprehensive, highly detailed, granular technical points, architecture design patterns, code logic, framework configurations, and technical takeaways from this segment.
+Do not omit details or summarize briefly; act as an elite technical transcriber writing for an expert developer audience.
 
 Transcript Segment:
 {chunk}
@@ -306,8 +306,8 @@ Video Title: {title}
 Video Description: {description}
 
 You are provided with several sequential detailed technical summaries of different parts of a video transcript.
-Your task is to combine and synthesize these summaries into a single, fully detailed technical newsletter in Telegram HTML format.
-Do not truncate; provide detailed technical coverage of the entire video sequentially so that readers learn everything.
+Your task is to combine and synthesize these summaries into a single, highly comprehensive, granular, deep-dive technical newsletter in Telegram HTML format.
+Do not truncate, simplify, or skip sections; provide detailed technical coverage of the entire video sequentially so that readers learn everything. Do NOT omit code blocks, architectural details, or system components mentioned in the summaries.
 Do NOT include the video date or link in the newsletter text itself. Do NOT include meta-commentary, notes about missing URLs/slides, or footnotes.
 CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
 
