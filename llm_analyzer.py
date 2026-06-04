@@ -144,7 +144,14 @@ def count_tokens(text: str) -> int:
         return len(text) // 4
 
 def analyze_transcript(title: str, description: str, upload_date: str, transcript: str, model: str = "openrouter/free") -> tuple[VideoInsights | None, str]:
+    # Safety limit: truncate excessively long transcripts to avoid hitting model context limits
+    max_safe_tokens = 60000
     token_count = count_tokens(transcript)
+    if token_count > max_safe_tokens:
+        logging.warning(f"Transcript estimated token count ({token_count}) exceeds safe limit of {max_safe_tokens}. Truncating transcript...")
+        transcript = transcript[:max_safe_tokens * 4] + "\n\n[Transcript truncated to fit LLM context limits]"
+        token_count = count_tokens(transcript)
+        
     logging.info(f"Transcript estimated token count: {token_count}")
     
     prompt = f"""
