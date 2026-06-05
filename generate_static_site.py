@@ -9,8 +9,18 @@ def fetch_data():
     supabase = get_db_client()
     
     # Fetch processed videos
-    videos_res = supabase.table("videos").select("*").eq("status", "processed").order("upload_date", desc=True).execute()
-    return videos_res.data
+    videos_res = supabase.table("videos").select("*").eq("status", "processed").execute()
+    data = videos_res.data or []
+    
+    # Standardize dates to YYYY-MM-DD for sorting and display
+    for item in data:
+        date_str = item.get('upload_date')
+        if date_str and len(date_str) == 8 and date_str.isdigit():
+            item['upload_date'] = f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
+            
+    # Sort by upload_date descending (newest first)
+    data.sort(key=lambda x: x.get('upload_date') or '', reverse=True)
+    return data
 
 def generate_html(data):
     html = """<!DOCTYPE html>

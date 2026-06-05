@@ -55,8 +55,8 @@ def run_pipeline(target_video_id=None):
         description = p_vid['description'] or ""
         raw_upload_date = p_vid['upload_date']
         
-        # If upload_date or description is missing, fetch them via yt-dlp
-        if not raw_upload_date or not description:
+        # If upload_date, description, or title is missing/default, fetch them via yt-dlp
+        if not raw_upload_date or not description or title == "Triggered Video":
             try:
                 import yt_dlp
                 logging.info(f"Fetching full metadata for {video_id} via yt-dlp...")
@@ -66,7 +66,7 @@ def run_pipeline(target_video_id=None):
                     if not raw_upload_date:
                         raw_upload_date = info.get("upload_date")
                         if raw_upload_date:
-                            update_video_status(video_id, "pending") # ensure we don't clear status
+                            update_video_status(video_id, "pending")
                             supabase = get_db_client()
                             supabase.table("videos").update({"upload_date": raw_upload_date}).eq("video_id", video_id).execute()
                     if not description:
@@ -74,6 +74,12 @@ def run_pipeline(target_video_id=None):
                         if description:
                             supabase = get_db_client()
                             supabase.table("videos").update({"description": description}).eq("video_id", video_id).execute()
+                    if title == "Triggered Video":
+                        fetched_title = info.get("title")
+                        if fetched_title:
+                            title = fetched_title
+                            supabase = get_db_client()
+                            supabase.table("videos").update({"title": fetched_title}).eq("video_id", video_id).execute()
             except Exception as e:
                 logging.warning(f"Failed to fetch metadata for {video_id}: {e}")
                 
@@ -108,7 +114,7 @@ def run_pipeline(target_video_id=None):
         )
         send_telegram_message(final_message)
         
-        update_video_status(video_id, "processed", model=model_name, summary_text=insights.summary_text, newsletter_text=insights.newsletter_text)
+        update_video_status(video_id, "processed", model=model_name, summary_text=insights.summary_text, newsletter_text=insights.newsletter_text, upload_date=upload_date)
         processed_count += 1
         
         # Throttling to respect OpenRouter API limits
