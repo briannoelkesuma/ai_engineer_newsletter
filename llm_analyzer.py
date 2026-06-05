@@ -72,7 +72,6 @@ You must output ONLY a valid JSON object matching this structure:
             {"role": "system", "content": system_content},
             {"role": "user", "content": prompt}
         ],
-        response_format={"type": "json_object"},
         temperature=0.3,
         max_tokens=8192
     )
@@ -204,13 +203,13 @@ def get_model_limits(model_name: str) -> tuple[int, int]:
         # Gemini context window is 1M+, so we can safely do single-pass up to 500k tokens
         return 500000, 100000
     # Smaller models or local models on OpenRouter (typically 8k context)
-    elif any(x in model_lower for x in ["llama-3-8b", "llama3-8b", "gemma", "mistral-7b"]):
+    elif any(x in model_lower for x in ["llama-3-8b", "llama3-8b", "gemma-2", "gemma2", "mistral-7b"]):
         return 6000, 4000
-    # Large context models (Llama 3.1 / 3.2 / 3.3 typically have 128k)
-    elif any(x in model_lower for x in ["llama-3.1", "llama-3.2", "llama-3.3", "hermes-3", "nemotron"]):
+    # Large context models (Llama 3.1 / 3.2 / 3.3, Gemma 4, Hermes 3, Nemotron typically have 128k)
+    elif any(x in model_lower for x in ["llama-3.1", "llama-3.2", "llama-3.3", "gemma-4", "gemma4", "hermes-3", "nemotron"]):
         return 80000, 30000
     # openrouter/free (safer default for routing)
-    elif "openrouter/free" in model_lower:
+    elif "openrouter/free" in model_lower or "gpt-oss" in model_lower:
         return 30000, 20000
     
     # Safe fallback
