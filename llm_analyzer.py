@@ -35,6 +35,40 @@ def is_retryable_exception(exception: Exception) -> bool:
         return False
     return True
 
+def clean_json_math_escapes(content: str) -> str:
+    import re
+    # Set of LaTeX commands starting with n, t, r, b, f
+    latex_ntrbf = {
+        'newline', 'nabla', 'nearrow', 'neg', 'times', 'theta', 'tau', 'tan', 
+        'tilde', 'triangle', 'rightarrow', 'rho', 'rangle', 'rbrace', 'real', 
+        'beta', 'bar', 'begin', 'box', 'frac', 'forall', 'frown'
+    }
+    
+    def replace_match(match):
+        backslash_and_char = match.group(0)
+        char = match.group(1)
+        rest = match.group(2)
+        
+        if char not in ('n', 't', 'r', 'b', 'f', 'u'):
+            return '\\\\' + char + rest
+            
+        if char in ('n', 't', 'r', 'b', 'f'):
+            word = char + rest
+            if word in latex_ntrbf:
+                return '\\\\' + word
+            return backslash_and_char
+            
+        if char == 'u':
+            if len(rest) >= 4 and all(c in '0123456789abcdefABCDEF' for c in rest[:4]):
+                if len(rest) == 4 or not rest[4].isalpha():
+                    return backslash_and_char
+            return '\\\\' + char + rest
+            
+        return backslash_and_char
+
+    pattern = r'\\([a-zA-Z])([a-zA-Z]*)'
+    return re.sub(pattern, replace_match, content)
+
 # Retry logic for 429 Too Many Requests (Rate Limits)
 @retry(
     wait=wait_exponential(multiplier=1.5, min=5, max=30), 
@@ -85,9 +119,10 @@ You must output ONLY a valid JSON object matching this structure:
     content = content.strip()
     
     try:
+        content = clean_json_math_escapes(content)
         return schema.model_validate_json(content)
     except Exception as e:
-        logging.error(f"JSON validation failed: {e}\nContent was: {content[:1000]}...")
+        logging.error(f"JSON validation failed: {e}\nContent was:\n{content}")
         raise
 
 

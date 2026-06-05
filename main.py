@@ -19,6 +19,46 @@ def format_date(date_str):
     # Format YYYYMMDD to YYYY-MM-DD
     return f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
 
+def fetch_youtube_metadata_fallback(video_id: str) -> dict:
+    import urllib.request
+    import re
+    url = f"https://www.youtube.com/watch?v={video_id}"
+    req = urllib.request.Request(
+        url, 
+        headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as response:
+            html = response.read().decode('utf-8', errors='ignore')
+            
+            # 1. Parse Title
+            title_match = re.search(r'<meta name="title" content="([^"]+)"', html)
+            if not title_match:
+                title_match = re.search(r'<meta property="og:title" content="([^"]+)"', html)
+            title = title_match.group(1) if title_match else "Triggered Video"
+            
+            # 2. Parse Description
+            desc_match = re.search(r'<meta name="description" content="([^"]+)"', html)
+            if not desc_match:
+                desc_match = re.search(r'<meta property="og:description" content="([^"]+)"', html)
+            description = desc_match.group(1) if desc_match else ""
+            
+            # 3. Parse Upload Date
+            date_match = re.search(r'itemprop="uploadDate" content="([^"T]+)', html)
+            if not date_match:
+                date_match = re.search(r'itemprop="datePublished" content="([^"T]+)', html)
+            # Format: YYYY-MM-DD -> YYYYMMDD
+            upload_date = date_match.group(1).replace("-", "") if date_match else None
+            
+            return {
+                "title": title,
+                "description": description,
+                "upload_date": upload_date
+            }
+    except Exception as e:
+        logging.warning(f"Fallback metadata fetch failed for {video_id}: {e}")
+    return {}
+
 def run_pipeline(target_video_id=None):
     logging.info("Starting ingestion pipeline...")
     
@@ -88,7 +128,22 @@ def run_pipeline(target_video_id=None):
                             supabase = get_db_client()
                             supabase.table("videos").update({"title": fetched_title}).eq("video_id", video_id).execute()
             except Exception as e:
-                logging.warning(f"Failed to fetch metadata for {video_id}: {e}")
+                logging.warning(f"Failed to fetch metadata for {video_id} via yt-dlp: {e}. Trying fallback HTML scraping...")
+                fallback_meta = fetch_youtube_metadata_fallback(video_id)
+                if fallback_meta:
+                    if not raw_upload_date and fallback_meta.get("upload_date"):
+                        raw_upload_date = fallback_meta["upload_date"]
+                        update_video_status(video_id, "pending")
+                        supabase = get_db_client()
+                        supabase.table("videos").update({"upload_date": raw_upload_date}).eq("video_id", video_id).execute()
+                    if not description and fallback_meta.get("description"):
+                        description = fallback_meta["description"]
+                        supabase = get_db_client()
+                        supabase.table("videos").update({"description": description}).eq("video_id", video_id).execute()
+                    if title == "Triggered Video" and fallback_meta.get("title") and fallback_meta["title"] != "Triggered Video":
+                        title = fallback_meta["title"]
+                        supabase = get_db_client()
+                        supabase.table("videos").update({"title": title}).eq("video_id", video_id).execute()
                 
         upload_date = format_date(raw_upload_date)
         

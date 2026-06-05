@@ -254,6 +254,20 @@ def generate_html(data):
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
@@ -273,7 +287,18 @@ def generate_html(data):
         
         # Display the webpage detailed info text (rendered via marked.js)
         webpage_detailed_info_text = item.get('webpage_detailed_info_text') or ""
-        escaped_md = json.dumps(webpage_detailed_info_text)
+        
+        # Fallback to first heading if title is default "Triggered Video" or empty
+        clean_md = webpage_detailed_info_text
+        if title == "Triggered Video" or not title:
+            import re
+            m = re.search(r'^#+\s*(.+)', webpage_detailed_info_text)
+            if m:
+                title = m.group(1).strip()
+                # Strip the heading from the markdown body
+                clean_md = re.sub(r'^#+\s*.+\n?', '', webpage_detailed_info_text, count=1).strip()
+        
+        escaped_md = json.dumps(clean_md)
         
         html += f"""
         <article class="card" id="video-{video_id}">
@@ -285,6 +310,9 @@ def generate_html(data):
             <div class="newsletter-content markdown-body" id="content-{video_id}"></div>
             <script>
                 document.getElementById("content-{video_id}").innerHTML = marked.parse({escaped_md});
+                if (window.MathJax && window.MathJax.typesetPromise) {{
+                    window.MathJax.typesetPromise();
+                }}
             </script>
             
             <a href="https://youtube.com/watch?v={video_id}" target="_blank" class="youtube-link">
