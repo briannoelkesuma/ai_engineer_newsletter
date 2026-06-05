@@ -13,7 +13,6 @@ import tiktoken
 load_dotenv()
 
 OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 
 client = OpenAI(
   base_url="https://openrouter.ai/api/v1",
@@ -93,81 +92,6 @@ You must output ONLY a valid JSON object matching this structure:
         logging.error(f"JSON validation failed: {e}\nContent was: {content[:1000]}...")
         raise
 
-def is_gemini_retryable(exception: Exception) -> bool:
-    if isinstance(exception, requests.HTTPError):
-        # Retry only on 429 or 5xx server errors
-        return exception.response.status_code == 429 or exception.response.status_code >= 500
-    return True
-
-@retry(
-    wait=wait_exponential(multiplier=2, min=5, max=60), 
-    stop=stop_after_attempt(5),
-    retry=retry_if_exception(is_gemini_retryable),
-    before_sleep=lambda retry_state: logging.warning(f"Gemini API rate limited or server error. Retrying in {retry_state.next_action.sleep} seconds...")
-)
-def ask_gemini_direct(prompt: str, schema: type[BaseModel]) -> BaseModel:
-    logging.info("Attempting LLM call with native Google Gemini API (gemini-2.5-flash)...")
-    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
-    headers = {"Content-Type": "application/json"}
-    params = {"key": GEMINI_API_KEY}
-    
-    if schema == VideoInsights:
-        system_text = "You are an expert AI Engineer and technical tutor. You must output a JSON object with the following exact keys:\n- \"telegram_summary_text\": A highly detailed technical, narrative-style newsletter summary (approx 200-400 words) for Telegram. Act as an elite technical tutor who explains the core concepts, problems, business rules, and technical solutions in clear subsections with headers. You MUST include a dedicated bulleted list of Key Learnings (focusing on framework configurations, design patterns, and constraints). Do NOT include timestamps or video link.\n- \"webpage_detailed_info_text\": An extremely comprehensive, tutorial-grade, highly granular technical deep-dive of the video. Act as an elite principal software engineer and technical educator. Detail every concept, architecture pattern, code logic block, framework configuration, system design decision, database setup, and step-by-step implementation. The output must be so detailed, clear, and comprehensive that a developer can fully learn and replicate the systems without watching the video. Organize it sequentially using timestamps/sections.\n\nCRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.\n\nYou must output ONLY a valid JSON object matching this structure:\n{\n  \"telegram_summary_text\": \"...\",\n  \"webpage_detailed_info_text\": \"...\"\n}"
-        resp_schema = {
-            "type": "OBJECT",
-            "properties": {
-                "telegram_summary_text": {
-                    "type": "STRING",
-                    "description": "A highly detailed technical, narrative-style newsletter summary for Telegram."
-                },
-                "webpage_detailed_info_text": {
-                    "type": "STRING",
-                    "description": "An extremely comprehensive, tutorial-grade, highly granular technical deep-dive of the video."
-                }
-            },
-            "required": ["telegram_summary_text", "webpage_detailed_info_text"]
-        }
-    else:
-        system_text = "You are an expert AI Engineer. Extract all detailed key points, architecture, code, and technical insights from the transcript chunk as a comprehensive detailed summary text.\n\nYou must output ONLY a valid JSON object matching this structure:\n{\n  \"summary\": \"...\"\n}"
-        resp_schema = {
-            "type": "OBJECT",
-            "properties": {
-                "summary": {
-                    "type": "STRING",
-                    "description": "A highly detailed technical summary and key insights extracted from this transcript chunk."
-                }
-            },
-            "required": ["summary"]
-        }
-        
-    payload = {
-        "systemInstruction": {
-            "parts": [{
-                "text": system_text
-            }]
-        },
-        "contents": [{
-            "parts": [{
-                "text": prompt
-            }]
-        }],
-        "generationConfig": {
-            "responseMimeType": "application/json",
-            "responseSchema": resp_schema,
-            "temperature": 0.3
-        }
-    }
-    
-    response = requests.post(url, json=payload, headers=headers, params=params)
-    response.raise_for_status()
-    res_data = response.json()
-    
-    try:
-        text_content = res_data["candidates"][0]["content"]["parts"][0]["text"]
-        return schema.model_validate_json(text_content)
-    except Exception as e:
-        logging.error(f"Failed to parse Gemini response: {e}. Raw response: {res_data}")
-        raise
 
 def count_tokens(text: str) -> int:
     try:
@@ -221,10 +145,8 @@ def analyze_transcript(title: str, description: str, upload_date: str, transcrip
     token_count = count_tokens(transcript)
     logging.info(f"Transcript estimated token count: {token_count}")
     
-    # Determine the model being targeted
-    target_model = "native_gemini_2.5_flash" if GEMINI_API_KEY else model
-    map_reduce_threshold, chunk_size = get_model_limits(target_model)
-    logging.info(f"Model limits for '{target_model}' -> Threshold: {map_reduce_threshold} tokens, Chunk size: {chunk_size} tokens")
+    map_reduce_threshold, chunk_size = get_model_limits(model)
+    logging.info(f"Model limits for '{model}' -> Threshold: {map_reduce_threshold} tokens, Chunk size: {chunk_size} tokens")
     
     if token_count <= map_reduce_threshold:
         logging.info("Transcript size within limit. Running single-pass analysis...")
@@ -243,12 +165,6 @@ Transcript:
 {transcript}
 """
 
-        if GEMINI_API_KEY:
-            try:
-                return ask_gemini_direct(prompt, VideoInsights), "native_gemini_2.5_flash"
-            except Exception as gemini_err:
-                logging.warning(f"Native Gemini API failed: {gemini_err}. Falling back to OpenRouter...")
-                
         if not OPENROUTER_API_KEY:
             logging.error("OpenRouter API key missing.")
             return None, model
@@ -286,13 +202,7 @@ Transcript Segment:
 {chunk}
 """
             chunk_summary = None
-            if GEMINI_API_KEY:
-                try:
-                    chunk_summary = ask_gemini_direct(chunk_prompt, ChunkSummary)
-                except Exception as gemini_err:
-                    logging.warning(f"Native Gemini failed on chunk {i+1}: {gemini_err}. Trying OpenRouter...")
-            
-            if not chunk_summary and OPENROUTER_API_KEY:
+            if OPENROUTER_API_KEY:
                 try:
                     chunk_summary = ask_llm(chunk_prompt, ChunkSummary, model=model)
                 except Exception as e:
@@ -335,13 +245,6 @@ Summaries:
 {combined_summaries}
 """
         reduced = None
-        if GEMINI_API_KEY:
-            try:
-                reduced = ask_gemini_direct(reduce_prompt, VideoInsights)
-                return reduced, "native_gemini_2.5_flash"
-            except Exception as gemini_err:
-                logging.warning(f"Native Gemini failed on reduce phase: {gemini_err}. Trying OpenRouter...")
-                
         if OPENROUTER_API_KEY:
             try:
                 reduced = ask_llm(reduce_prompt, VideoInsights, model=model)

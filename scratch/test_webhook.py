@@ -8,8 +8,8 @@ load_dotenv()
 
 CALLBACK_URL = "https://youtube-websub-worker.2612brian.workers.dev"
 SECRET = os.environ.get("WEBHOOK_SECRET", "")
-VIDEO_ID = "wcUJWP6WpGM"
-TITLE = "SWE-rebench: Lessons from Evaluating Coding Agents — Ibragim Badertdinov, Nebius"
+VIDEO_ID = "r305-aQTaU0"
+TITLE = "Text Diffusion — Brendon Dillon, Google DeepMind"
 CHANNEL_ID = "UCLKPca3kwwd-B59HNr-_lvA"
 
 if not SECRET:
