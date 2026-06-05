@@ -92,58 +92,41 @@ def run_pipeline(target_video_id=None):
     for p_vid in pending_videos:
         video_id = p_vid['video_id']
         title = p_vid['title']
-        description = p_vid['description'] or ""
-        raw_upload_date = p_vid['upload_date']
+        description = ""
+        raw_upload_date = None
         
-        # If upload_date, description, or title is missing/default, fetch them via yt-dlp
-        if not raw_upload_date or not description or title == "Triggered Video":
-            try:
-                import yt_dlp
-                logging.info(f"Fetching full metadata for {video_id} via yt-dlp...")
-                ydl_opts = {'quiet': True, 'skip_download': True}
-                proxy_env = os.environ.get("YOUTUBE_PROXY")
-                if proxy_env:
-                    import random
-                    proxies = [p.strip() for p in proxy_env.split(",") if p.strip()]
-                    proxy = random.choice(proxies) if proxies else None
-                    if proxy:
-                        ydl_opts['proxy'] = proxy
-                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                    info = ydl.extract_info(f"https://www.youtube.com/watch?v={video_id}", download=False)
-                    if not raw_upload_date:
-                        raw_upload_date = info.get("upload_date")
-                        if raw_upload_date:
-                            update_video_status(video_id, "pending")
-                            supabase = get_db_client()
-                            supabase.table("videos").update({"upload_date": raw_upload_date}).eq("video_id", video_id).execute()
-                    if not description:
-                        description = info.get("description", "")
-                        if description:
-                            supabase = get_db_client()
-                            supabase.table("videos").update({"description": description}).eq("video_id", video_id).execute()
-                    if title == "Triggered Video":
-                        fetched_title = info.get("title")
-                        if fetched_title:
-                            title = fetched_title
-                            supabase = get_db_client()
-                            supabase.table("videos").update({"title": fetched_title}).eq("video_id", video_id).execute()
-            except Exception as e:
-                logging.warning(f"Failed to fetch metadata for {video_id} via yt-dlp: {e}. Trying fallback HTML scraping...")
-                fallback_meta = fetch_youtube_metadata_fallback(video_id)
-                if fallback_meta:
-                    if not raw_upload_date and fallback_meta.get("upload_date"):
-                        raw_upload_date = fallback_meta["upload_date"]
-                        update_video_status(video_id, "pending")
+        # Fetch full metadata from YouTube for LLM context
+        try:
+            import yt_dlp
+            logging.info(f"Fetching full metadata for {video_id} via yt-dlp...")
+            ydl_opts = {'quiet': True, 'skip_download': True}
+            proxy_env = os.environ.get("YOUTUBE_PROXY")
+            if proxy_env:
+                import random
+                proxies = [p.strip() for p in proxy_env.split(",") if p.strip()]
+                proxy = random.choice(proxies) if proxies else None
+                if proxy:
+                    ydl_opts['proxy'] = proxy
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(f"https://www.youtube.com/watch?v={video_id}", download=False)
+                raw_upload_date = info.get("upload_date")
+                description = info.get("description", "")
+                if title == "Triggered Video":
+                    fetched_title = info.get("title")
+                    if fetched_title:
+                        title = fetched_title
                         supabase = get_db_client()
-                        supabase.table("videos").update({"upload_date": raw_upload_date}).eq("video_id", video_id).execute()
-                    if not description and fallback_meta.get("description"):
-                        description = fallback_meta["description"]
-                        supabase = get_db_client()
-                        supabase.table("videos").update({"description": description}).eq("video_id", video_id).execute()
-                    if title == "Triggered Video" and fallback_meta.get("title") and fallback_meta["title"] != "Triggered Video":
-                        title = fallback_meta["title"]
-                        supabase = get_db_client()
-                        supabase.table("videos").update({"title": title}).eq("video_id", video_id).execute()
+                        supabase.table("videos").update({"title": fetched_title}).eq("video_id", video_id).execute()
+        except Exception as e:
+            logging.warning(f"Failed to fetch metadata for {video_id} via yt-dlp: {e}. Trying fallback HTML scraping...")
+            fallback_meta = fetch_youtube_metadata_fallback(video_id)
+            if fallback_meta:
+                raw_upload_date = fallback_meta.get("upload_date")
+                description = fallback_meta.get("description", "")
+                if title == "Triggered Video" and fallback_meta.get("title") and fallback_meta["title"] != "Triggered Video":
+                    title = fallback_meta["title"]
+                    supabase = get_db_client()
+                    supabase.table("videos").update({"title": title}).eq("video_id", video_id).execute()
                 
         upload_date = format_date(raw_upload_date)
         
@@ -172,7 +155,7 @@ def run_pipeline(target_video_id=None):
         logging.info(f"Publishing to Telegram...")
         send_telegram_message(insights.telegram_summary_text)
         
-        update_video_status(video_id, "processed", model=model_name, telegram_summary_text=insights.telegram_summary_text, webpage_detailed_info_text=insights.webpage_detailed_info_text, upload_date=upload_date)
+        update_video_status(video_id, "processed", model=model_name, telegram_summary_text=insights.telegram_summary_text, webpage_detailed_info_text=insights.webpage_detailed_info_text)
         processed_count += 1
         
         # Throttling to respect OpenRouter API limits

@@ -14,22 +14,20 @@ def get_db_client() -> Client:
 
 def get_pending_videos():
     supabase = get_db_client()
-    response = supabase.table("videos").select("*").eq("status", "pending").order("upload_date", desc=False).execute()
+    response = supabase.table("videos").select("*").eq("status", "pending").order("created_at", desc=False).execute()
     return response.data
 
-def add_video(video_id: str, title: str, description: str, upload_date: str):
+def add_video(video_id: str, title: str):
     supabase = get_db_client()
     data = {
         "video_id": video_id,
         "title": title,
-        "description": description,
-        "upload_date": upload_date,
         "status": "pending"
     }
     response = supabase.table("videos").upsert(data, ignore_duplicates=True).execute()
     return response.data
 
-def update_video_status(video_id: str, status: str, model: str = None, telegram_summary_text: str = None, webpage_detailed_info_text: str = None, upload_date: str = None):
+def update_video_status(video_id: str, status: str, model: str = None, telegram_summary_text: str = None, webpage_detailed_info_text: str = None):
     supabase = get_db_client()
     data = {"status": status}
     if model:
@@ -38,8 +36,6 @@ def update_video_status(video_id: str, status: str, model: str = None, telegram_
         data["telegram_summary_text"] = telegram_summary_text
     if webpage_detailed_info_text:
         data["webpage_detailed_info_text"] = webpage_detailed_info_text
-    if upload_date:
-        data["upload_date"] = upload_date
     response = supabase.table("videos").update(data).eq("video_id", video_id).execute()
     return response.data
 

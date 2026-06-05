@@ -200,8 +200,6 @@ async function insertVideoToSupabase(videoId, title, env) {
   const body = {
     video_id: videoId,
     title: title,
-    description: null,
-    upload_date: null,
     status: 'pending'
   };
 

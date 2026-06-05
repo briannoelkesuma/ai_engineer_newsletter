@@ -12,12 +12,6 @@ def fetch_data():
     videos_res = supabase.table("videos").select("*").eq("status", "processed").execute()
     data = videos_res.data or []
     
-    # Standardize dates to YYYY-MM-DD for sorting and display
-    for item in data:
-        date_str = item.get('upload_date')
-        if date_str and len(date_str) == 8 and date_str.isdigit():
-            item['upload_date'] = f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
-            
     # Sort by created_at descending (newest processed first)
     data.sort(key=lambda x: x.get('created_at') or '', reverse=True)
     return data
@@ -301,7 +295,6 @@ def generate_html(data):
     for item in data:
         # Simple string escaping for safety on title
         title = str(item['title']).replace('<', '&lt;').replace('>', '&gt;')
-        date = item['upload_date']
         video_id = item['video_id']
         
         # Display the webpage detailed info text (rendered via marked.js)
@@ -323,7 +316,6 @@ def generate_html(data):
         <article class="card" id="video-{video_id}">
             <div class="card-header">
                 <h2>{title}</h2>
-                <span class="date">{date}</span>
             </div>
             
             <div class="newsletter-content markdown-body" id="content-{video_id}"></div>
