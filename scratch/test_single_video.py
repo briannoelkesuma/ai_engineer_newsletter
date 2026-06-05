@@ -10,7 +10,7 @@ from llm_analyzer import analyze_transcript
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def test_video(video_id: str):
+def test_video(video_id: str, model: str = None):
     logging.info(f"Testing pipeline for video ID: {video_id}")
     
     # 1. Fetch transcript
@@ -23,13 +23,14 @@ def test_video(video_id: str):
     logging.info(f"Successfully fetched transcript ({len(transcript)} chars).")
     
     # 2. Run LLM Analysis
-    logging.info("Running LLM analysis (Llama 3.3 70B)...")
+    logging.info("Running LLM analysis...")
     try:
         insights, model_used = analyze_transcript(
             title="Test Video Title",
             description="Test Description",
             upload_date="2026-06-05",
-            transcript=transcript
+            transcript=transcript,
+            model=model if model else "meta-llama/llama-3.3-70b-instruct:free"
         )
         
         if insights:
@@ -38,11 +39,11 @@ def test_video(video_id: str):
             print("="*50)
             print("TELEGRAM SUMMARY TEXT:")
             print("-"*50)
-            print(insights.summary_text)
+            print(insights.telegram_summary_text)
             print("-"*50)
-            print("STATIC SITE NEWSLETTER TEXT (DETAILED):")
+            print("STATIC SITE WEBPAGE DETAILED INFO TEXT (DETAILED):")
             print("-"*50)
-            print(insights.newsletter_text)
+            print(insights.webpage_detailed_info_text)
             print("="*50 + "\n")
         else:
             logging.error("LLM Analysis returned None.")
@@ -50,5 +51,8 @@ def test_video(video_id: str):
         logging.error(f"Error during analysis: {e}")
 
 if __name__ == "__main__":
-    # Using one of the recent AI Engineer videos
-    test_video("V-L0INGTEOg")
+    # Use provided video ID or default to the example video
+    video_id = sys.argv[1] if len(sys.argv) > 1 else "wcUJWP6WpGM"
+    # Optional model name as second argument
+    model_name = sys.argv[2] if len(sys.argv) > 2 else None
+    test_video(video_id, model_name)

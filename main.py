@@ -108,13 +108,13 @@ def run_pipeline(target_video_id=None):
         site_url = os.environ.get("SITE_URL", "https://ai-engineer-newsletter.vercel.app")
         final_message = (
             f"📺 <b>{title}</b>\n\n"
-            f"{insights.summary_text}\n\n"
+            f"{insights.telegram_summary_text}\n\n"
             f"📖 <a href=\"{site_url}/#video-{video_id}\">Read detailed timestamp breakdown</a>\n\n"
             f"🔗 https://youtube.com/watch?v={video_id}"
         )
         send_telegram_message(final_message)
         
-        update_video_status(video_id, "processed", model=model_name, summary_text=insights.summary_text, newsletter_text=insights.newsletter_text, upload_date=upload_date)
+        update_video_status(video_id, "processed", model=model_name, telegram_summary_text=insights.telegram_summary_text, webpage_detailed_info_text=insights.webpage_detailed_info_text, upload_date=upload_date)
         processed_count += 1
         
         # Throttling to respect OpenRouter API limits
@@ -122,9 +122,6 @@ def run_pipeline(target_video_id=None):
         time.sleep(65)
         
     logging.info("Pipeline run complete.")
-    if processed_count > 0 or failed_count > 0:
-        send_admin_alert(f"Cron run complete.\n✅ Processed: {processed_count}\n❌ Failed: {failed_count}")
-        
     if processed_count > 0:
         from generate_static_site import build_site
         build_site()

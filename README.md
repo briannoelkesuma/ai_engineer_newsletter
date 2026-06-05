@@ -55,7 +55,7 @@ flowchart TD
     D -->|4. Download Subtitles| E
     D -->|5. Summarize Transcript| F
     D -->|6. Post summary HTML| G
-    D -->|7. Update status='processed' & save newsletter_text| C
+    D -->|7. Update status='processed' & save webpage_detailed_info_text| C
     D -->|8. Rebuild public/index.html & Commit| H
     
     H -->|9. Auto-deploy static site| I
@@ -117,7 +117,8 @@ CREATE TABLE videos (
     upload_date TEXT,
     status TEXT DEFAULT 'pending',
     model TEXT,
-    newsletter_text TEXT,
+    telegram_summary_text TEXT,
+    webpage_detailed_info_text TEXT,
     created_at TIMESTAMPTZ DEFAULT now()
 );
 ```

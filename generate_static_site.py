@@ -205,8 +205,8 @@ def generate_html(data):
         date = item['upload_date']
         video_id = item['video_id']
         
-        # Display the full Telegram newsletter text (safely allowing HTML tags like <b>, <i>, <code>, <pre>, <a>)
-        newsletter_text = item.get('newsletter_text') or ""
+        # Display the webpage detailed info text (safely allowing HTML tags like <b>, <i>, <code>, <pre>, <a>)
+        webpage_detailed_info_text = item.get('webpage_detailed_info_text') or ""
         
         html += f"""
         <article class="card" id="video-{video_id}">
@@ -215,7 +215,7 @@ def generate_html(data):
                 <span class="date">{date}</span>
             </div>
             
-            <div class="newsletter-content" style="white-space: pre-wrap; font-size: 0.95rem; color: #2d2a25;">{newsletter_text}</div>
+            <div class="newsletter-content" style="white-space: pre-wrap; font-size: 0.95rem; color: #2d2a25;">{webpage_detailed_info_text}</div>
             
             <a href="https://youtube.com/watch?v={video_id}" target="_blank" class="youtube-link">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">

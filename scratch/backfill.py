@@ -100,14 +100,14 @@ def run_backfill():
         site_url = os.environ.get("SITE_URL", "https://ai-engineer-newsletter.vercel.app")
         final_message = (
             f"📺 <b>{title}</b>\n\n"
-            f"{insights.summary_text}\n\n"
+            f"{insights.telegram_summary_text}\n\n"
             f"📖 <a href=\"{site_url}/#video-{video_id}\">Read detailed timestamp breakdown</a>\n\n"
             f"🔗 https://youtube.com/watch?v={video_id}"
         )
         send_telegram_message(final_message)
         
         # Update status to processed
-        update_video_status(video_id, "processed", model=model_name, summary_text=insights.summary_text, newsletter_text=insights.newsletter_text)
+        update_video_status(video_id, "processed", model=model_name, telegram_summary_text=insights.telegram_summary_text, webpage_detailed_info_text=insights.webpage_detailed_info_text)
         processed_count += 1
         
         # Respect rate limits
