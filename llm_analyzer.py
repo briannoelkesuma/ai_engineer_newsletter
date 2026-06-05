@@ -39,9 +39,16 @@ def clean_json_math_escapes(content: str) -> str:
     import re
     # Set of LaTeX commands starting with n, t, r, b, f
     latex_ntrbf = {
-        'newline', 'nabla', 'nearrow', 'neg', 'times', 'theta', 'tau', 'tan', 
-        'tilde', 'triangle', 'rightarrow', 'rho', 'rangle', 'rbrace', 'real', 
-        'beta', 'bar', 'begin', 'box', 'frac', 'forall', 'frown'
+        # t commands
+        'text', 'textbf', 'textit', 'texttt', 'textsf', 'times', 'theta', 'tau', 'tan', 'tilde', 'triangle', 'to', 'top',
+        # n commands
+        'newline', 'nabla', 'nearrow', 'neg', 'neq', 'num', 'nsub', 'nsup', 'nexists',
+        # r commands
+        'rightarrow', 'rho', 'rangle', 'rbrace', 'real', 'right', 'rharpoonup', 'rightharpoonup',
+        # b commands
+        'beta', 'bar', 'begin', 'box', 'bmatrix', 'bmod', 'bot', 'buildrel',
+        # f commands
+        'frac', 'forall', 'frown', 'flat'
     }
     
     def replace_match(match):

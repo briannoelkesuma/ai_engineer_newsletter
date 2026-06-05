@@ -18,8 +18,8 @@ def fetch_data():
         if date_str and len(date_str) == 8 and date_str.isdigit():
             item['upload_date'] = f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
             
-    # Sort by upload_date descending (newest first)
-    data.sort(key=lambda x: x.get('upload_date') or '', reverse=True)
+    # Sort by created_at descending (newest processed first)
+    data.sort(key=lambda x: x.get('created_at') or '', reverse=True)
     return data
 
 def generate_html(data):
@@ -251,6 +251,25 @@ def generate_html(data):
             padding: 8px 16px;
             color: var(--text-muted);
             background: #fafaf7;
+        }
+        /* Prevent overflow of text, equations, and code blocks */
+        .markdown-body {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            max-width: 100%;
+        }
+        .markdown-body table {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        mjx-container {
+            max-width: 100% !important;
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+            -webkit-overflow-scrolling: touch;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
