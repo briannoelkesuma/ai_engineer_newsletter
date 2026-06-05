@@ -21,18 +21,22 @@ def fetch_transcript(video_id: str) -> str:
         
         import sys
         
-        # Download transcript using yt-dlp to bypass the youtube-transcript-api block
-        # We download it as JSON3 format
-        subprocess.run([
+        proxy = os.environ.get("YOUTUBE_PROXY")
+        cmd = [
             sys.executable,
             "-m", "yt_dlp",
             "--write-auto-sub",
             "--skip-download",
             "--sub-format", "json3",
-            "--quiet",
+            "--quiet"
+        ]
+        if proxy:
+            cmd.extend(["--proxy", proxy])
+        cmd.extend([
             f"https://www.youtube.com/watch?v={video_id}",
             "-o", f"transcripts/{video_id}.%(ext)s"
-        ], check=True)
+        ])
+        subprocess.run(cmd, check=True)
         
         json3_path = f"transcripts/{video_id}.en.json3"
         if not os.path.exists(json3_path):

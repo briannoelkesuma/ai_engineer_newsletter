@@ -9,12 +9,16 @@ def get_recent_videos(channel_url: str, days_back: int = 30):
     """
     date_limit_str = (datetime.now() - timedelta(days=days_back)).strftime('%Y%m%d')
     
+    import os
     ydl_opts = {
         'extract_flat': True,
         'quiet': True,
         'daterange': yt_dlp.utils.DateRange(date_limit_str, '99991231'), 
         'playlistend': 50 
     }
+    proxy = os.environ.get("YOUTUBE_PROXY")
+    if proxy:
+        ydl_opts['proxy'] = proxy
 
     videos = []
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:

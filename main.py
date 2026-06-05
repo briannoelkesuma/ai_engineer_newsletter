@@ -61,6 +61,9 @@ def run_pipeline(target_video_id=None):
                 import yt_dlp
                 logging.info(f"Fetching full metadata for {video_id} via yt-dlp...")
                 ydl_opts = {'quiet': True, 'skip_download': True}
+                proxy = os.environ.get("YOUTUBE_PROXY")
+                if proxy:
+                    ydl_opts['proxy'] = proxy
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                     info = ydl.extract_info(f"https://www.youtube.com/watch?v={video_id}", download=False)
                     if not raw_upload_date:
