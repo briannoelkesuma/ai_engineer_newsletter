@@ -272,6 +272,33 @@
 
     <main>
 
+        <article class="card" id="video-4VhbYlfC7Gs">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-06-05</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-4VhbYlfC7Gs"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: Malleable Evals & Adaptive AI Systems\n\n## Overview\nThis presentation by Vincent Koc explores the critical gap between how we build AI agents (adaptive, fluid, and intent-driven) and how we test them (static, rigid, and benchmark-driven). The central thesis is that for agentic AI to be reliable, the evaluation harness must be as malleable as the system it is testing.\n\n---\n\n## 1. The Failure of Static Benchmarks\n### The Current State\nTraditionally, AI evaluation follows a software engineering pattern of unit testing: \n- **Handcrafted Datasets:** Creating a set of gold-standard questions and answers.\n- **Offline Evaluation:** Running the model against these sets before deployment.\n- **Static Benchmarks:** Using academic benchmarks (e.g., MMLU, ARC) to measure general capability.\n\n### The Problem: \"Eval Calcification\"\nKoc identifies a phenomenon he calls \"calcification.\" When a system is static, a benchmark works. However, agentic systems are dynamic. When a user's intent shifts or the environment changes, the static benchmark no longer reflects reality. This creates a false sense of security until a production failure occurs, forcing developers back to the drawing board.\n\n---\n\n## 2. The Evolution of AI Engineering\nKoc maps the progression of the field to explain why a mindset shift is necessary:\n\n| Phase | Focus | Methodology | Eval Approach |\n| :--- | :--- | :--- | :--- |\n| **Prompt Engineering** | Input Tuning | Wordsmithing instructions | Manual output checking |\n| **Context Engineering** | Data Steering | RAG, Tool Calling, MCP | Component-level testing |\n| **Intent Engineering** | Goal Optimization | Self-optimizing harnesses | End-state/Reward signals |\n\n### Intent Engineering Explained\nIntent engineering moves away from \"If X, then Y\" logic. Instead, it focuses on defining the **end-state** or the **intent** of the user. The system then optimizes its own path to reach that state. This is exemplified by systems like *OpenClaw*, where the harness itself can shift and adapt to create new skills or optimize workflows autonomously.\n\n---\n\n## 3. Proposed Architecture for Malleable Evals\nTo solve the calcification problem, Koc proposes a transition toward an **Adaptive Evaluation Framework**.\n\n### A. Telemetry-in-the-Loop\nInstead of relying on pre-defined tests, the system uses production telemetry to drive evaluation:\n1. **Trace Analysis:** Capture real-world interaction traces.\n2. **Self-Curation:** Use an agent to analyze these traces and identify patterns where the system is struggling or where user behavior has shifted.\n3. **Dynamic Suite Generation:** Automatically generate new test cases based on these real-world failures and feed them back into the eval suite.\n\n### B. Always-On Evaluation\nEvaluation should not be a pre-deployment gate but a continuous service. This involves:\n- **Online Optimizations:** Continuous monitoring of reward signals.\n- **Self-Healing:** When telemetry indicates a failure, the harness triggers a self-correction mechanism to update the agent's logic or the evaluation criteria.\n\n### C. The 80/20 Rule of Agentic Failure\n- **The 80%:** Standard behaviors that are well-defined and covered by static tests.\n- **The 20%:** The \"long tail\" of weird user queries and edge cases. This 20% is where most business risk resides. Malleable evals are specifically designed to hunt and manage this 20% through adaptive discovery.\n\n---\n\n## 4. Implementation Strategies\n\n### Reward Signals & Auto-Optimization\nDrawing inspiration from Andrej Karpathy's auto-research concepts, Koc suggests using Python-based auto-optimization:\n- **Define a Target:** Set a clear goal (e.g., \"Minimize cost while maintaining 95% accuracy on X task\").\n- **Iterative Tweaking:** The system tweaks its own parameters or prompts.\n- **Signal Feedback:** The evaluation harness provides a reward signal, and the system iterates until the target is met.\n\n### System Design Decision: Agentic Mindset\n- **Constraint:** Stop treating evals as a dataset.\n- **Solution:** Treat evals as **code** or a **living agent**. The evaluation system should be an agent that monitors another agent, adapting its testing strategy as the target agent evolves.\n\n## 5. Summary of Technical Shift\n\n| From (Static) | To (Malleable) |\n| :--- | :--- |\n| Fixed Q&A Pairs $\\rightarrow$ Dynamic Traces |\n| Pre-deployment Gate $\\rightarrow$ Always-on Service |\n| Accuracy Metrics $\\rightarrow$ Intent Alignment |\n| Manual Test Writing $\\rightarrow$ Self-curating Suites |\n| Predictable Paths $\\rightarrow$ Chaos Engineering/Boundary Testing |";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-4VhbYlfC7Gs");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=4VhbYlfC7Gs" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-r305-aQTaU0">
             <div class="card-header">
                 <h2>Text Diffusion — Brendon Dillon, Google DeepMind</h2>
