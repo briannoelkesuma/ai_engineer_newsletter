@@ -38,8 +38,8 @@ def is_retryable_exception(exception: Exception) -> bool:
 
 # Retry logic for 429 Too Many Requests (Rate Limits)
 @retry(
-    wait=wait_exponential(multiplier=2, min=15, max=120), 
-    stop=stop_after_attempt(6),
+    wait=wait_exponential(multiplier=1.5, min=5, max=30), 
+    stop=stop_after_attempt(3),
     retry=retry_if_exception(is_retryable_exception),
     before_sleep=lambda retry_state: logging.warning(f"Rate limited or API error. Retrying in {retry_state.next_action.sleep} seconds...")
 )
@@ -258,12 +258,14 @@ Transcript:
             return ask_llm(prompt, VideoInsights, model=model), model
         except Exception as e:
             logging.error(f"OpenRouter model {model} failed: {e}")
-            if model != "openrouter/free":
-                try:
-                    logging.info("Falling back to openrouter/free...")
-                    return ask_llm(prompt, VideoInsights, model="openrouter/free"), "openrouter/free"
-                except Exception as fallback_err:
-                    logging.error(f"Fallback to openrouter/free failed: {fallback_err}")
+            fallback_models = ["google/gemma-4-31b-it:free", "openrouter/free"]
+            for fallback_model in fallback_models:
+                if model != fallback_model:
+                    try:
+                        logging.info(f"Falling back to {fallback_model}...")
+                        return ask_llm(prompt, VideoInsights, model=fallback_model), fallback_model
+                    except Exception as fallback_err:
+                        logging.error(f"Fallback to {fallback_model} failed: {fallback_err}")
             return None, model
 
     else:
@@ -294,11 +296,16 @@ Transcript Segment:
                 try:
                     chunk_summary = ask_llm(chunk_prompt, ChunkSummary, model=model)
                 except Exception as e:
-                    logging.warning(f"Primary model {model} failed on chunk {i+1}: {e}. Trying fallback openrouter/free...")
-                    try:
-                        chunk_summary = ask_llm(chunk_prompt, ChunkSummary, model="openrouter/free")
-                    except Exception as fallback_err:
-                        logging.error(f"Map phase failed entirely on chunk {i+1}: {fallback_err}")
+                    logging.warning(f"Primary model {model} failed on chunk {i+1}: {e}.")
+                    fallback_models = ["google/gemma-4-31b-it:free", "openrouter/free"]
+                    for fallback_model in fallback_models:
+                        if model != fallback_model:
+                            try:
+                                logging.info(f"Falling back to {fallback_model} on chunk {i+1}...")
+                                chunk_summary = ask_llm(chunk_prompt, ChunkSummary, model=fallback_model)
+                                break
+                            except Exception as fallback_err:
+                                logging.error(f"Fallback to {fallback_model} failed on chunk {i+1}: {fallback_err}")
                         
             if not chunk_summary:
                 logging.error(f"Could not map chunk {i+1}. Aborting Map-Reduce.")
@@ -340,11 +347,15 @@ Summaries:
                 reduced = ask_llm(reduce_prompt, VideoInsights, model=model)
                 return reduced, model
             except Exception as e:
-                logging.warning(f"Primary model failed on reduce phase: {e}. Trying fallback openrouter/free...")
-                try:
-                    reduced = ask_llm(reduce_prompt, VideoInsights, model="openrouter/free")
-                    return reduced, "openrouter/free"
-                except Exception as fallback_err:
-                    logging.error(f"Reduce phase failed entirely: {fallback_err}")
-                    
+                logging.warning(f"Primary model failed on reduce phase: {e}.")
+                fallback_models = ["google/gemma-4-31b-it:free", "openrouter/free"]
+                for fallback_model in fallback_models:
+                    if model != fallback_model:
+                        try:
+                            logging.info(f"Falling back to {fallback_model} on reduce phase...")
+                            reduced = ask_llm(reduce_prompt, VideoInsights, model=fallback_model)
+                            return reduced, fallback_model
+                        except Exception as fallback_err:
+                            logging.error(f"Fallback to {fallback_model} failed on reduce phase: {fallback_err}")
+                            
         return None, model
