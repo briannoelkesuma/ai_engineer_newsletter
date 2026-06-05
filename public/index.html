@@ -272,9 +272,37 @@
 
     <main>
 
+        <article class="card" id="video-r305-aQTaU0">
+            <div class="card-header">
+                <h2>Text Diffusion — Brendon Dillon, Google DeepMind</h2>
+                <span class="date">2026-06-05</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-r305-aQTaU0"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: Text Diffusion at Google DeepMind\n\nThis guide explores the architecture, hardware implications, and unique capabilities of Text Diffusion as presented by Brendon Dillon. It contrasts the traditional autoregressive approach with the iterative refinement process used in models like Gemini Diffusion.\n\n## 1. Autoregressive vs. Diffusion Generation\n\n### Autoregressive (AR) Generation\n- **Mechanism**: Generates text sequentially. Each token is conditioned on all previous tokens.\n- **Attention**: Uses <i>Causal Attention</i> (masking future tokens).\n- **Constraint**: Once a token is generated, it is fixed. If the model makes a reasoning error early on, it must either ignore it or explicitly apologize and correct it in subsequent tokens.\n\n### Text Diffusion Generation\n- **Mechanism**: Starts with a sequence of pure noise (random discrete tokens from the vocabulary).\n- **Process**: Iteratively refines the entire sequence over a fixed or adaptive number of denoising steps.\n- **Attention**: Uses <i>Bidirectional Attention</i>, allowing the model to attend to both past and future tokens within the generation canvas.\n\n## 2. Hardware Architecture & Latency Optimization\n\n### The Memory Bandwidth Bottleneck\nModern AI accelerators (GPUs/TPUs) are typically <b>memory-bound</b> rather than compute-bound. \n- **Tensor Cores**: Extremely high FLOPS (floating-point operations per second).\n- **HBM (High Bandwidth Memory)**: Where weights, activations, and the KV cache reside.\n- **The Problem**: The bandwidth channel between HBM and the Tensor Core is the primary bottleneck. \n\n### Why Diffusion is Faster (Latency)\nIn AR generation (batch size 1), the model must stream the entire neural network weights from memory for *every single token*. \n\n**Comparison Example:**\n- **AR Model**: To generate 256 tokens, the model performs 256 memory transfers of the weights.\n- **Diffusion Model**: To generate 256 tokens, the model might only require 24 denoising passes. \n- **Result**: A ~10x reduction in memory transfers, leading to significantly lower latency (reported speeds up to 2,000 tokens/sec).\n\n## 3. Advanced Capabilities of Text Diffusion\n\n### Bidirectional Reasoning & Self-Correction\nBecause the model sees the entire sequence, it can perform \"look-ahead\" reasoning. \n- **The Process**: \n    1. **Pass 1**: Model guesses an answer (e.g., `Answer = 60`).\n    2. **Pass 2**: Model begins reasoning steps; the answer updates (e.g., `Answer = 49`).\n    3. **Pass 3**: Reasoning completes, and the model corrects the initial answer to the final correct value (e.g., `Answer = 39`).\n- **Comparison**: AR models (like GPT-4o or Gemini Flash) often \"stick to their guns\" or make errors that propagate through the rest of the reasoning chain because they cannot retroactively change previous tokens.\n\n### Dynamic and Adaptive Computation\nDiffusion models allow for a flexible compute budget at inference time:\n- **Fixed Budget**: Increasing the number of denoising steps generally increases output quality (monotonic improvement).\n- **Adaptive Budget**: The model can be trained to signal when it has reached a convergence point and stop denoising.\n\n| Task Complexity | Example | Denoising Steps |\n| :--- | :--- | :--- |\n| Low | 100 digits of Pi | ~4 steps |\n| Medium | FizzBuzz Code | ~18 steps |\n| High | Quantum Mechanics Explanation | ~31 steps |\n\n### In-place Editing\nUnlike AR models that must regenerate everything from the point of a change, Diffusion models can perform **In-place Editing**:\n- **Mechanism**: Mask specific tokens (the \"cut out\" area) and keep the rest of the sequence fixed.\n- **Application**: The model fills in the masked area while maintaining consistency with the surrounding context (e.g., adding a middle paragraph to a story or fixing a specific bug in a block of code).\n\n## 4. System Design Trade-offs\n\n### Throughput vs. Latency\nWhile Diffusion offers superior **latency** (time to first full response), it suffers in **throughput** (total queries per second for large batches).\n- **AR Throughput**: High. Large batches can be processed efficiently because each token generation is a single pass.\n- **Diffusion Throughput**: Lower. Multiple forward passes per request hit the compute threshold faster, increasing the cost to serve at scale.\n\n### Ideal Use Cases\nDue to the throughput/latency trade-off, Text Diffusion is most effective for:\n- **On-Device AI**: Phones or robots where batch size is 1 and low latency is critical.\n- **Real-time Interactive UI**: Generating HTML/CSS on the fly for simulated environments (e.g., the \"Generated Wikipedia\" or \"Generated OS\" demos).\n- **Live Coding**: Voice-to-code applications where immediate visual feedback is required.\n\n## 5. Implementation Details (Q&A Summary)\n- **Discrete vs. Latent**: Most current text diffusion research uses **Discrete Diffusion** (tokens in $\\\rightarrow$ tokens out) rather than latent space diffusion.\n- **Windowing**: For very long texts, the model can use a window-based approach, generating blocks of text (e.g., 512 tokens) autoregressively, while each block is refined via diffusion.\n- **Training**: Diffusion models can be trained on the same data as AR models and can potentially be distilled from larger models.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-r305-aQTaU0");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=r305-aQTaU0" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-iNkFlCiij0U">
             <div class="card-header">
                 <h2>The Art &amp; Science of Benchmarking Agents — Vincent Chen, Snorkel AI</h2>
+                <span class="date">2026-06-05</span>
             </div>
             
             <div class="newsletter-content markdown-body" id="content-iNkFlCiij0U"></div>
@@ -301,6 +329,7 @@
         <article class="card" id="video-zKk7sDMGDEQ">
             <div class="card-header">
                 <h2>Benchmarking semantic code retrieval on Claude Code — Kuba Rogut, Turbopuffer</h2>
+                <span class="date">2026-06-05</span>
             </div>
             
             <div class="newsletter-content markdown-body" id="content-zKk7sDMGDEQ"></div>
@@ -327,6 +356,7 @@
         <article class="card" id="video-wcUJWP6WpGM">
             <div class="card-header">
                 <h2>SWE-rebench: Lessons from Evaluating Coding Agents — Ibragim Badertdinov, Nebius</h2>
+                <span class="date">2026-06-05</span>
             </div>
             
             <div class="newsletter-content markdown-body" id="content-wcUJWP6WpGM"></div>

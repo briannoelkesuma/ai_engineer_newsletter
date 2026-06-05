@@ -296,6 +296,8 @@ def generate_html(data):
         # Simple string escaping for safety on title
         title = str(item['title']).replace('<', '&lt;').replace('>', '&gt;')
         video_id = item['video_id']
+        created_at_str = item.get('created_at') or ''
+        date = created_at_str[:10] if len(created_at_str) >= 10 else 'Unknown Date'
         
         # Display the webpage detailed info text (rendered via marked.js)
         webpage_detailed_info_text = item.get('webpage_detailed_info_text') or ""
@@ -316,6 +318,7 @@ def generate_html(data):
         <article class="card" id="video-{video_id}">
             <div class="card-header">
                 <h2>{title}</h2>
+                <span class="date">{date}</span>
             </div>
             
             <div class="newsletter-content markdown-body" id="content-{video_id}"></div>

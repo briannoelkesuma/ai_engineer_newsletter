@@ -68,11 +68,11 @@ def run_pipeline(target_video_id=None):
     
     if target_video_id:
         logging.info(f"Triggered for specific video ID: {target_video_id}")
-        add_video(target_video_id, "Triggered Video", "", "")
+        add_video(target_video_id, "Triggered Video")
     else:
         recent_videos = get_recent_videos(CHANNEL_URL, DAYS_BACK)
         for vid in recent_videos:
-            add_video(vid['id'], vid['title'], vid['description'], vid['upload_date'])
+            add_video(vid['id'], vid['title'])
         
     pending_videos = get_pending_videos()
     
