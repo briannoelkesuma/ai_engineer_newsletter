@@ -22,7 +22,7 @@ client = OpenAI(
 
 class VideoInsights(BaseModel):
     telegram_summary_text: str = Field(description="A highly detailed technical, narrative-style newsletter for Telegram (approx 200-400 words). Explain the core concepts, problems, business rules, and technical solutions covered in the video. Break it down into clear subsections with headers. You MUST include a dedicated bulleted list of Key Learnings (specifically focusing on framework configs, architecture decisions, and implementation constraints). Focus purely on technical substance. Do NOT include timestamps, do NOT include video date/link. CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. Only use <b>, <i>, <code>, <pre>, and <a> tags. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.")
-    webpage_detailed_info_text: str = Field(description="An extremely comprehensive, tutorial-grade, highly granular technical deep-dive of the video. Act as an elite principal software engineer and technical educator. You MUST detail every single concept, architecture pattern, code logic block, framework configuration, system design decision, database setup, and step-by-step implementation mentioned in the video. The output must be so detailed, clear, and comprehensive that a developer can fully learn and replicate the systems without watching the video. Organize it sequentially using timestamps/sections. Use strict Telegram HTML format: only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.")
+    webpage_detailed_info_text: str = Field(description="An extremely comprehensive, tutorial-grade, highly granular technical deep-dive of the video. Act as an elite principal software engineer and technical educator. You MUST detail every single concept, architecture pattern, code logic block, framework configuration, system design decision, database setup, and step-by-step implementation mentioned in the video. The output must be so detailed, clear, and comprehensive that a developer can fully learn and replicate the systems without watching the video. Organize it sequentially using timestamps/sections. FORMATTING RULE: Use standard Markdown format (headings, lists, bold, italics, tables, and code blocks) so it can be rendered as Markdown on the website.")
 
 class ChunkSummary(BaseModel):
     summary: str = Field(description="A highly detailed technical summary and key insights extracted from this transcript chunk.")
@@ -47,10 +47,8 @@ def ask_llm(prompt: str, schema: type[BaseModel], model: str = "meta-llama/llama
     
     if schema == VideoInsights:
         system_content = """You are an expert AI Engineer and technical tutor. You must output a JSON object with the following exact keys:
-- "telegram_summary_text": A highly detailed technical, narrative-style newsletter summary (approx 200-400 words) for Telegram. Act as an elite technical tutor who explains the core concepts, problems, business rules, and technical solutions in clear subsections with headers. You MUST include a dedicated bulleted list of Key Learnings (focusing on framework configurations, design patterns, and constraints). Do NOT include timestamps or video link.
-- "webpage_detailed_info_text": An extremely comprehensive, tutorial-grade, highly granular technical deep-dive of the video. Act as an elite principal software engineer and technical educator. Detail every concept, architecture pattern, code logic block, framework configuration, system design decision, database setup, and step-by-step implementation. The output must be so detailed, clear, and comprehensive that a developer can fully learn and replicate the systems without watching the video. Organize it sequentially using timestamps/sections.
-
-CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
+- "telegram_summary_text": A highly detailed technical, narrative-style newsletter summary (approx 200-400 words) for Telegram. Act as an elite technical tutor who explains the core concepts, problems, business rules, and technical solutions. You MUST include a dedicated bulleted list of Key Learnings (focusing on framework configurations, design patterns, and constraints). Use strict Telegram HTML parse mode format: only use <b>, <i>, <code>, <pre>, and <a> tags. Do NOT use block HTML tags or Markdown here. Do NOT include timestamps or video link. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
+- "webpage_detailed_info_text": An extremely comprehensive, tutorial-grade, highly granular technical deep-dive of the video. Act as an elite principal software engineer and technical educator. Detail every concept, architecture pattern, code logic block, framework configuration, system design decision, database setup, and step-by-step implementation. Organize it sequentially using timestamps/sections. Use standard Markdown format (headings, lists, bold, italics, tables, and code blocks) so it can be rendered as Markdown on the website.
 
 You must output ONLY a valid JSON object matching this structure:
 {
@@ -155,11 +153,10 @@ Video Title: {title}
 Video Description: {description}
 
 Your task is to provide:
-1. "telegram_summary_text": A highly detailed technical, narrative-style newsletter summary (approx 200-400 words) for Telegram. Focus on the core message, technical concepts, and implementation strategies without timestamps. Explain the technical "how" and "why" sequentially but in narrative blocks.
-2. "webpage_detailed_info_text": An extremely comprehensive, tutorial-grade, highly granular technical deep-dive of the video. Detail every concept, architecture pattern, code logic block, framework configuration, system design decision, database setup, and step-by-step implementation sequentially (using timestamps/sections). Make it so detailed, clear, and comprehensive that a developer can fully learn and replicate the systems without watching the video.
+1. "telegram_summary_text": A highly detailed technical, narrative-style newsletter summary (approx 200-400 words) for Telegram. Focus on the core message, technical concepts, and implementation strategies without timestamps. Use strict Telegram HTML parse mode format: only use <b>, <i>, <code>, <pre>, and <a> tags. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
+2. "webpage_detailed_info_text": An extremely comprehensive, tutorial-grade, highly granular technical deep-dive of the video. Detail every concept, architecture pattern, code logic block, framework configuration, system design decision, database setup, and step-by-step implementation sequentially (using timestamps/sections). Use standard Markdown format (headings, lists, bold, italics, tables, and code blocks) so it can be rendered as Markdown on the website.
 
 Do NOT include the video date or link in the texts.
-CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
 
 Transcript:
 {transcript}
@@ -235,11 +232,10 @@ Video Description: {description}
 
 You are provided with several sequential detailed technical summaries of different parts of a video transcript.
 Your task is to combine and synthesize these summaries into a single JSON object containing:
-1. "telegram_summary_text": A highly detailed technical, narrative-style newsletter summary (approx 200-400 words) for Telegram. Focus on the core message, technical concepts, and implementation strategies without timestamps. Explain the technical "how" and "why" sequentially but in narrative blocks.
-2. "webpage_detailed_info_text": An extremely comprehensive, tutorial-grade, highly granular technical deep-dive of the video. Detail every concept, architecture pattern, code logic block, framework configuration, system design decision, database setup, and step-by-step implementation sequentially (using timestamps/sections). Make it so detailed, clear, and comprehensive that a developer can fully learn and replicate the systems without watching the video.
+1. "telegram_summary_text": A highly detailed technical, narrative-style newsletter summary (approx 200-400 words) for Telegram. Focus on the core message, technical concepts, and implementation strategies without timestamps. Use strict Telegram HTML parse mode format: only use <b>, <i>, <code>, <pre>, and <a> tags. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
+2. "webpage_detailed_info_text": An extremely comprehensive, tutorial-grade, highly granular technical deep-dive of the video. Detail every concept, architecture pattern, code logic block, framework configuration, system design decision, database setup, and step-by-step implementation sequentially (using timestamps/sections). Use standard Markdown format (headings, lists, bold, italics, tables, and code blocks) so it can be rendered as Markdown on the website.
 
 Do NOT include the video date or link in the texts.
-CRITICAL FORMATTING RULE: Telegram HTML parse mode is strict. DO NOT use block HTML tags like <p>, <br>, <ul>, <li>, <html>, or <body>. Only use <b>, <i>, <code>, <pre>, and <a>. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
 
 Summaries:
 {combined_summaries}

@@ -187,7 +187,73 @@ def generate_html(data):
             opacity: 1;
             pointer-events: auto;
         }
+
+        /* Markdown Styles */
+        .markdown-body h1, .markdown-body h2, .markdown-body h3 {
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .markdown-body h1 { font-size: 1.6rem; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        .markdown-body h2 { font-size: 1.35rem; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+        .markdown-body h3 { font-size: 1.15rem; color: var(--accent); }
+        .markdown-body p { margin-bottom: 16px; }
+        .markdown-body ul, .markdown-body ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+        .markdown-body li { margin-bottom: 6px; }
+        .markdown-body code {
+            font-family: 'JetBrains Mono', monospace;
+            background: #f1ede4;
+            color: #d77a3a;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .markdown-body pre {
+            background: #1e1b18;
+            color: #f5f2eb;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        .markdown-body pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+            border-radius: 0;
+            font-size: 0.9em;
+        }
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+        }
+        .markdown-body th, .markdown-body td {
+            border: 1px solid var(--border);
+            padding: 10px 12px;
+            text-align: left;
+        }
+        .markdown-body th {
+            background: #f5f0e6;
+            font-weight: 600;
+        }
+        .markdown-body tr:nth-child(even) {
+            background: #fafaf7;
+        }
+        .markdown-body blockquote {
+            border-left: 4px solid var(--accent);
+            margin: 0 0 20px;
+            padding: 8px 16px;
+            color: var(--text-muted);
+            background: #fafaf7;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 
@@ -205,8 +271,9 @@ def generate_html(data):
         date = item['upload_date']
         video_id = item['video_id']
         
-        # Display the webpage detailed info text (safely allowing HTML tags like <b>, <i>, <code>, <pre>, <a>)
+        # Display the webpage detailed info text (rendered via marked.js)
         webpage_detailed_info_text = item.get('webpage_detailed_info_text') or ""
+        escaped_md = json.dumps(webpage_detailed_info_text)
         
         html += f"""
         <article class="card" id="video-{video_id}">
@@ -215,7 +282,10 @@ def generate_html(data):
                 <span class="date">{date}</span>
             </div>
             
-            <div class="newsletter-content" style="white-space: pre-wrap; font-size: 0.95rem; color: #2d2a25;">{webpage_detailed_info_text}</div>
+            <div class="newsletter-content markdown-body" id="content-{video_id}"></div>
+            <script>
+                document.getElementById("content-{video_id}").innerHTML = marked.parse({escaped_md});
+            </script>
             
             <a href="https://youtube.com/watch?v={video_id}" target="_blank" class="youtube-link">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
