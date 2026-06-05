@@ -309,10 +309,15 @@ def generate_html(data):
             
             <div class="newsletter-content markdown-body" id="content-{video_id}"></div>
             <script>
-                document.getElementById("content-{video_id}").innerHTML = marked.parse({escaped_md});
-                if (window.MathJax && window.MathJax.typesetPromise) {{
-                    window.MathJax.typesetPromise();
-                }}
+                (function() {{
+                    const md = {escaped_md};
+                    const processedMd = md.replace(/\\\\/g, '\\\\\\\\');
+                    const element = document.getElementById("content-{video_id}");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {{
+                        window.MathJax.typesetPromise([element]);
+                    }}
+                }})();
             </script>
             
             <a href="https://youtube.com/watch?v={video_id}" target="_blank" class="youtube-link">

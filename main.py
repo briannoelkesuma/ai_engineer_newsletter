@@ -168,7 +168,7 @@ def run_pipeline(target_video_id=None):
             
         logging.info(f"Publishing to Telegram...")
         site_url = os.environ.get("SITE_URL", "https://ai-engineer-newsletter.vercel.app")
-        final_message = insights.telegram_summary_text
+        final_message = f"{insights.telegram_summary_text}\n\n📖 <a href=\"{site_url}/#video-{video_id}\">Read detailed timestamp breakdown</a>\n\n🔗 https://youtube.com/watch?v={video_id}"
         send_telegram_message(final_message)
         
         update_video_status(video_id, "processed", model=model_name, telegram_summary_text=insights.telegram_summary_text, webpage_detailed_info_text=insights.webpage_detailed_info_text, upload_date=upload_date)

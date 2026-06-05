@@ -125,6 +125,17 @@ CREATE TABLE videos (
 
 ---
 
+## YouTube Proxy Implementation (IP Rotation)
+
+To bypass YouTube's strict rate limits and IP bot detection (which frequently blocks standard Cloudflare/GitHub Actions runner IPs), the pipeline implements a robust outbound proxy rotation mechanism:
+1. **Multi-Proxy Support**: Reads a list of comma-separated proxy endpoints from the `YOUTUBE_PROXY` environment variable.
+2. **Randomized Rotation**: On every request made by `yt-dlp` (both metadata extraction and subtitle downloads), the runner randomly selects an active proxy from this list.
+3. **Graceful Fallbacks**: In the event that YouTube blocks the proxy list or requests fail, the pipeline automatically falls back to:
+   * Public API transcript retrieval (`youtube-transcript.ai`).
+   * Fallback scraping of metadata directly from public YouTube HTML watch pages.
+
+---
+
 ## Verification & Troubleshooting
 
 Here is how you can verify that each part of your pipeline is working:
@@ -154,14 +165,7 @@ You can check if Google's Hub has successfully registered your Cloudflare Worker
 4. **Subscription Activation**: Activated WebSub handshake.
 5. **Database simplification**: Combined `insights` and `videos` into a single `videos` table.
 6. **Robust LLM configuration**: Set Llama 3.3 70B as default and implemented Map-Reduce for long transcripts.
-
-### ⏳ Remaining Setup Items
-
-#### Connect Repo to Vercel
-1. Go to [Vercel](https://vercel.com) and click **Add New -> Project**.
-2. Import the `ai_engineer_newsletter` repository.
-3. In the Build and Development Settings, set the build output directory to `public`.
-4. Deploy the project.
+7. **Vercel Connection**: Connected repository to Vercel with output directory set to `public`, enabling automated static builds.
 
 ---
 
