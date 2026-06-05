@@ -144,8 +144,8 @@ def run_pipeline(target_video_id=None):
         insights, model_name = analyze_transcript(title, description, upload_date, transcript)
         
         if not insights:
-            logging.error(f"LLM analysis failed for {video_id}. Marking as failed.")
-            update_video_status(video_id, "failed")
+            logging.error(f"LLM analysis failed for {video_id}. Reverting status to pending for next run retry.")
+            update_video_status(video_id, "pending")
             failed_count += 1
             continue
             
