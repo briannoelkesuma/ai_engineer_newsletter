@@ -14,6 +14,26 @@ def fetch_transcript(video_id: str) -> str:
         with open(local_path, "r") as f:
             return f.read()
 
+    # Try public API first
+    try:
+        import urllib.request
+        logging.info(f"Attempting to fetch transcript from public API for {video_id}...")
+        url = f"https://youtube-transcript.ai/transcript/{video_id}.txt"
+        req = urllib.request.Request(
+            url, 
+            headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+        )
+        with urllib.request.urlopen(req, timeout=15) as response:
+            if response.status == 200:
+                content = response.read().decode('utf-8')
+                if content.strip() and not "not found" in content.lower():
+                    logging.info(f"Successfully fetched transcript from public API for {video_id}")
+                    with open(local_path, "w", encoding="utf-8") as f:
+                        f.write(content)
+                    return content
+    except Exception as e:
+        logging.warning(f"Public API fetch failed for {video_id}: {e}. Falling back to yt-dlp...")
+
     try:
         import subprocess
         import json
@@ -21,7 +41,12 @@ def fetch_transcript(video_id: str) -> str:
         
         import sys
         
-        proxy = os.environ.get("YOUTUBE_PROXY")
+        proxy_env = os.environ.get("YOUTUBE_PROXY")
+        proxy = None
+        if proxy_env:
+            import random
+            proxies = [p.strip() for p in proxy_env.split(",") if p.strip()]
+            proxy = random.choice(proxies) if proxies else None
         cmd = [
             sys.executable,
             "-m", "yt_dlp",

@@ -173,6 +173,90 @@
 
     <main>
 
+        <article class="card" id="video-r305-aQTaU0">
+            <div class="card-header">
+                <h2>Triggered Video</h2>
+                <span class="date">Unknown Date</span>
+            </div>
+            
+            <div class="newsletter-content" style="white-space: pre-wrap; font-size: 0.95rem; color: #2d2a25;"><h2>Deep Dive: Text Diffusion Architecture and Implementation</h2>
+
+This technical guide details the concepts presented by Brendon Dillon (Google DeepMind) regarding the implementation of Text Diffusion models, contrasting them with traditional Autoregressive (AR) models.
+
+<h3>1. Core Conceptual Framework</h3>
+
+<b>Autoregressive (AR) Generation:</b>
+- <b>Logic:</b> Generates tokens sequentially: $P(x_t | x_{<t})$.
+- <b>Constraint:</b> Causal attention mask prevents the model from seeing future tokens. If a mistake is made at token $t$, the model must either hallucinate a correction or fail, as it cannot change $x_t$ once generated.
+
+<b>Text Diffusion Generation:</b>
+- <b>Training:</b> A clean sequence of tokens is gradually corrupted by adding noise (discrete corruption: replacing tokens with random ones from the vocabulary). The model is trained to reverse this process.
+- <b>Inference:</b> The process starts with a sequence of pure random noise. The model iteratively refines this "canvas" over a set number of denoising steps until a clean, coherent sequence emerges.
+- <b>Attention:</b> Uses <b>bidirectional attention</b>, allowing every token in the sequence to attend to every other token, regardless of position.
+
+<h3>2. Hardware Performance & Memory Dynamics</h3>
+
+<b>The Memory-Bound Problem:</b>
+- GPUs and TPUs have high compute power (FLOPs) but limited memory bandwidth (HBM). 
+- In AR models, for every token generated, the entire model weight set and the KV cache must be streamed from HBM to the tensor cores. This makes the process <b>memory-bound</b>.
+
+<b>The Diffusion Solution:</b>
+- Diffusion generates a block of tokens (e.g., 256 tokens) in a few passes (e.g., 24 steps).
+- <b>Efficiency Gain:</b> If 256 tokens are generated in 24 passes instead of 256 passes, memory transfers are reduced by $\approx 10\times$, leading to significantly lower latency for individual users.
+- <b>Trade-off:</b> While latency is lower, <b>throughput</b> for massive batches is lower because the model performs multiple forward passes on the same data, hitting compute thresholds faster than AR models.
+
+<h3>3. Advanced Functional Capabilities</h3>
+
+<h4>A. Bidirectional Reasoning and Self-Correction</h4>
+Because the model can attend to the "future" tokens it is currently refining, it can perform <i>global self-correction</i>. 
+- <b>Example:</b> In a math problem, the model might initially guess "Answer = 60". As it refines the reasoning steps in the subsequent passes, it discovers the answer is actually 39. In the next denoising step, it can retroactively change the "60" to "39" at the start of the sequence.
+
+<h4>B. Dynamic and Adaptive Computation</h4>
+Diffusion models allow for a flexible compute budget at inference time:
+- <b>Fixed Budget:</b> Increasing the number of denoising steps generally increases output quality (monotonic improvement).
+- <b>Adaptive Budget:</b> The model can be trained to determine when a sequence is "clean enough" and stop early.
+- <b>Complexity Scaling:</b> 
+    - <i>Simple tasks:</i> (e.g., 100 digits of pi) $\rightarrow$ $\approx 4$ steps.
+    - <i>Medium tasks:</i> (e.g., FizzBuzz code) $\rightarrow$ $\approx 18$ steps.
+    - <i>Hard tasks:</i> (e.g., Quantum Mechanics explanation) $\rightarrow$ $\approx 31$ steps.
+
+<h4>C. In-place Editing (In-filling)</h4>
+Unlike AR models that must regenerate everything from the point of a change, Diffusion models can perform <b>in-place editing</b>:
+- <b>Mechanism:</b> Mask specific tokens (the "cut out" area) and keep the surrounding context fixed. The model denoises only the masked area, ensuring the new content is consistent with both the prefix and the suffix.
+- <b>Use Cases:</b> Fixing a specific bug in a code block without rewriting the entire file or inserting a middle paragraph into a story.
+
+<h3>4. System Design and Implementation Details</h3>
+
+<b>Discrete vs. Latent Diffusion:</b>
+- The discussed implementation uses <b>Discrete Diffusion</b>: the process happens directly in the token space (tokens in $\rightarrow$ tokens out).
+- <b>Corruption Process:</b> A discrete corruption process where tokens are replaced by random tokens from the vocabulary.
+
+<b>Handling Sequence Length:</b>
+- <b>Windowing:</b> The simplest implementation uses a fixed window length (e.g., 512 or 1024 tokens).
+- <b>Extended Generation:</b> For longer texts, the model can operate in a block-wise manner, generating one window and then moving to the next, though the current implementation typically sets the window in stone for the duration of the generation.
+
+<b>On-Device Application Strategy:</b>
+- Because diffusion is low-latency and doesn't require massive batching to be efficient, it is ideal for <b>on-device AI</b> (phones, robotics) where the user is a single instance (batch size = 1) and throughput concerns are negligible compared to the need for immediate response.
+
+<h3>5. Summary of Comparison</h3>
+
+| Feature | Autoregressive (AR) | Text Diffusion |
+| :--- | :--- | :--- |
+| **Generation Order** | Sequential (Left-to-Right) | Iterative Refinement (Global) |
+| **Attention** | Causal (Past only) | Bidirectional (Past & Future) |
+| **Latency** | Higher (per token) | Lower (per block) |
+| **Throughput** | High (via large batches) | Lower (multiple passes per sample) |
+| **Editing** | Regenerate from point of change | In-place editing/In-filling |
+| **Compute** | Fixed per token | Adaptive based on difficulty |</div>
+            
+            <a href="https://youtube.com/watch?v=r305-aQTaU0" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-wcUJWP6WpGM">
             <div class="card-header">
                 <h2>SWE-rebench: Lessons from Evaluating Coding Agents — Ibragim Badertdinov, Nebius</h2>
