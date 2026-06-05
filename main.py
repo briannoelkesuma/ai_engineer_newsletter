@@ -6,7 +6,7 @@ from ingestor import get_recent_videos
 from transcript_fetcher import fetch_transcript
 from llm_analyzer import analyze_transcript
 from telegram_bot import send_telegram_message, send_admin_alert
-from db import add_video, get_pending_videos, update_video_status, reset_stuck_videos, get_db_client
+from db import add_video, get_pending_videos, update_video_status, reset_stuck_videos, get_db_client, reset_failed_videos_for_daily_retry
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -62,9 +62,10 @@ def fetch_youtube_metadata_fallback(video_id: str) -> dict:
 def run_pipeline(target_video_id=None):
     logging.info("Starting ingestion pipeline...")
     
-    # Self-Healing: Reset stuck processing videos from prior crashed runs (only on batch runs)
+    # Self-Healing: Reset stuck processing videos and failed videos for daily retry (only on batch runs)
     if not target_video_id:
         reset_stuck_videos()
+        reset_failed_videos_for_daily_retry()
     
     if target_video_id:
         logging.info(f"Triggered for specific video ID: {target_video_id}")
@@ -89,7 +90,7 @@ def run_pipeline(target_video_id=None):
     processed_count = 0
     failed_count = 0
     
-    for p_vid in pending_videos:
+    for idx, p_vid in enumerate(pending_videos):
         video_id = p_vid['video_id']
         title = p_vid['title']
         description = ""
@@ -144,8 +145,27 @@ def run_pipeline(target_video_id=None):
         insights, model_name = analyze_transcript(title, description, upload_date, transcript)
         
         if not insights:
-            logging.error(f"LLM analysis failed for {video_id}. Reverting status to pending for next run retry.")
-            update_video_status(video_id, "pending")
+            current_model_val = p_vid.get("model") or ""
+            if current_model_val == "retry_1":
+                next_model_val = "retry_2"
+                next_status = "pending"
+            elif current_model_val == "retry_2":
+                next_model_val = "retry_3"
+                next_status = "pending"
+            elif current_model_val == "retry_3":
+                next_model_val = None
+                next_status = "failed"
+            else:
+                next_model_val = "retry_1"
+                next_status = "pending"
+                
+            if next_status == "pending":
+                logging.error(f"LLM analysis failed for {video_id}. Reverting status to pending (attempt {next_model_val}) for retry.")
+                update_video_status(video_id, "pending", model=next_model_val)
+            else:
+                logging.error(f"LLM analysis failed 4 times for {video_id}. Marking as failed for next-day retry.")
+                update_video_status(video_id, "failed", model=None)
+                
             failed_count += 1
             continue
             
@@ -158,9 +178,10 @@ def run_pipeline(target_video_id=None):
         update_video_status(video_id, "processed", model=model_name, telegram_summary_text=insights.telegram_summary_text, webpage_detailed_info_text=insights.webpage_detailed_info_text)
         processed_count += 1
         
-        # Throttling to respect OpenRouter API limits
-        logging.info("Sleeping for 65 seconds to respect API rate limits...")
-        time.sleep(65)
+        # Throttling to respect OpenRouter API limits (only sleep if there are more videos in the batch)
+        if idx < len(pending_videos) - 1:
+            logging.info("Sleeping for 65 seconds to respect API rate limits...")
+            time.sleep(65)
         
     logging.info("Pipeline run complete.")
     if processed_count > 0:

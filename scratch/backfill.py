@@ -36,7 +36,7 @@ def run_backfill():
     
     # 1. Pre-populate database with placeholders
     for vid_id in BACKFILL_VIDEO_IDS:
-        add_video(vid_id, f"Backfill Video {vid_id}", "", "")
+        add_video(vid_id, f"Backfill Video {vid_id}")
         
     # Get pending videos to process
     pending = get_pending_videos()
@@ -49,8 +49,8 @@ def run_backfill():
     for idx, p_vid in enumerate(pending):
         video_id = p_vid['video_id']
         title = p_vid['title']
-        description = p_vid['description'] or ""
-        raw_upload_date = p_vid['upload_date']
+        description = ""
+        raw_upload_date = None
         
         logging.info(f"[{idx+1}/{len(pending)}] Ingesting video metadata for: {video_id}")
         
@@ -71,12 +71,10 @@ def run_backfill():
                 raw_upload_date = info.get("upload_date", raw_upload_date)
                 description = info.get("description", description)
                 
-                # Update in DB
+                # Update in DB (title only)
                 supabase = get_db_client()
                 supabase.table("videos").update({
-                    "title": title,
-                    "upload_date": raw_upload_date,
-                    "description": description
+                    "title": title
                 }).eq("video_id", video_id).execute()
         except Exception as e:
             logging.warning(f"Failed to fetch metadata for {video_id}: {e}")

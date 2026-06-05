@@ -5,8 +5,6 @@ DROP TABLE IF EXISTS videos CASCADE;
 CREATE TABLE videos (
     video_id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
-    description TEXT,
-    upload_date TEXT,
     status TEXT DEFAULT 'pending',
     model TEXT,
     telegram_summary_text TEXT,
