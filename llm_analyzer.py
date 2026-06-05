@@ -215,7 +215,9 @@ def get_model_limits(model_name: str) -> tuple[int, int]:
     # Safe fallback
     return 30000, 20000
 
-def analyze_transcript(title: str, description: str, upload_date: str, transcript: str, model: str = "meta-llama/llama-3.3-70b-instruct:free") -> tuple[VideoInsights | None, str]:
+def analyze_transcript(title: str, description: str, upload_date: str, transcript: str, model: str = None) -> tuple[VideoInsights | None, str]:
+    if not model:
+        model = os.environ.get("DEFAULT_MODEL", "meta-llama/llama-3.3-70b-instruct:free")
     token_count = count_tokens(transcript)
     logging.info(f"Transcript estimated token count: {token_count}")
     
