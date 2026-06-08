@@ -272,6 +272,33 @@
 
     <main>
 
+        <article class="card" id="video-SKDJo2CopRs">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-06-08</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-SKDJo2CopRs"></div>
+            <script>
+                (function() {
+                    const md = "# Cloudflare AI Agents: Durable Objects, Dynamic Workers, and Code Mode\n\n## Introduction\nThis technical deep dive explores Cloudflare's innovative approach to AI agent computing through three core primitives: Durable Objects, Dynamic Workers, and Code Mode. The presentation covers their technical architecture, use cases, and implications for modern software development.\n\n## 1. Durable Objects: Stateful Serverless Computing\n### Problem Statement\nTraditional serverless functions (e.g., AWS Lambda) are stateless, making them unsuitable for applications requiring persistent state. The example of a hit counter demonstrates how stateless functions reset counters on each request.\n\n### Solution: Durable Objects\n- **Architecture**: State is maintained in-memory across requests\n- **Scalability**: Leverages Cloudflare's global network for sub-16ms latency\n- **Features**:\n  - Resumability across tabs/sessions\n  - Background task execution\n  - Persistent storage via SQLite/R2 integration\n\n### Technical Implementation\n```javascript\n// Example Durable Object\nclass HitCounter extends DurableObject {\n  async increment() {\n    this.counter = (this.counter || 0) + 1;\n  }\n}\n```\n\n### Business Rules\n- Eliminates database dependencies for stateful operations\n- Enables real-time collaboration without additional infrastructure\n\n## 2. Dynamic Workers: Code as a Compute Primitive\n### Core Concept\nDynamic Workers allow executing arbitrary code from strings in isolated environments, breaking traditional code deployment paradigms.\n\n### Technical Architecture\n- **Execution Model**: Code runs in sandboxed workers with restricted capabilities\n- **Security**: No file system access, limited network permissions\n- **Flexibility**: Supports JavaScript, Python, and WASM\n\n### Key Features\n```javascript\n// Dynamic Worker example\nconst worker = new DynamicWorker(\"function add(a, b) { return a + b; }\");\nworker.execute(3, 5); // Returns 8\n```\n\n### Use Cases\n- User-generated code execution\n- LLM-powered code generation\n- Dynamic workflow automation\n\n### Constraints\n- Strict security boundaries\n- Limited resource allocation per worker\n\n## 3. Code Mode: Secure Sandboxed Execution\n### Architecture\nCode Mode combines dynamic workers with sandboxed execution for secure code delegation.\n\n### Security Model\n- No environment variables exposed\n- Restricted outgoing requests\n- No persistent storage\n\n### Technical Implementation\n```javascript\n// Code Mode sandbox configuration\nconst sandbox = new CodeModeSandbox({\n  allowedApis: ['github.com'],\n  outgoingRequests: 0\n});\n\nconst result = sandbox.execute(\"fetch('https://github.com')\");\n```\n\n### Advantages\n- Enables secure code execution from untrusted sources\n- Reduces attack surface through capability-based security\n\n## 4. Additional Innovations\n### M- CMS\n- Built entirely on dynamic workers\n- Plugin system runs in isolated sandboxes\n- Cloudflare-specific but platform-agnostic\n\n### Zig Support\n- First-class WASM support in workers\n- Tiny binary sizes compared to Go/Rust\n- Enables efficient edge computing\n\n## 5. Future Directions\n- AI agents running entirely on workers\n- Code generation and execution pipelines\n- Cross-platform support for dynamic workers\n\n## Conclusion\nCloudflare's primitives represent a paradigm shift in compute architecture, enabling secure, scalable, and flexible code execution at the edge. These technologies collectively address long-standing challenges in serverless computing while opening new possibilities for AI-driven applications.\n\n## Key Takeaways\n- Durable Objects solve statefulness in serverless\n- Dynamic Workers enable code-as-compute\n- Code Mode provides secure sandboxing\n- Zig support optimizes edge execution\n- M- CMS demonstrates practical applications\n\nThis presentation highlights how Cloudflare is redefining the boundaries of what's possible in serverless and AI computing through these innovative primitives.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-SKDJo2CopRs");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=SKDJo2CopRs" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-xzXdLRUyjUg">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
