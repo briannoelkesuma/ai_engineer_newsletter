@@ -11,3 +11,6 @@ CREATE TABLE videos (
     webpage_detailed_info_text TEXT,
     created_at TIMESTAMPTZ DEFAULT now()
 );
+
+-- Enable Row Level Security (RLS)
+ALTER TABLE videos ENABLE ROW LEVEL SECURITY;

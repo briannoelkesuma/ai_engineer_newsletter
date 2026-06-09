@@ -169,7 +169,7 @@ def run_pipeline(target_video_id=None):
             failed_count += 1
             continue
             
-        site_url = os.environ.get("SITE_URL", "https://ai-engineer-newsletter.vercel.app")
+        site_url = os.environ.get("SITE_URL", "https://briannoelkesuma.github.io/ai_engineer_newsletter/public")
         insights.telegram_summary_text = f"{insights.telegram_summary_text}\n\n📖 <a href=\"{site_url}/#video-{video_id}\">Read detailed timestamp breakdown</a>\n\n🔗 https://youtube.com/watch?v={video_id}"
 
         logging.info(f"Publishing to Telegram...")

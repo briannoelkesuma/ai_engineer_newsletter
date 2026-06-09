@@ -102,7 +102,7 @@ def run_backfill():
             
         # Publish to Telegram
         logging.info("Publishing to Telegram channel...")
-        site_url = os.environ.get("SITE_URL", "https://ai-engineer-newsletter.vercel.app")
+        site_url = os.environ.get("SITE_URL", "https://briannoelkesuma.github.io/ai_engineer_newsletter/public")
         final_message = (
             f"📺 <b>{title}</b>\n\n"
             f"{insights.telegram_summary_text}\n\n"

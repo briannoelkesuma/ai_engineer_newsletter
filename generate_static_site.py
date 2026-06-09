@@ -46,9 +46,11 @@ def generate_html(data):
             font-family: 'Inter', -apple-system, sans-serif;
             background: var(--bg);
             color: var(--text);
-            line-height: 1.6;
+            line-height: 1.7;
             margin: 0;
             padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
         header {
@@ -80,30 +82,32 @@ def generate_html(data):
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 32px;
-            margin-bottom: 32px;
+            padding: 40px;
+            margin-bottom: 40px;
             box-shadow: var(--shadow);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s ease;
         }
         
         .card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(20,17,13,.08);
+            box-shadow: 0 12px 30px rgba(20,17,13,.06);
         }
         
         .card:target {
             border-color: var(--accent);
-            box-shadow: 0 0 16px rgba(215, 122, 58, 0.25);
+            box-shadow: 0 0 24px rgba(215, 122, 58, 0.15);
             scroll-margin-top: 40px;
         }
         
         .card-header {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 16px;
+            align-items: center;
+            margin-bottom: 24px;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 12px;
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 16px;
         }
         
         h2 {
@@ -111,6 +115,7 @@ def generate_html(data):
             font-weight: 700;
             margin: 0;
             line-height: 1.3;
+            color: var(--text);
         }
         
         .date {
@@ -124,7 +129,7 @@ def generate_html(data):
         }
         
         h3 {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: var(--accent);
             margin: 24px 0 12px;
         }
@@ -151,11 +156,14 @@ def generate_html(data):
             font-weight: 600;
             font-size: 0.9rem;
             margin-top: 24px;
-            transition: opacity 0.2s ease;
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
         }
         
         a.youtube-link:hover {
-            opacity: 0.9;
+            transform: translateY(-1px);
+            background: var(--accent);
+            box-shadow: 0 4px 12px rgba(215, 122, 58, 0.2);
+            color: #ffffff;
         }
         
         #backTop {
@@ -164,17 +172,27 @@ def generate_html(data):
             right: 24px;
             background: var(--text);
             color: var(--bg);
-            border: none;
+            border: 1px solid var(--border);
             border-radius: 50%;
-            width: 48px;
-            height: 48px;
-            font-size: 24px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
             box-shadow: var(--shadow);
             z-index: 100;
+            font-weight: bold;
+        }
+        
+        #backTop:hover {
+            transform: translateY(-2px);
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #ffffff;
         }
         
         #backTop.visible {
@@ -183,87 +201,192 @@ def generate_html(data):
         }
 
         /* Markdown Styles */
+        .markdown-body {
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: #24211c;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+        }
+        
         .markdown-body h1, .markdown-body h2, .markdown-body h3 {
-            margin-top: 24px;
-            margin-bottom: 12px;
+            margin-top: 32px;
+            margin-bottom: 16px;
             font-weight: 700;
             color: var(--text);
+            letter-spacing: -0.01em;
         }
+        
         .markdown-body h1 { font-size: 1.6rem; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
         .markdown-body h2 { font-size: 1.35rem; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
         .markdown-body h3 { font-size: 1.15rem; color: var(--accent); }
         .markdown-body p { margin-bottom: 16px; }
         .markdown-body ul, .markdown-body ol {
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             padding-left: 24px;
         }
-        .markdown-body li { margin-bottom: 6px; }
-        .markdown-body code {
+        .markdown-body li { margin-bottom: 8px; }
+        
+        .markdown-body :not(pre) > code {
             font-family: 'JetBrains Mono', monospace;
             background: #f1ede4;
-            color: #d77a3a;
-            padding: 2px 6px;
+            color: #c86522;
+            padding: 3px 6px;
             border-radius: 4px;
-            font-size: 0.9em;
+            font-size: 0.875em;
+            word-break: break-word;
+            border: 1px solid rgba(215, 122, 58, 0.1);
         }
+        
         .markdown-body pre {
-            background: #1e1b18;
+            background: #191613;
             color: #f5f2eb;
-            padding: 16px;
-            border-radius: 8px;
+            padding: 20px;
+            border-radius: 10px;
             overflow-x: auto;
-            margin-bottom: 20px;
+            margin: 24px 0;
+            border: 1px solid rgba(232, 226, 214, 0.1);
+            -webkit-overflow-scrolling: touch;
         }
+        
         .markdown-body pre code {
+            font-family: 'JetBrains Mono', monospace;
             background: none;
             color: inherit;
             padding: 0;
             border-radius: 0;
-            font-size: 0.9em;
-        }
-        .markdown-body table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 24px;
             font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre;
+            word-break: normal;
+            word-wrap: normal;
         }
+        
+        .markdown-body table {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            border-collapse: collapse;
+            margin: 24px 0;
+            -webkit-overflow-scrolling: touch;
+            border-spacing: 0;
+        }
+        
         .markdown-body th, .markdown-body td {
             border: 1px solid var(--border);
-            padding: 10px 12px;
+            padding: 12px 16px;
             text-align: left;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            min-width: 120px;
         }
+        
         .markdown-body th {
-            background: #f5f0e6;
+            background: #fcfbf9;
             font-weight: 600;
+            border-bottom: 2px solid var(--border);
+            color: var(--text);
         }
+        
         .markdown-body tr:nth-child(even) {
-            background: #fafaf7;
+            background: #fafaf8;
         }
+        
         .markdown-body blockquote {
             border-left: 4px solid var(--accent);
             margin: 0 0 20px;
             padding: 8px 16px;
             color: var(--text-muted);
-            background: #fafaf7;
+            background: #fafaf8;
         }
-        /* Prevent overflow of text, equations, and code blocks */
-        .markdown-body {
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            word-break: break-word;
-            max-width: 100%;
+
+        /* Custom scrollbar styling for tables, pre, and equations */
+        .markdown-body pre::-webkit-scrollbar,
+        .markdown-body table::-webkit-scrollbar,
+        mjx-container::-webkit-scrollbar {
+            height: 6px;
         }
-        .markdown-body table {
-            display: block;
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        .markdown-body pre::-webkit-scrollbar-track,
+        .markdown-body table::-webkit-scrollbar-track,
+        mjx-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
         }
+        .markdown-body pre::-webkit-scrollbar-thumb,
+        .markdown-body table::-webkit-scrollbar-thumb,
+        mjx-container::-webkit-scrollbar-thumb {
+            background: rgba(215, 122, 58, 0.2);
+            border-radius: 3px;
+        }
+        .markdown-body pre::-webkit-scrollbar-thumb:hover,
+        .markdown-body table::-webkit-scrollbar-thumb:hover,
+        mjx-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(215, 122, 58, 0.4);
+        }
+
         mjx-container {
             max-width: 100% !important;
             overflow-x: auto !important;
             overflow-y: hidden !important;
             -webkit-overflow-scrolling: touch;
+            padding: 8px 0;
+        }
+
+        /* Responsive Media Queries */
+        @media (max-width: 768px) {
+            header {
+                padding: 60px 20px 32px;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+            .card {
+                padding: 28px;
+                margin-bottom: 24px;
+            }
+            .card-header {
+                margin-bottom: 20px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            header {
+                padding: 40px 16px 24px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            p.subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 24px;
+            }
+            main {
+                padding: 0 16px 48px;
+            }
+            .card {
+                padding: 20px;
+                margin-bottom: 20px;
+                border-radius: 8px;
+            }
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                padding-bottom: 12px;
+                margin-bottom: 16px;
+            }
+            h2 {
+                font-size: 1.3rem;
+            }
+            .date {
+                font-size: 0.8rem;
+            }
+            a.youtube-link {
+                width: 100%;
+                justify-content: center;
+                margin-top: 16px;
+            }
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
