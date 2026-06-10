@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-zMiSRliEzv4">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-06-10</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-zMiSRliEzv4"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: Product Signals to Pull Requests\n\nThis presentation by Joshua Snyder (PostHog) details the architecture of a \"Self-Driving Product\" pipeline. The goal is to automate the entire lifecycle of bug resolution: from the moment a signal is detected in observability data to the submission of a verified Pull Request (PR).\n\n## 1. The Problem: The Observability Latency Gap\nTraditional observability follows a slow, manual loop:\n`Signal` $\\\rightarrow$ `Dashboard Metric Change` $\\\rightarrow$ `Human Investigation` $\\\rightarrow$ `Ticket Creation (Linear)` $\\\rightarrow$ `Coding` $\\\rightarrow$ `PR` $\\\rightarrow$ `Review` $\\\rightarrow$ `Ship`.\n\nPostHog's vision is to collapse this loop by replacing the middle steps with an autonomous agentic pipeline, allowing developers to wake up to a list of green PRs rather than a list of alerts.\n\n## 2. The Pipeline Architecture\n\n### Step A: Ingestion & Safety Filtering\nBecause PostHog ingests trillions of events from public-facing sources, the pipeline must handle malicious inputs (Prompt Injection/Attackers).\n- **Safety Filter:** An LLM classifier acts as the first line of defense, dropping signals that attempt to manipulate the system or request sensitive data.\n- **Normalization:** Diverse data sources (stack traces, JSON logs, experiment charts) are normalized into a standard <code>Signal</code> structure containing:\n    - Source Product\n    - Signal Type\n    - Content\n    - Weight (Importance)\n    - Vector Embedding\n\n### Step B: Signal Grouping & Clustering\nOne of the biggest technical hurdles is grouping different types of signals (e.g., a customer Slack message and a Sentry error) into a single \"Report.\"\n\n**The Failure of Direct Embedding:**\nUsing off-the-shelf embedding models on raw signals leads to clustering by *structure*. All errors cluster together and all Slack messages cluster together, regardless of whether they refer to the same bug.\n\n**The Solution: Query-Based Matching**\nInstead of embedding the signal itself, the pipeline:\n1. Asks an LLM: \"What is this signal about?\"\n2. Generates several descriptive queries.\n3. Matches these *queries* in the embedding space.\nThis ensures semantic similarity (the *meaning* of the bug) takes precedence over structural similarity (the *format* of the log).\n\n### Step C: The Research Agent\nOnce a report's weight exceeds a threshold, a Research Agent is triggered. \n- **Infrastructure:** Built using the Claude Agent SDK and hosted in a **Modal** sandbox.\n- **Tooling (MCP):** The agent uses the **Model Context Protocol (MCP)** to fetch additional context from:\n    - Internal logs and session replays.\n    - External tools like **Linear** and **Notion** for historical context.\n    - **Git Blame** to identify the most appropriate human reviewer for the eventual PR.\n\n### Step D: Actionability Assessment\nNot every signal should trigger a PR. The system categorizes reports into three paths:\n1. **Not Actionable:** Insufficient data; the report is sent back to the pool to gather more evidence.\n2. **Human Input Required:** Product-level decisions (e.g., \"Is this UX confusing?\") are sent to a human inbox.\n3. **Immediately Actionable:** Coding errors or specific bugs are passed to the Execution Agent.\n\n### Step E: Execution & Iterative Fixes\nThe Execution Agent operates in a dedicated sandbox:\n1. **Clone:** The user's repository is cloned into the sandbox.\n2. **Fix:** The agent writes the code fix using the Claude Agent SDK.\n3. **Verify:** The agent pushes a PR and monitors CI.\n4. **Iterate:** If CI fails or a reviewer comments, the system **rehydrates a snapshot** of the sandbox and the agent continues iterating until the PR is \"green.\"\n\n## 3. Engineering Lessons & Constraints\n\n| Challenge | Initial Approach | Optimized Solution |\n| :--- | :--- | :--- |\n| **Clustering** | Direct signal embeddings | LLM-generated query embeddings |\n| **Evaluation** | \"Vibe checks\" on local data | Production-representative data evals |\n| **Noise** | Agent tries to fix everything | Strict actionability filtering |\n| **Cost** | Minimizing agent usage early | High-cost exploration $\\\rightarrow$ Distillation to one-shot calls |\n\n### The \"Tokens are Free\" Philosophy\nSnyder argues that during the experimentation phase, developers should not over-optimize for cost. By running expensive agentic loops 100+ times on the same problem, the team identified recurring \"clever\" patterns. These patterns were then distilled into **one-shot LLM calls** or specialized models, drastically reducing long-term operational costs while maintaining quality.\n\n## 4. Future Roadmap: The Self-Building Product\n- **Automated Experimentation:** Shipping pricing or onboarding experiments, measuring impact, and auto-rolling back via feature flags if metrics drop.\n- **Closed-Loop Learning:** The system will learn from PR rejections or production failures to improve the generation of the next PR.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-zMiSRliEzv4");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=zMiSRliEzv4" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-Bc6Ojl2XS1w">
             <div class="card-header">
                 <h2>From Transcription to Live Music: Gemini's Audio Stack — Thor Schaeff, Google DeepMind</h2>
