@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-TNwJ1LMiENk">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-06-10</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-TNwJ1LMiENk"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: Optimizing Small Language Models for Tool Use via RL\n\n## Overview\nThis presentation by Kobie Crawford (Snorkel) explores the hypothesis that targeted Reinforcement Learning (RL) and high-quality data can enable a small language model (SLM) to outperform a massive model in specialized enterprise tasks. The focus is specifically on **tool use for financial analysis**, where reliability and precision are more critical than general-purpose reasoning.\n\n## The Core Problem: The \"Sledgehammer\" Approach\nMany enterprises attempt to solve performance issues by increasing model size (e.g., moving from a 7B to a 175B+ model). Crawford refers to this as \"taking a sledgehammer to crack a walnut.\" \n\n### The \"Terence Tao Effect\"\nDrawing a parallel to the mathematician Terence Tao, the speaker argues that while a model may be \"brilliant\" (possessing vast general reasoning capabilities), that brilliance doesn't automatically ensure the model will follow the disciplined, step-by-step operational procedures required for a specific professional role, such as a financial analyst.\n\n### Case Study: 235B vs. 4B Model\n- **The 235B Model Failure:** When asked for year-over-year growth rates, the massive model attempted to query non-existent tables without first inspecting the environment. After failing twice, it fell back to hallucinating an answer.\n- **The 4B Model Success:** After RL training, the smaller model followed a disciplined workflow: `get_table_names` $\\\rightarrow$ `get_table_info` $\\\rightarrow$ `execute_query` $\\\rightarrow$ `self-correct` $\\\rightarrow$ `final answer`.\n\n---\n\n## Implementation Strategy\n\n### 1. Data Generation & Quality Control\nSnorkel's approach emphasizes an **Expert-in-the-Loop** framework:\n- **Expert Sourcing:** Utilizing PhDs and industry veterans in financial analysis to create ground-truth datasets.\n- **Verification:** Every task is verified to ensure it is queryable and has a verifiable answer.\n- **Data Quality:** The focus is on high-signal data rather than massive, noisy datasets.\n\n### 2. The Training Framework\n- **Algorithm:** The team utilized **GRPO** (Group Relative Policy Optimization).\n- **Environment:** A self-contained **FinQA environment** was developed. This environment is fully encapsulated (no external API dependencies), making it portable and secure for on-premise deployment.\n- **Infrastructure:** The environment is available via PrimeIntellect, OpenEnv, and Hugging Face Spaces.\n- **Resource Efficiency:** The training job took approximately **21 hours** and cost **under $500 per run**, proving that RL for behavior alignment is computationally tractable for most organizations.\n\n### 3. Benchmarking and Evals\nTwo primary benchmarks were used within the FinQA environment:\n1. **FinQA (290 samples):** Standard financial Q&A.\n2. **FinQA Reasoning (79 samples):** Complex tasks requiring multi-table queries.\n\n---\n\n## Key Technical Findings\n\n### Tool Discipline vs. Reasoning\nThe research revealed that the primary failure mode wasn't a lack of reasoning, but a lack of **tool discipline**. The model didn't know *when* and *how* to use the available tools to verify its assumptions.\n\n### The Curriculum Surprise\nThe team tested three training regimes:\n- Single-table only\n- Multi-table mixed\n- Curriculum learning (Single $\\\rightarrow$ Multi)\n\n**Result:** Training on **single-table questions only** yielded the greatest uplift. This suggests that once a model learns the *behavior* of using tools correctly on simple tasks, that discipline generalizes to complex multi-table tasks.\n\n### Performance Metrics\n- **Pass@1 Rate:** The success rate for the 4B model essentially doubled compared to its baseline.\n- **Generalization:** The FinQA Reasoning benchmark saw a jump from **13.9% to 26.6%** accuracy.\n\n---\n\n## System Design: Rubric-Based Evaluation\nTo move beyond binary (Correct/Incorrect) evaluations, Snorkel implements **Rubrics**. \n\n| Evaluation Level | Method | Purpose |\n| :--- | :--- | :--- |\n| **Binary Eval** | Yes/No | Used for the RL reward signal (GRPO). |\n| **Rubric Eval** | Multi-point Checklist | Used for human analysis to identify *where* the model failed (e.g., failed at schema inspection vs. failed at SQL syntax). |\n\nBy using rubrics, engineers can pinpoint the exact behavioral gap and generate targeted synthetic or expert data to fill that specific gap, creating a virtuous cycle of improvement.\n\n## Summary of the Technical Workflow\n`Expert Data` $\\\rightarrow$ `FinQA Environment` $\\\rightarrow$ `GRPO RL Training` $\\\rightarrow$ `Rubric-based Analysis` $\\\rightarrow$ `Targeted Data Refinement` $\\\rightarrow$ `Optimized SLM`";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-TNwJ1LMiENk");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=TNwJ1LMiENk" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-zMiSRliEzv4">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
