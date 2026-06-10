@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-Bc6Ojl2XS1w">
+            <div class="card-header">
+                <h2>From Transcription to Live Music: Gemini's Audio Stack — Thor Schaeff, Google DeepMind</h2>
+                <span class="date">2026-06-10</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-Bc6Ojl2XS1w"></div>
+            <script>
+                (function() {
+                    const md = "# Deep Dive: Gemini's Native Audio Stack & Real-Time Multimodality\n\nThis technical deep-dive explores the architecture and implementation of Google DeepMind's latest audio capabilities, focusing on the transition from traditional cascading AI pipelines to native multimodal models.\n\n## 1. The Shift to Native Multimodality\n\n### The Problem: Cascading Pipelines\nTraditionally, AI audio systems operated as a sequence of discrete models:\n1. **ASR (Automatic Speech Recognition):** Audio $\\\rightarrow$ Text.\n2. **LLM (Large Language Model):** Text $\\\rightarrow$ Text (Reasoning).\n3. **TTS (Text-to-Speech):** Text $\\\rightarrow$ Audio.\n\n**The Constraint:** This process loses \"paralinguistic\" information\u2014emotion, sarcasm, pacing, and tone\u2014because the LLM only sees the transcribed text, not the original sound.\n\n### The Solution: Sound-to-Sound\nGemini 3.1 Flash Live implements a **native multimodal architecture**. The intelligence is baked directly into the audio model. It ingests raw audio and generates raw audio, allowing the model to reason about the *sound* itself. This enables the model to detect if a user is happy, sad, or angry and respond with matching emotional prosody.\n\n## 2. Advanced Audio Understanding & Analysis\n\n### Single-Request Extraction\nUsing Gemini 3.1 Flash, developers can perform complex audio analysis in a single API call. Instead of multiple passes, the model can simultaneously provide:\n- **Speaker Diarization:** Identifying and labeling distinct speakers by name.\n- **Temporal Mapping:** Accurate timestamps for every utterance.\n- **Language Detection & Translation:** Identifying non-English languages and providing real-time translations.\n- **Emotional Labeling:** Classifying the emotional state (e.g., Happy, Sad, Angry, Neutral).\n\n### Implementation Strategy\nTo achieve this, the system uses **Structured Outputs**. By providing a <code>response schema</code>, the model populates a JSON-like structure that can be directly mapped to a UI, ensuring the output is predictable and machine-readable.\n\n## 3. Controllable Speech Generation\n\n### From Voice Libraries to Performance Steering\nUnlike traditional TTS providers that offer a library of fixed voices (filtered by gender or accent), Gemini uses a small set of base voices that are modified via **System Instructions**.\n\n**The \"Director's Note\" Pattern:**\nDevelopers can steer the voice by defining:\n- **Audio Profile:** The persona (e.g., \"Finian, a high-pitched Irish male\").\n- **Scene Setting:** The environment (e.g., \"A cozy, crowded pub on the coast of County Clare\").\n- **Performance Guidance:** Specific instructions on how to deliver the lines (e.g., \"Strong authentic Irish accent, laughing fit to burst\").\n\nThis approach allows for an infinite variety of accents and tones derived from a few base models, underpinned by the model's deep understanding of how different global accents sound.\n\n## 4. Gemini 3.1 Flash Live: Real-Time Interaction\n\n### Technical Architecture\n- **Connection Protocol:** Uses **WebSockets** for full-duplex, real-time communication.\n- **Input Modalities:** Simultaneous ingestion of text, audio, and video frames.\n- **Video Constraints:** Currently supports a maximum frame rate of **1 frame per second (FPS)** for screen or camera ingestion.\n- **Output:** Real-time audio responses accompanied by a text transcript.\n\n### Developer Implementation\nGoogle provides SDKs in **Python** (for server-to-server) and **JavaScript** (for client-to-server). To improve agent reliability, DeepMind recommends using **Gemini Skills** (coding agent skills) to steer the model's behavior during real-time interactions.\n\n## 5. Generative Music Integration: Lyra 3\n\n### Lyra 3 Model Variants\nDeepMind introduced two primary music generation models:\n| Model | Purpose | Duration/Capability |\n| :--- | :--- | :--- |\n| **Lyra 3 Clip** | Jingle/Short-form | 30-second generation |\n| **Lyra 3 Pro** | Full-length songs | Complete song structure with lyrics |\n\n### System Design: The \"Life Jukebox\"\nThe \"Life Jukebox\" demo demonstrates a complex agentic workflow:\n1. **User Input:** Real-time audio request (e.g., \"German techno Schlager about the UK startup scene\").\n2. **Reasoning:** Gemini 3.1 Flash Live processes the request and determines the necessary parameters (genre, mood, lyrics).\n3. **Tool Calling:** The model calls the **Lyra 3 API** as a tool, passing the generated lyrics and style parameters.\n4. **Output:** The system streams the generated music back to the user.\n\n## 6. Summary of Technical Stack\n\n| Component | Technology | Role |\n| :--- | :--- | :--- |\n| **Core Model** | Gemini 3.1 Flash Live | Native multimodal reasoning & real-time I/O |\n| **Interface** | Google AI Studio / Live API | Prototyping and WebSocket deployment |\n| **Music Gen** | Lyra 3 (Clip/Pro) | High-fidelity audio/music synthesis |\n| **Control** | System Prompts / Schemas | Performance steering and structured data extraction |";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-Bc6Ojl2XS1w");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=Bc6Ojl2XS1w" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-zDGHt0LB-dA">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
@@ -415,6 +442,33 @@
             </script>
             
             <a href="https://youtube.com/watch?v=zDGHt0LB-dA" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
+        <article class="card" id="video-UM6sFg_jdlE">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-06-09</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-UM6sFg_jdlE"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: From Naive RAG to Agentic Retrieval\n\nThis technical analysis explores the evolution of retrieval strategies in AI agents, moving away from simple vector search toward a sophisticated, tool-rich agentic approach. The discussion centers on the distinction between traditional RAG and Agentic Search, using real-world implementations from companies like Cursor and Cloud Code.\n\n## 1. Redefining RAG vs. Agentic Search\n\n### Naive RAG (The \"Twitter\" Definition)\nMost developers perceive RAG as a linear pipeline: \n`Corpus` $\\rightarrow$ `Embedding` $\\rightarrow$ `Vector Search` $\\rightarrow$ `LLM Context` $\\rightarrow$ `Generation`.\n\n### The Comprehensive View of Retrieval\nTrue retrieval is not just vector search. A robust retrieval system should incorporate:\n- **Vector Search:** For semantic similarity.\n- **Full-Text Search:** Using algorithms like **BM25** for keyword precision.\n- **Deterministic Filters:** Grepping, globbing, and Regular Expressions (Regex) for exact matches.\n\n### Agentic Search\nAgentic search is defined as providing an agent with a <b>set of tools</b> to progressively and iteratively find and reason over context. Instead of one query, the agent performs a loop: \n`Search` $\\rightarrow$ `Analyze Result` $\\rightarrow$ `Refine Query` $\\rightarrow$ `Search Again` $\\rightarrow$ `Final Answer`.\n\n---\n\n## 2. Case Study: Cursor's Implementation\n\nCursor provides a blueprint for high-performance agentic search in large-scale codebases. Their architecture focuses on two main pillars: efficiency in indexing and accuracy in retrieval.\n\n### Efficient Indexing via Merkle Trees\nTo avoid the massive computational cost of re-embedding entire codebases for every user or branch, Cursor utilizes **Merkle Trees** (hash trees).\n- **The Logic:** By calculating hashes of the codebase structure, Cursor can identify which specific files have changed between versions.\n- **The Benefit:** They only re-chunk and re-embed the modified files, copying the rest of the data from similar existing indexes. This drastically reduces the cost and time required for codebase indexing.\n\n### Performance Gains\nInternal benchmarks show that adding semantic search tools to the agent's toolkit resulted in:\n- A **12.5% to 24% increase** in answer accuracy.\n- A **2.6% increase** in code retention for large codebases.\n- A **2.2% decrease** in dissatisfied user requests.\n\n---\n\n## 3. Comparative Analysis: Cloud Code vs. Cursor\n\nThe talk contrasts two different approaches to codebase discovery:\n\n| Feature | Cloud Code Approach (Per-Session) | Cursor Approach (Indexed)\n| :--- | :--- | :--- |\n| **Mechanism** | Iterative Grepping/Reading | Upfront Indexing + Semantic Search |\n| **Workflow** | Grep $\\rightarrow$ Read $\\rightarrow$ Assess $\\rightarrow$ Repeat | Semantic Query $\\rightarrow$ Targeted Retrieval |\n| **Cost** | High token cost per session (redundant steps) | Upfront indexing cost, low runtime cost |\n| **Latency** | Slower (multiple round-trips to find files) | Faster (direct access to relevant chunks) |\n| **Efficiency** | Redundant for identical queries across users | \"Cached compute\" via embeddings |\n\n**Key Insight:** Embeddings and semantic search act as **\"cached compute.\"** By spending compute upfront to index the data, the agent avoids repeating the discovery process every time a question is asked.\n\n---\n\n## 4. The \"Right Million\" Theory (Staged Retrieval)\n\nReferring to insights from Google's Jeff Dean, the talk addresses the misconception that massive context windows (e.g., 1 trillion tokens) solve the retrieval problem.\n\n### The Concept of Staged Retrieval\nRegardless of the maximum context window size, the goal of the system should be **staged retrieval**. The architecture should act as a funnel:\n1. **Trillions of Tokens** (The total corpus)\n2. $\\rightarrow$ **Millions of Tokens** (Filtered via semantic/full-text search)\n3. $\\rightarrow$ **Thousands of Tokens** (The specific context passed to the LLM)\n\n**The Core Thesis:** You don't need a trillion tokens at once; you need the **right million**. The precision of the retrieval stage is more important than the capacity of the context window.\n\n## 5. Implementation Summary for Engineers\n\nTo implement a professional-grade agentic retrieval system, engineers should:\n1. **Implement Hybrid Search:** Don't rely solely on vectors; integrate BM25 and Regex tools.\n2. **Build Iterative Loops:** Allow the agent to decide if the retrieved context is sufficient. If not, the agent should be empowered to call a different search tool.\n3. **Optimize Indexing:** Use hashing/Merkle trees to handle versioning and updates efficiently.\n4. **Focus on Precision:** Prioritize the \"staged retrieval\" pipeline to ensure the LLM receives the most relevant tokens, reducing noise and hallucination.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-UM6sFg_jdlE");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=UM6sFg_jdlE" target="_blank" class="youtube-link">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
                 </svg>
