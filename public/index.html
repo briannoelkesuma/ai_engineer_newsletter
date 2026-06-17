@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-c-2eEv2ou7Y">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-06-15</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-c-2eEv2ou7Y"></div>
+            <script>
+                (function() {
+                    const md = "# Deep Dive: The Double iFrame Architecture in ChatGPT and MCP Apps\n\nThis technical analysis explores the architectural decisions behind how AI agents like ChatGPT and Claude render third-party user interfaces (UI) via the Model Context Protocol (MCP). The primary challenge is balancing **extensibility** (allowing third-party code to run) with **security** (preventing data theft and XSS attacks).\n\n## 1. The Core Mechanism: MCP Views\nIn the MCP ecosystem, \"Views\" are small snippets of HTML, CSS, and JS that appear within a conversation. These are typically triggered by a **tool call**. \n- **Discovery:** Tools advertise their UI requirements during the initial `tool_list` call.\n- **Rendering:** When a tool is called, the host creates an iFrame and injects the tool results to render dynamic content.\n\n## 2. The Security Dilemma: CSP and Origins\nTo understand the \"Double iFrame,\" we must first look at the constraints of the browser's security model.\n\n### Content Security Policy (CSP)\nHosts use CSP headers to tell the browser which scripts, styles, and APIs are allowed. Two critical directives are:\n- `frame-src`: Controls which domains can be embedded in an iFrame.\n- `script-src`: Controls which scripts can be executed. ChatGPT often requires a **nonce** (a unique, one-time token) for every script, which blocks most third-party JS by default.\n\n### The `srcdoc` Problem\nIf a host uses the `srcdoc` attribute to inject HTML directly:\n1. **Same-Origin Risk:** The iFrame shares the origin of the parent. A malicious app could access `localStorage` or cookies of the main ChatGPT session.\n2. **The Sandbox Paradox:** Adding the `sandbox` attribute creates a `null` origin. While secure, this prevents the app from using any origin-indexed storage (Local Storage, IndexedDB, Cookies).\n3. **The `allow-same-origin` Trap:** Adding this attribute to a sandbox restores the origin, but it also allows the app to escape the sandbox and access the parent DOM, returning to the original security risk.\n\n## 3. The Solution: The Double iFrame Pattern\nTo solve the conflict between isolation and functionality, a nested architecture is used. This pattern was famously pioneered by the Facebook App Marketplace.\n\n### The Architecture Flow\n1. **The Outer iFrame:** The host loads an iFrame from a dedicated, controlled domain (e.g., `user-content.openai.com`). \n2. **Subdomain Routing:** Each app is assigned a **unique subdomain**. This ensures that App A and App B have different origins, preventing them from accessing each other's local storage.\n3. **The Inner iFrame:** The outer iFrame (the \"loader\") then creates a second iFrame using `srcdoc` to render the actual MCP view content.\n\n### Why this works:\n- **Isolation:** The outer iFrame provides a distinct origin separate from the main host.\n- **Persistence:** Because the outer iFrame has a real (though unique) origin, the inner content can utilize storage APIs without colliding with other apps.\n- **Control:** The host can inject specific `<meta>` tags into the first iFrame to define a strict CSP for the app itself.\n\n## 4. Implementation Constraints for Developers\nWhen building MCP apps, developers must be aware that their code runs in this nested environment. This leads to common production failures related to **Cross-Origin Resource Sharing (CORS)** and CSP.\n\n### Metadata Declarations\nDevelopers must explicitly declare all external domains their app depends on in the MCP app spec metadata. If a domain is missing, the host's CSP will block the request. Key directives to configure include:\n- `connect-src`: For API calls (`fetch`, `XMLHttpRequest`).\n- `img-src`: For loading external images.\n- `script-src`: For external JS libraries.\n\n## 5. Tooling and Development Workflow\nBecause CSP issues often only appear in production (as developer modes often disable CSP), specialized tooling is required.\n\n### Skybridge Framework\nThe video introduces **Skybridge**, an open-source framework that extends the official App SDK. Key features include:\n- **End-to-End Type Safety:** Ensuring the MCP server and the UI views share the same data types.\n- **CSP Inspector:** A development tool that monitors network calls in real-time and compares them against the declared metadata. If a call is made to a domain not listed in the `connect-src` metadata, the inspector flags it as \"missing,\" allowing developers to fix the configuration before submission to the App Store.\n\n## Summary Table: iFrame Approach Comparison\n\n| Method | Origin | Security | Functionality | Verdict |\n| :--- | :--- | :--- | :--- | :--- |\n| `srcdoc` (No Sandbox) | Parent Origin | \u274c Dangerous | \u2705 Full | \u274c Unsafe |\n| `srcdoc` (Sandboxed) | `null` | \u2705 Secure | \u274c No Storage | \u274c Non-functional |\n| `src` (Direct External) | App Origin | \u26a0\ufe0f Moderate | \u2705 Full | \u274c CSP Management Nightmare |\n| **Double iFrame** | **Unique Subdomain** | \u2705 Secure | \u2705 Full | \u2705 Industry Standard |";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-c-2eEv2ou7Y");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=c-2eEv2ou7Y" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-iUWwcG-C8OU">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
