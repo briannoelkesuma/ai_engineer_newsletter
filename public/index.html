@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-v4F1gFy-hqg">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-06-21</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-v4F1gFy-hqg"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: Why Software Fundamentals Matter in the Age of AI\n\nThis presentation by Matt Pocock challenges the notion that AI makes traditional software engineering obsolete. Instead, it posits that the ability to manage complexity, design robust architectures, and maintain system integrity is the only way to successfully scale AI-assisted development.\n\n## 1. The Fallacy of \"Specs-to-Code\"\n\n### The Problem: Software Entropy\nMany developers are adopting a workflow where they write a specification, let the AI generate code, and then simply update the spec when a bug occurs. Pocock identifies this as a recipe for disaster due to **Software Entropy**.\n\n- **The Cycle:** Spec $\\\rightarrow$ Code $\\\rightarrow$ Bug $\\\rightarrow$ Update Spec $\\\rightarrow$ Worse Code.\n- **The Result:** Without a focus on the overall design, each AI iteration tends to increase the complexity and fragility of the system.\n- **The Core Issue:** The belief that \"code is cheap\" is a misconception. Bad code is the most expensive asset a company can own because it creates a barrier to future changes.\n\n## 2. Solving the Communication Gap\n\n### The \"Design Concept\"\nReferencing Frederick P. Brooks' *The Design of the Designer*, Pocock explains that a \"design concept\" is the ephemeral, invisible theory of what is being built. When a human and an AI don't share this concept, the output is misaligned.\n\n**Implementation Strategy: The \"Grill Me\" Pattern**\nTo align the design concept, use a specific prompting strategy:\n- **The Prompt:** \"Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one by one.\"\n- **The Goal:** Turn the AI into an adversary that probes for gaps in the requirements, resulting in a comprehensive Product Requirements Document (PRD) or a set of precise issues.\n\n### Ubiquitous Language (DDD)\nTo solve the problem of AI verbosity and misalignment, Pocock leverages **Domain-Driven Design (DDD)**.\n\n- **Ubiquitous Language:** A shared vocabulary used by developers, domain experts, and the AI.\n- **Technical Implementation:**\n    - Create a markdown file containing tables of domain terms and their precise definitions.\n    - Use a \"skill\" (automated prompt) to scan the codebase and extract existing terminology to populate this file.\n    - Feed this language file into the AI's context to ensure the AI thinks and implements using the same mental model as the architect.\n\n## 3. Managing the Feedback Loop\n\n### The \"Headlights\" Problem\nAI often \"outruns its headlights,\" meaning it generates massive amounts of code before verifying if the logic works. This leads to high failure rates and difficult debugging.\n\n**The Solution: TDD (Test-Driven Development)**\n- **Rate of Feedback = Speed Limit:** The speed at which you can develop is limited by how quickly you get feedback.\n- **TDD Workflow:**\n    1. Write a failing test (defines the boundary).\n    2. AI implements the minimum code to pass the test.\n    3. Refactor for design and cleanliness.\n\n## 4. Architectural Patterns for AI-Driven Code\n\n### Deep Modules vs. Shallow Modules\nBased on John Ousterhout's *A Philosophy of Software Design*, the talk distinguishes between two types of module structures:\n\n| Feature | Shallow Modules | Deep Modules |\n| :--- | :--- | :--- |\n| **Interface** | Complex, many functions | Simple, minimal surface area |\n| **Functionality** | Low (tiny blobs of logic) | High (complex internal logic) |\n| **AI Interaction** | AI gets lost in dependencies | AI operates within a clear boundary |\n| **Testability** | Hard (requires many mocks) | Easy (test at the interface) |\n\n### The \"Gray Box\" Strategy\nTo prevent developer burnout and cognitive overload, Pocock suggests a delegation model:\n1. **Architectural Design:** The human designs the **Interface** (the boundary).\n2. **Implementation:** The AI handles the **Implementation** (the internals).\n3. **Verification:** The human verifies the result via tests at the interface.\n\nThis allows the developer to treat modules as \"gray boxes,\" reducing the need to review every line of generated code as long as the boundary is stable and the tests pass.\n\n## 5. Summary of the Strategic Framework\n\n### The New Developer Hierarchy\n- **The AI (Tactical Level):** Acts as a \"Sergeant\" or tactical programmer. It is excellent at executing specific changes and writing boilerplate.\n- **The Human (Strategic Level):** Acts as the Architect. Responsible for the system map, the ubiquitous language, and the investment in design.\n\n### Final Technical Takeaway\n**Invest in the design of the system every day.** By focusing on deep modules and strict interfaces, you create a codebase that rewards TDD and allows AI to be a force multiplier rather than a source of entropy.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-v4F1gFy-hqg");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=v4F1gFy-hqg" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-0S8xe9ftGTM">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
