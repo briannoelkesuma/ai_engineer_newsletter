@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video--x5GEVnkuRw">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-06-28</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content--x5GEVnkuRw"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: Structuring Unstructured Data with Docling\n\n## Overview\nThis session focuses on the critical challenge of document ingestion for AI systems. The core thesis is that the quality of an AI's output is directly proportional to the quality of the data processing pipeline. Poorly parsed PDFs lead to \"hallucinations\" and data corruption, which can propagate through RAG (Retrieval-Augmented Generation) systems.\n\n## The Problem: The \"Unstructured Data\" Bottleneck\n- **The Failure of Simple Parsers:** Basic PDF parsers often read text linearly. In multi-column layouts or tables, this results in merged words from different columns, rendering the text indecipherable to both humans and LLMs.\n- **The Cost of Frontier Models:** While high-end VLMs can parse documents accurately, the token cost for thousands of PDFs is prohibitive (e.g., $30 per million output tokens).\n- **Non-Determinism:** Proprietary models can be non-deterministic, making it difficult to maintain consistent structured output across different model versions (e.g., v5.1 vs v5.2).\n\n## Introducing Docling\nDocling is an open-source library and CLI designed to convert various formats (PDF, DOCX, etc.) into structured <code>Markdown</code>, <code>JSON</code>, or <code>Pydantic</code> objects. \n\n### Core Technical Capabilities\n- **Layout Analysis:** Uses a combination of OCR and vision models to identify document structures (headers, footers, tables, and images).\n- **Table Extraction:** Converts complex PDF tables into structured data frames or Markdown tables, preserving the relational integrity of the data.\n- **Local Execution:** Runs locally on CPU, significantly reducing latency and cost compared to cloud-based VLM APIs.\n\n---\n\n## Implementation Walkthrough\n\n### 1. Basic Conversion\nUsing a simple `pip install docling`, developers can initialize a `DocumentConverter`. The process involves:\n- Ingesting a source (URL or local file).\n- Converting the document into a Pydantic data type.\n- Exporting to Markdown for LLM consumption.\n\n### 2. Advanced Image & Table Handling\n- **Table to DataFrame:** Docling can isolate tables and export them directly into pandas DataFrames for analytical use.\n- **Image Enrichment Pipeline:** \n    - **Extraction:** Extracting images and their associated captions using bounding boxes.\n    - **Annotation:** Integrating with local LLMs (e.g., **Granite** via **Ollama**) to generate detailed descriptions of images.\n    - **Result:** The final output is an \"enriched document\" where images are replaced by descriptive text, allowing a standard text-based RAG pipeline to \"see\" the images.\n\n### 3. Chunkless (Agentic) RAG\nOne of the most innovative patterns discussed is **Chunkless RAG**. \n\n| Feature | Traditional RAG | Chunkless RAG (Docling) |\n| :--- | :--- | :--- |\n| **Indexing** | Vector Database (Embeddings) | Markdown Document Outline |\n| **Retrieval** | Semantic Similarity Search | LLM-driven Outline Navigation |\n| **Complexity** | High (Requires Embedding Model) | Low (Uses Document Structure) |\n| **Process** | Chunk $\\\rightarrow$ Embed $\\\rightarrow$ Store $\\\rightarrow$ Retrieve | Outline $\\\rightarrow$ LLM Selection $\\\rightarrow$ Full Text Pull |\n\n**Logic Flow:**\n1. The LLM views the document's structural outline (sections and summaries).\n2. The LLM identifies the most relevant section based on the user query.\n3. The agent pulls the full text of that specific section to generate the answer.\n4. This loop iterates until the answer is verified, creating an agentic retrieval loop.\n\n---\n\n## Scaling and Enterprise Deployment\n\n### Docling Serve\nFor production environments with thousands of documents, `docling-serve` allows the tool to be deployed as a REST API.\n- **Containerization:** Can be deployed as a microservice in Kubernetes.\n- **API Control:** The endpoint accepts arguments to toggle OCR, choose backends, or enable image annotation.\n\n### Model Context Protocol (MCP) Integration\nDocling implements the **Model Context Protocol**, allowing AI agents (like Claude Coder or Cursor) to interact with document tools without manual command-line intervention.\n- **Configuration:** Added via `config.yaml` in the agent's environment.\n- **Available Tools:**\n    - **Conversion Tools:** Convert files to Markdown/JSON.\n    - **Generation Tools:** Process specific segments of a PDF.\n    - **Manipulation Tools:** Edit or restructure document elements.\n\n## Summary of the Technical Stack\n- **Language:** Python\n- **Data Validation:** Pydantic\n- **Local LLM Orchestration:** Ollama (for Granite/Llama models)\n- **Deployment:** `docling-serve` (REST API) / Kubernetes\n- **Agent Interface:** MCP (Model Context Protocol)";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content--x5GEVnkuRw");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=-x5GEVnkuRw" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-aHhB3sjGjkI">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
