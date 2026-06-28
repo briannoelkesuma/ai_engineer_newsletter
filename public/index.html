@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-aHhB3sjGjkI">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-06-28</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-aHhB3sjGjkI"></div>
+            <script>
+                (function() {
+                    const md = "# Agents Building Agents \u2013 Technical Deep Dive\n\n## 0:03 Introduction\n- Overview of the talk, speaker introduction, focus on building AI agents.\n\n## 0:34 Industry Landscape\n- Growing demand for AI agents across workflow automation, search, and personal assistants.\n- Core challenges: hallucinations, non\u2011determinism, latency, cost.\n\n## 1:04 Agentic Loop Fundamentals\n- Definition of an AI agent: LLM core + tool access + context retrieval.\n- Architecture description (LLM <-> tools <-> context).\n\n## 1:35 Problem Classes\n### 1.1 Evaluation Failures\n- Golden dataset created with SME\u2011defined input\u2011output pairs.\n- Na\u00efve evaluator pass rate ~18\u202f%.\n### 1.2 Live\u2011Data Failures\n- Real\u2011user traces, thumbs\u2011up/down, SME annotations.\n\n## 2:05 Golden Dataset Construction\n- Collaborative creation with subject\u2011matter experts.\n- Defines expected tool usage and output format.\n- Serves as baseline for scoring.\n\n## 3:39 Na\u00efve Evaluator Details\n```text\n# Pseudocode\nif LLM_output contains ground_truth:\n    score = 1\nelse:\n    score = 0\n```\n- Early results: 18\u202f% pass rate on simple arithmetic tasks.\n\n## 4:09 System Prompt & Context Retrieval\n- Prompt engineering to specify tool usage.\n- Secure sandbox to limit external access.\n- Example prompt snippet:\n<pre>You are a helpful assistant. You may call the following tools: search_web(query), fetch(url).</pre>\n\n## 5:13 Autonomous Improvement Loop (AutoAgent)\n- Loop steps:\n  1. Generate hypothesis (e.g., modify prompt, add tool).\n  2. Apply change to agent code.\n  3. Run eval suite \u2192 produce `reports.md`.\n  4. Evaluate metrics; rollback or propagate.\n- Metrics tracking table:\n| Iteration | Baseline % | New % | \u0394 |\n|----------|------------|-------|---|\n| 0        | 18         | \u2013     | \u2013 |\n| 5        | 18         | 45    | +27 |\n| 10       | 18         | 83    | +65 |\n- Example code change (Python snippet):\n```python\ndef get_answer(query):\n    if \"weather\" in query:\n        return fetch_weather(query)\n    return search_web(query)\n```\n\n## 6:47 Iteration Results & Rollback Strategy\n- Decision logic: if \u0394 > 0 \u2192 keep; if \u0394 \u2264 0 \u2192 revert.\n- Rollback to previous branch automatically recorded.\n\n## 7:19 Live Data Collection Pipeline\n1. User interacts \u2192 trace recorded (input, tools called, tokens, latency).\n2. User feedback (\ud83d\udc4d/\ud83d\udc4e + comment) stored.\n3. SME annotates trace for deeper insight.\n4. Collected traces \u2192 clustering \u2192 failure mode extraction.\n\n## 8:20 Clustering & Root\u2011Cause Analysis\n- Clustering algorithm groups similar failure traces.\n- Adversarial review by coding agent to propose fixes.\n- Root\u2011cause extraction example:\n<pre>\nFailure: URL not hyperlinked\nCause: Missing markdown link syntax\nFix: Add <a href=\"...\"> wrapper\n</pre>\n\n## 9:21 Fix Proposal Generation\n- Coding agent drafts PRs:\n  - Update system prompt.\n  - Add new tool wrapper.\n  - Adjust scoring function.\n- AutoAgent can generate draft PRs automatically.\n\n## 10:24 Production Deployment\n- Real\u2011world case: baseline 67\u202f% \u2192 86\u202f% after 10 iterations.\n- Edge\u2011case discoveries: previously unnoticed prompt ambiguities.\n- Continuous monitoring via observability stack.\n\n## 11:27 Tooling & Governance\n- **Harness Engineering**: sandbox, quality gates (lint, unit tests, LLM code review).\n- Observability: logging, metrics, alerting.\n- Constraints: cost caps, latency thresholds, security policies.\n\n## 12:29 Human\u2011in\u2011the\u2011Loop Steering\n- Human reviews generated hypotheses.\n- Guides agent away from false positives.\n- Example steering prompt:\n<pre>Do not modify the search query unless confidence > 0.9.</pre>\n\n## 13:00 Summary & Next Steps\n- Recap of autonomous improvement loop.\n- Emphasis on integrating golden dataset, clustering, and AutoAgent.\n- Call to action: experiment with spec\u2011driven agent pipelines.\n\n---\n*Prepared by the AI Engineering team at NearForm \u2013 2024*\n";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-aHhB3sjGjkI");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=aHhB3sjGjkI" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-JnubYCYunk8">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
