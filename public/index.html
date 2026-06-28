@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-IddXPepIAS4">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-06-28</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-IddXPepIAS4"></div>
+            <script>
+                (function() {
+                    const md = "# Deep Dive: Spec-Driven Development (SDD) for Production Workflows\n\n## Overview\nSpec-Driven Development (SDD) is a methodology designed to maximize the efficiency of Large Language Models (LLMs) in software engineering. Instead of relying on iterative, unstructured prompting (often called \"vibe coding\"), SDD enforces a rigorous sequence of documentation that guides the AI through the architectural and logical requirements of a feature before implementation begins.\n\n---\n\n## \ud83d\udee0 The Core Philosophy: The \"AI Intern\" Analogy\nErik Hanchett posits that LLMs should be treated as **AI Interns**. They are eager and capable but lack the high-level context and judgment of a senior engineer. Without a strict specification, they are prone to \"going off the rails.\" \n\n**The Human-in-the-Loop (HITL) Model:**\n- The developer acts as the **Architect** and **Code Reviewer**.\n- The AI acts as the **Implementer**.\n- The developer is ultimately responsible for the output; therefore, the review process is the most critical stage of the workflow.\n\n---\n\n## \ud83d\udcd0 The Spec-Driven Workflow Sequence\n\n### 1. Requirements Phase\n- **Goal:** Define *what* the system should do.\n- **EARS Format:** The video highlights the use of the **Easy Approach to Requirements Syntax (EARS)**. This ensures requirements are unambiguous and structured (e.g., \"When [event], the [system] shall [action]\").\n- **Clarification Loop:** Before generating the final spec, the AI should ask clarifying questions to fill gaps in the initial prompt.\n\n### 2. Design Phase\n- **Goal:** Define *how* the system will be built.\n- **Artifacts:**\n    - **High-Level Design Docs:** Architectural decisions and data flow.\n    - **Visualizations:** Use of **Mermaid.js** for sequence diagrams and flowcharts, and ASCII art for quick structural representations.\n- **Developer Intervention:** This is the critical point where the human must edit the design to inject \"taste,\" expertise, and specific business constraints.\n\n### 3. Implementation Phase\n- **Goal:** Break the design into executable units.\n- **Task Lists:** The AI generates a granular list of tasks. \n- **MVP Optimization:** A recommended strategy is to isolate the top 4-5 tasks to build a **Minimum Viable Product (MVP)** first, allowing for early validation of the architecture.\n\n---\n\n## \u2699\ufe0f Technical Configurations & Tooling\n\n### Context Steering\nTo prevent context window pollution or \"hallucinations,\" the workflow utilizes:\n- **Steering Docs (`agents.md` / `claw.md`):** Files that contain global rules, coding standards, and project constraints.\n- **Skills:** On-demand instruction files triggered by keywords or slash commands (e.g., `/skill-name`) to execute specific patterns without bloating the main prompt.\n\n### Property-Based Testing (PBT)\nUnlike traditional unit tests that check specific inputs, SDD leverages **Property-Based Testing**:\n- **Tooling:** Use of libraries like `fast-check` (for TypeScript/Node.js).\n- **Logic:** The AI generates tests that verify if a *property* (a rule) holds true across hundreds of random inputs, ensuring the implementation strictly adheres to the requirements document.\n\n### Model Context Protocol (MCP)\n**MCP** acts as a standardized bridge between the LLM and external data sources. \n- **Integration:** Allows the AI to pull tickets from **Jira** or **Asana** directly into the requirements phase.\n- **Workflow:** `Project Management Tool` $\\rightarrow$ `MCP Server` $\\rightarrow$ `LLM` $\\rightarrow$ `Spec Document`.\n\n---\n\n## \ud83d\ude80 Implementation Summary Table\n\n| Phase | Input | AI Output | Human Action |\n| :--- | :--- | :--- | :--- |\n| **Requirements** | Initial Prompt / Jira Ticket | EARS-formatted requirements | Review & Clarify |\n| **Design** | Requirements Doc | Mermaid Diagrams / Architecture | Edit for \"Taste\" & Logic |\n| **Planning** | Design Doc | Granular Task List | Prioritize MVP Tasks |\n| **Coding** | Task List + Design | Source Code | Code Review & PBT Validation |\n\n## \ud83c\udfc1 Conclusion\nWhether using specialized tools like **Kiro** (which automates these modes) or manual markdown files, the transition from \"vibe coding\" to \"spec-driven coding\" is essential for scaling AI-assisted development in production environments. The key is moving the intellectual effort to the **pre-coding phase** to ensure the resulting code is correct by design.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-IddXPepIAS4");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=IddXPepIAS4" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video--x5GEVnkuRw">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
