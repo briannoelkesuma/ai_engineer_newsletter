@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-DqtmZE6Hl0g">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-06-29</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-DqtmZE6Hl0g"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: The Prompt is the Platform\n\n## Overview\nThis presentation by Dominik Tornow explores the evolution of software engineering in the age of AI agents. The central argument is that the traditional model of building general-purpose libraries and frameworks is being replaced by a model where **specifications** are the primary product, and **bespoke implementations** are synthesized on-demand for specific infrastructure targets.\n\n---\n\n## 1. The Shift: From Implementation to Specification\n### The Core Theory\nTraditionally, software reuse happens at the implementation level (using a library). Tornow proposes that reuse will move \"upstream.\" Instead of reusing code, we will reuse a **specification** and derive a tailor-made implementation for the existing infrastructure.\n\n**The Value Chain Shift:**\n- **Old Model:** Value $\\\rightarrow$ Implementation (Code, Frameworks, Libraries).\n- **New Model:** Value $\\\rightarrow$ Specification (Protocols, Logic, Constraints).\n\n### The \"Prompt as a Platform\"\nWhen an agent can repeatedly synthesize trusted servers from a single specification, the prompt used to drive that synthesis becomes the actual platform. The goal is to achieve **durable execution** with minimal additional dependencies by leveraging the target's native infrastructure.\n\n---\n\n## 2. The Agentic Engineering Pipeline\n\nTornow identifies a critical failure point: agents often fail when jumping directly from an abstract specification to a production implementation. They typically produce \"happy path\" code that fails under concurrency or network failure.\n\n### The Refined Workflow\nTo solve this, Resonate implements a four-stage pipeline:\n\n| Stage | Artifact | Purpose |\n| :--- | :--- | :--- |\n| **1** | **Abstract Specification** | Target-agnostic definition of the protocol. No assumptions about DB schemas or consistency models. |\n| **2** | **Simulated Implementation** | \"Executable Design.\" A Python-based simulation to discover the correct algorithm under partial failure. |\n| **3** | **Concrete Specification** | Target-specific decisions (e.g., SQL queries, transaction boundaries, indices) made explicit. |\n| **4** | **Production Implementation** | The final, verified code synthesized for the specific target (e.g., Rust on Postgres). |\n\n---\n\n## 3. Technical Implementation: Resonate on NATS.io\n\n### Target Primitives\nTo make the system manageable for an AI agent, the protocol is reduced to a minimal set of primitives provided by NATS.io:\n- **Queues**: For message passing.\n- **Key-Value (KV) Store**: For state persistence.\n- **Delayed/Scheduled Messages**: For timing and timeouts.\n\n### The Challenge of Distributed Consistency\nImplementing a durable execution platform on a KV store introduces the problem of **stale reads**. \n- **The Scenario**: A read may return an older version of a value (e.g., version 0) while the latest is version 2.\n- **The Failure**: If the agent writes code assuming all reads are fresh, the system will fail when the target behaves \"legally\" (returning a stale read) but not \"conveniently.\"\n- **The Solution**: Optimistic Concurrency Control. The write only succeeds if the version read is still the latest version; otherwise, the write fails, signaling that the world has changed.\n\n---\n\n## 4. Deterministic Simulation & The \"Forbidden Fruit\"\n\n### The Simulation Environment\nResonate uses a deterministic simulation environment written in Python. This environment mimics the target platform (NATS.io) but adds critical capabilities:\n1. **Deterministic Randomness**: Every failure, stale read, and network glitch is repeatable via a seed, allowing the agent to reproduce and fix specific traces.\n2. **Inspectability**: The simulation tracks the full version history of every key.\n\n### The \"Forbidden Fruit\" Concept\nIn a production environment, a developer only knows the value they received. They do *not* know if that read was stale or what the actual latest value was. This is \"forbidden\" information because production code cannot depend on it.\n\n**How the Agent Uses it:**\nIn simulation, the system records **Trace Events**. These events tell the agent:\n- *\"This read was stale.\"*\n- *\"You received Value A, but the latest value was actually Value B.\"*\n\nThis provides the agent with **immediate, unambiguous feedback**. Instead of just knowing that an invariant failed, the agent sees the exact cause-and-effect chain: *\"The invariant failed because the algorithm made a decision based on a stale view of the world.\"*\n\n---\n\n## 5. Conclusion: Minimalism as the Finish Line\n\nTornow emphasizes that **minimalism and simplicity** are not starting points but the result of iterative refinement. By stripping away unnecessary abstractions and properties, the protocol becomes small enough for an agent to reason about and verify through simulation.\n\n**Final Architecture Flow:**\n`Abstract Spec` $\\\rightarrow$ `Simulation` $\\\rightarrow$ `Concrete Spec` $\\\rightarrow$ `Production Code`.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-DqtmZE6Hl0g");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=DqtmZE6Hl0g" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-LrGCT7G_rU8">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
