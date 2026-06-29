@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-Lc8zRh9muoY">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-06-29</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-Lc8zRh9muoY"></div>
+            <script>
+                (function() {
+                    const md = "# Deep Dive: Solving the Reproducibility Crisis in AI Agents\n\n## The Problem: The \"Works on My Machine\" Paradox\nIn production AI agent environments, a common failure mode occurs where an agent performs a catastrophic action (e.g., selling 1,000 shares instead of $1,000 worth of stock), yet the telemetry shows a `200 OK` response. When engineers attempt to reproduce the bug by pulling the raw prompt and running it locally, the model often behaves perfectly. This makes debugging impossible because the failure is non-reproducible.\n\n### Why `temperature=0` Isn't the Solution\nMany developers assume greedy decoding (temperature 0) makes an LLM deterministic. However, several low-level factors prevent this:\n\n| Factor | Technical Explanation |\n| :--- | :--- |\n| **Floating Point Math** | Floating point addition is not associative. Tiny shifts in the order of matrix operations alter final logits, flipping the winning token. |\n| **Batch Invariance** | Requests are batched with other users' requests. The specific composition of a batch can influence the computation path. |\n| **MoE Routing** | Mixture of Experts architectures have strict capacity limits. If a subnetwork overflows, tokens are rerouted based on current traffic, changing the output. |\n| **GPU Non-determinism** | Underlying hardware operations can produce slightly different bit-level results across different runs. |\n\n---\n\n## The Solution: Replayability over Determinism\n\nThe presenters argue that we should stop asking \"How do I make the model deterministic?\" and start asking \"How do I debug and retest a run I cannot reproduce?\"\n\n### Bitwise Determinism vs. Replayability\n- **Bitwise Determinism:** Same input $\\\rightarrow$ Same output. This is nearly impossible with hosted APIs and actually undesirable, as randomness drives the creativity and \"agency\" of the model.\n- **Replayability:** The ability to record a run and re-validate it. This is an observability problem, not a model configuration problem.\n\n---\n\n## Technical Implementation: The Boundary Pattern\n\nTo achieve replayability, the presenters introduce a concept called **Chronicle**, which utilizes a **Boundary Annotation** pattern.\n\n### 1. The Boundary Concept\nInstead of recording at the network layer (which misses local retrieval, in-process tools, and memory), recording happens at the **node boundary**. A node is defined as any method in the agentic workflow (e.g., a tool call, an LLM call, or a RAG retrieval).\n\n### 2. The Recording Mechanism\nBy annotating methods with a `@boundary` decorator, the system captures:\n- **Input/Output Pairs:** Every single piece of data entering and leaving the method.\n- **Metadata:** Model version, build ID, sampling parameters, and RAG chunks used.\n- **State Freezing:** The entire execution trace is saved as a JSON object, effectively \"freezing\" the state of that specific run.\n\n### 3. The Replay and Stubbing Workflow\nOnce a failure is recorded as a trace, the debugging workflow shifts to a deterministic CI process:\n\n1. **Trace Loading:** Load the recorded failure trace into the test suite.\n2. **Selective Stubbing:** Use the trace to **stub** (mock) the outputs of the LLM nodes. Since the LLM output is provided by the trace, the model is not called, removing all probability and cost from the equation.\n3. **Live Execution:** Keep the node being fixed (e.g., a tool's guardrail logic) running live.\n4. **Assertion:** Run the agent and assert that the tool now correctly blocks the erroneous input that previously caused the failure.\n\n---\n\n## Testing Strategies for AI Agents\n\nThe video distinguishes between two critical types of testing required for production-grade agents:\n\n### Deterministic Testing\n- **Target:** Guardrails, tool logic, and data parsing.\n- **Method:** Use recorded traces to stub LLM nodes. This removes the \"probability window,\" making the agent run a repeatable test case.\n- **Goal:** Ensure that specific logic changes (like adding a validation check to a tool) actually prevent the failure.\n\n### Behavioral Testing\n- **Target:** Tone, persona, and overall trajectory.\n- **Method:** Use **LLM-as-a-Judge**. Since these metrics are subjective, a second, highly capable LLM evaluates whether the agent's path was optimal.\n- **Goal:** Measure the quality and \"feel\" of the agent's interaction.\n\n## Summary of Best Practices for Production Agents\n\n- **Stop chasing bitwise determinism** via API settings.\n- **Log all session variables:** Track LLM versions, build IDs, and specific RAG chunks.\n- **Capture the full envelope:** Don't just log the prompt; log the entire input/output context of every node.\n- **Use Replay for Debugging:** Fix the failure, then use the original failure trace as a permanent regression test case.\n- **Preserve Variance:** Keep temperature $> 0$ to maintain the agent's ability to explore and reason creatively.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-Lc8zRh9muoY");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=Lc8zRh9muoY" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-akk6KRlcwW4">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
