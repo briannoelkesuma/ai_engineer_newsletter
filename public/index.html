@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-hVJOnuhFmTA">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-02</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-hVJOnuhFmTA"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: The Prompt Is Still a Punch Card\n\n## Overview\nThis presentation by Ted Johnson explores the systemic failure of current AI user interfaces. The central thesis is that we are attempting to operate the most sophisticated intelligence ever created through a legacy interaction protocol\u2014the \"batch\" process\u2014which forces humans to adapt to the machine rather than the machine adapting to human communication patterns.\n\n---\n\n## 1. The Three Pillars of Interface Design\nJohnson defines the interaction between humans and machines through three distinct lenses. Understanding these is critical to identifying why \"prompting\" feels like work.\n\n| Concept | Definition | Current State in AI |\n| :--- | :--- | :--- |\n| **The Channel** | The physical transport of intent (Keyboard, Mic, Screen). | Largely unchanged (still mostly text boxes and buttons). |\n| **Expression** | The range and richness of meaning the channel can carry. | **Exploded.** Natural language allows for nuance, context, and intent. |\n| **The Protocol** | The rules and shape of the exchange (The \"how\" of the interaction). | **Stagnant.** Still follows the \"Batch\" protocol (Submit $\\\rightarrow$ Wait $\\\rightarrow$ Review). |\n\n## 2. The \"Punch Card\" Analogy\nJohnson draws a historical parallel between modern prompting and early computing:\n- **The Batch Process:** In the punch card era, a programmer encoded a full request, submitted the deck to an operator, waited hours, and then repaired errors in a printout.\n- **Modern Prompting:** We assemble a complex prompt, hit submit, wait seconds, and then \"repair\" the output by re-prompting.\n- **The Illusion of Mastery:** \"Prompt Engineering\" is framed not as a power-user skill, but as a set of workarounds (incantations) used to navigate a rigid protocol. Examples include \"think step-by-step\" or \"act as an expert,\" which are essentially ways to ensure the \"deck\" doesn't fail.\n\n## 3. The Mismatch: Model Capacity vs. Interface Protocol\nThere is a widening gap between what the models *can* do and how we *access* that capability:\n- **Model Capacity (Exponential Growth):** Reasoning, speech, vision, and planning are curving upward.\n- **Interface Protocol (Flat):** The interaction remains a turn-based box. \n\nThis creates a **\"Translation Tax\"**:\n- **Precision Tax:** The need to be hyper-specific to get the right result.\n- **Context Tax:** The burden on the human to remember and provide all necessary background.\n- **Repair Tax:** The effort required to fix hallucinations or off-target responses.\n\n## 4. Moving Toward Participatory AI\nTo solve the batch-processing problem, the interface must move from *reactive* to *participatory*.\n\n### Real-Time Turn Taking\nUsing examples like Nvidia's *Personal Plex*, Johnson demonstrates the requirements for a truly conversational interface:\n- **Yielding:** The ability for the AI to stop speaking immediately when interrupted.\n- **Backchanneling:** Using non-lexical cues (e.g., \"mhm,\" \"right\") to signal active listening without taking the floor.\n- **Thread Recovery:** The ability to pick up a previous topic after a tangential interruption.\n\n### The Utility-Driven Model\nInstead of waiting for a prompt, a participatory system employs a utility-driven logic block:\n1. **Continuous Listening:** The system monitors the conversation stream.\n2. **Statement Labeling:** The AI labels participant statements as *Questions*, *Proposals*, or *Answers*.\n3. **Turn Determination:** The AI only takes a turn when it determines that no one else holds the floor and its intervention provides high utility (e.g., resolving a scope objective or providing a requested document).\n\n## 5. Implementation Case Study: The Meeting Assistant\nJohnson illustrates a future state where the AI acts as a silent participant in a business meeting:\n- **Passive Observation:** The AI follows a conversation about \"expense approvals\" and \"thresholds\" without being prompted.\n- **Autonomous Resolution:** The AI identifies a consensus (e.g., \"threshold is $10,000\") and automatically updates the requirement document.\n- **Contextual Awareness:** The AI can answer specific questions (\"Is this room free?\") by integrating real-time calendar data without a formal \"prompt\" sequence.\n\n## 6. Conclusion: The Shift in Design Philosophy\nThe final takeaway is a fundamental shift in the design question for AI engineers:\n\n**Old Question:** *\"How do we make the user better at prompting the AI?\"*\n**New Question:** *\"What burden are we still putting on humans only because the machine used to be too limited to carry that burden itself?\"*\n\nBy removing the burden of timing, modality, and channel selection, AI becomes an **interface technology** that amplifies human potential by becoming fluent in human interaction, rather than forcing humans to become fluent in machine syntax.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-hVJOnuhFmTA");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=hVJOnuhFmTA" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-UNzCG3lw6O0">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
@@ -1171,6 +1198,60 @@
             </script>
             
             <a href="https://youtube.com/watch?v=4uFVSLgD2Q4" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
+        <article class="card" id="video-I2cbIws9j10">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-06-25</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-I2cbIws9j10"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: AI Engineer World's Fair 2026 - Agentic Workflows\n\n## Executive Summary\nThis session explores the transition from traditional LLM interactions to **Agentic Workflows**. The primary focus is on how to build systems that can reason, act, and self-correct, moving the needle from simple chatbots to autonomous AI engineers capable of solving complex, multi-step problems.\n\n---\n\n## 1. The Shift: Zero-Shot vs. Agentic Workflows\n\n### The Zero-Shot Limitation\nTraditionally, developers used <b>Zero-Shot</b> or <b>Few-Shot</b> prompting. The flow was linear: `Input -> LLM -> Output`. This approach fails in complex tasks because the model has only one chance to get the answer right, leading to high hallucination rates in coding or mathematical tasks.\n\n### The Agentic Approach\nAgentic workflows introduce <b>iteration</b>. The process becomes a loop: `Input -> Draft -> Critique -> Refine -> Final Output`. By allowing the model to \"think\" and \"correct,\" the quality of the output increases exponentially without needing a larger model.\n\n## 2. Core Agentic Design Patterns\n\n### A. The Reflection Pattern (Self-Correction)\nIn this pattern, the system employs two distinct roles:\n1. **The Generator:** Produces the initial response.\n2. **The Critic:** Analyzes the response for errors, logical gaps, or missing requirements.\n\n**Implementation Logic:**\n```python\n# Conceptual Loop\nwhile not is_correct(output):\n    critique = critic_llm.generate(f\"Review this: {output}\")\n    output = generator_llm.generate(f\"Improve this based on: {critique}\")\n```\n\n### B. Tool Use (Function Calling)\nRather than relying on internal knowledge, agents are equipped with <b>Tools</b> (APIs, Python interpreters, Search engines). \n- **Dynamic Routing:** The agent analyzes the user intent and selects the appropriate tool from a defined schema.\n- **Execution Loop:** The agent calls the tool, receives the output, and incorporates that data back into its reasoning process.\n\n### C. Planning and Decomposition\nComplex goals are broken down into smaller, manageable sub-tasks. \n- **Task Decomposition:** The LLM creates a <code>To-Do list</code> of steps.\n- **Sequential Execution:** The agent executes each step, updating the global state after each completion.\n\n## 3. System Architecture & Design Decisions\n\n### State Management\nTo prevent the agent from \"getting lost,\" a robust state management system is required:\n- **Short-term Memory:** Managed via the context window (sliding window or summarization).\n- **Long-term Memory:** Utilizing **Vector Databases** (e.g., Pinecone, Milvus) to retrieve relevant documents via RAG (Retrieval-Augmented Generation).\n\n### Orchestration Frameworks\nDiscussion on the trade-offs between different orchestration styles:\n| Approach | Flexibility | Predictability | Use Case |\n| :--- | :--- | :--- | :--- |\n| **Hard-coded DAGs** | Low | High | Standard Business Logic |\n| **Autonomous Agents** | High | Low | Open-ended Research |\n| **Hybrid Workflows** | Medium | Medium | Production AI Apps |\n\n## 4. Implementation Strategy for Production\n\n### Step-by-Step Deployment\n1. **Define the Scope:** Identify a task that requires multiple steps (e.g., \"Write a feature, test it, and deploy it\").\n2. **Build the Toolset:** Create a set of strictly typed functions (JSON Schema) that the LLM can call.\n3. **Implement the Loop:** Set up a loop with a maximum iteration limit to prevent infinite loops (cost control).\n4. **Evaluation (LLM-as-a-Judge):** Use a more powerful model (e.g., GPT-4o or Claude 3.5) to grade the output of the agentic workflow against a gold-standard dataset.\n\n## 5. Constraints and Challenges\n- **Latency:** Iterative loops increase the time to first token. Solution: Use streaming and asynchronous execution for sub-tasks.\n- **Cost:** Multiple LLM calls per request increase token spend. Solution: Use smaller, faster models for the \"Critic\" role and larger models for the \"Generator\" role.\n- **Reliability:** Agents can enter \"death loops\" where they repeat the same mistake. Solution: Implement a **State Monitor** that detects repetition and forces a strategy shift.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-I2cbIws9j10");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=I2cbIws9j10" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
+        <article class="card" id="video-4sX_He5c4sI">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-06-25</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-4sX_He5c4sI"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: Autoresearch & AGI Architectures (WF2026)\n\nThis session represents a critical pivot in AI engineering: the move from **Chatbots** to **Autonomous Research Agents**. The discussion features a panel of principal engineers and researchers from the world's leading AI labs, focusing on the infrastructure required to build systems capable of independent scientific discovery and complex problem solving.\n\n## \ud83c\udfd7\ufe0f System Architecture: From LLMs to Autoresearch Agents\n\nTraditional LLM interactions are stateless and linear. The proposed architecture for Autoresearch shifts toward a **Closed-Loop System**. \n\n### 1. The Agentic Loop\nInstead of a single prompt-response cycle, the system implements a loop consisting of:\n- **Hypothesis Generation:** The model proposes a potential solution or scientific hypothesis.\n- **Action Execution:** The agent utilizes tools (Python interpreters, API calls, web search) to test the hypothesis.\n- **Observation/Feedback:** The system captures the output of the tool execution.\n- **Reflection:** The model analyzes the result and updates its internal state or hypothesis.\n\n### 2. Memory & State Management\nTo handle long-running research tasks, the architecture employs a **Hierarchical Memory System**:\n- **Working Memory:** High-priority context stored in the active prompt window (KV Cache).\n- **Episodic Memory:** A vector database (e.g., Pinecone, Milvus) storing previous attempts and failures to avoid repetitive errors.\n- **Semantic Memory:** The core knowledge base of the model, updated via fine-tuning or RAG.\n\n## \ud83d\udee0\ufe0f Implementation Strategies & Design Patterns\n\n### Inference-Time Compute Scaling\nOne of the most significant technical shifts discussed is the concept of **Scaling Inference**. Rather than relying solely on a larger model, the system allocates more compute at the moment of generation through:\n- **Chain-of-Thought (CoT) Expansion:** Forcing the model to generate internal reasoning steps before the final answer.\n- **Beam Search & Tree-of-Thoughts:** Exploring multiple reasoning paths in parallel and pruning those that lead to contradictions.\n- **Majority Voting/Self-Consistency:** Running the same prompt multiple times and selecting the most frequent high-confidence output.\n\n### Verification & Reward Models\nTo prevent the \"hallucination spiral,\" the engineers discuss the implementation of **Reward Models (RMs)**. \n\n| Component | Function | Implementation |\n| :--- | :--- | :--- |\n| **ORM (Outcome Reward Model)** | Validates the final result | Binary check (Correct/Incorrect) based on ground truth. |\n| **PRM (Process Reward Model)** | Validates each step of reasoning | Step-by-step scoring to ensure the logic is sound throughout the process. |\n\n## \ud83d\ude80 Advanced Concepts in AGI Development\n\n### Recursive Improvement\nRecursive improvement involves using an AI to improve its own architecture. This is achieved through:\n1. **Synthetic Data Generation:** Using a frontier model to generate high-quality reasoning traces for a smaller model.\n2. **Automated Prompt Engineering:** An agent that iteratively tests and optimizes prompts to maximize a specific metric.\n3. **Architecture Search:** Using ML to optimize the hyperparameters of the next generation of models.\n\n### Sandboxed Execution Environments\nFor an agent to be truly autonomous, it must be able to execute code. The technical requirement here is a **Secure Sandbox**:\n- **Containerization:** Using Docker or gVisor to isolate the execution environment.\n- **Resource Constraints:** Strict limits on CPU, RAM, and Network access to prevent runaway processes.\n- **State Persistence:** Allowing the agent to save files and reload them in subsequent turns of the loop.\n\n## \ud83d\udcc8 Summary of Technical Constraints & Solutions\n\n- **Constraint:** Context Window Saturation $\\\rightarrow$ **Solution:** Implementing *sliding window attention* and *summarization buffers*.\n- **Constraint:** Stochasticity (Inconsistency) $\\\rightarrow$ **Solution:** Implementing *deterministic seeds* and *multi-path verification*.\n- **Constraint:** Latency $\\\rightarrow$ **Solution:** *Speculative Decoding* where a smaller model predicts tokens and a larger model verifies them in parallel.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-4sX_He5c4sI");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=4sX_He5c4sI" target="_blank" class="youtube-link">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
                 </svg>
