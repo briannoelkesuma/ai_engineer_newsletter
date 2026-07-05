@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-d_Ftrl3vfV0">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-05</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-d_Ftrl3vfV0"></div>
+            <script>
+                (function() {
+                    const md = "# Comprehensive Technical Deep\u2011Dive: Turning AI Products into Understandable Stories\n\n## 1. Executive Summary\n- Overview of Veronica Hylak\u2019s framework for AI product storytelling.\n- Why clear narrative is a prerequisite for adoption and funding.\n\n## 2. The Core Problem: The \u201cWound\u201d\n- Definition of a wound as a repetitive, high\u2011friction task.\n- Psychological impact on users and operational cost.\n- Real\u2011world examples from security operations and knowledge retrieval.\n\n## 3. Narrative Architecture\n### 3.1 Opening Slide \u2013 The Wound Hook\n- Time budget: \u226420\u202fseconds.\n- Structure: Situation \u2192 Pain \u2192 Desired State.\n- Use of <b>bold</b> keywords to emphasize the wound.\n\n### 3.2 Analogy & Viral Story Integration\n- Leveraging familiar narratives (e.g., McDonald\u2019s AI drive\u2011thru).\n- Mapping analogy components to product capabilities.\n\n### 3.3 Click\u2011Through Mechanism\n- How to make the product \u201cclick\u201d instantly.\n- Use of concrete mental images (smoke alarm for AI behavior).\n\n### 3.4 Transformation Demonstration\n- Before\u2011and\u2011after scenarios.\n- Quantitative metrics (e.g., investigation time reduced from 30\u202fmin to 10\u202fsec).\n\n## 4. Technical Foundations\n### 4.1 Multi\u2011Agent Orchestration Layer\n- Agent roles: Collector, Analyzer, Resolver.\n- Communication protocol: JSON\u2011RPC over WebSocket.\n- State persistence with Redis Streams.\n\n### 4.2 Data Integration\n- Unified query interface using GraphQL schema.\n- Schema\u2011first design for source\u2011agnostic connectors.\n- Example connector for Slack, JIRA, and Confluence.\n\n### 4.3 API Design\n- Endpoint: `/query`\n- Request format: `{ \"natural_lang\": \"How many tickets are open for project X?\" }`\n- Response format: `{ \"answer\": \"...\", \"sources\": [...] }`\n\n### 4.4 Database Schema\n- Tables: `agents`, `tasks`, `responses`, `metadata`.\n- Indexing strategy for low\u2011latency retrieval.\n- Sample SQL snippet.\n\n## 5. Implementation Walk\u2011through\n### 5.1 Environment Setup\n```bash\n# Docker compose file\nversion: \"3.8\"\nservices:\n  redis:\n    image: redis:7\n    ports: [\"6379:6379\"]\n  api:\n    build: .\n    environment:\n      - REDIS_URL=redis://redis:6379/0\n```\n\n### 5.2 Defining Agent Roles\n```python\nclass Collector(Agent):\n    async def run(self):\n        # fetch data from external APIs\n        ...\n\nclass Analyzer(Agent):\n    async def run(self):\n        # apply ML models\n        ...\n\nclass Resolver(Agent):\n    async def run(self):\n        # generate actionable output\n        ...\n```\n\n### 5.3 Communication Protocol\n```json\n{\n  \"type\": \"message\",\n  \"sender\": \"collector\",\n  \"payload\": { \"task\": \"fetch_tickets\" }\n}\n```\n\n### 5.4 Query API Example\n```bash\ncurl -X POST http://localhost:8000/query \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"natural_lang\":\"How many critical bugs are pending?\"}'\n```\n\n## 6. Performance & Scaling\n- Horizontal scaling via Kubernetes.\n- Autoscaling policies based on Redis queue depth.\n- Latency benchmarks: 95th percentile < 150\u202fms.\n\n## 7. Validation & Testing\n- Unit tests for each agent using pytest.\n- Integration tests with mock external services.\n- End\u2011to\u2011end user testing with a 17\u2011year\u2011old prototype.\n\n## 8. Key Learnings (Summary)\n- Start with a vivid wound; keep it under 20\u202fseconds.\n- Tie the solution to a relatable story.\n- Consolidate data into a single query interface.\n- Use a multi\u2011agent workflow pattern.\n- Limit initial narrative to three core messages.\n- Show a clear before\u2011and\u2011after transformation.\n- Respect the constraint of jargon\u2011free opening.\n\n## 9. Conclusion\n- Recap of the storytelling framework.\n- Implications for funding and market traction.\n- Next steps for building a production\u2011ready multi\u2011agent system.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-d_Ftrl3vfV0");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=d_Ftrl3vfV0" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-hVJOnuhFmTA">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
