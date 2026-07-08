@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-BqZrTdgBaPw">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-08</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-BqZrTdgBaPw"></div>
+            <script>
+                (function() {
+                    const md = "# Running a Chess YouTube Channel Entirely by AI \u2014 Technical Implementation Guide\n\n## Introduction\n\nStephan Steinfurt presents an innovative AI-driven system for automatically generating chess educational content. This solution addresses the challenge of combining chess engines' analytical power with human-understandable explanations through LLM reasoning.\n\n## System Architecture\n\n### Core Components\n\n1. **Data Ingestion Layer**\n   - Downloads human chess games from Lichess nightly\n   - Processes PGN files for analysis\n   - Maintains game database for historical context\n\n2. **Analysis Engine**\n   - Chess engine integration for position evaluation\n   - Tactical analysis (checks, captures, threats)\n   - Legal move validation to prevent impossible positions\n\n3. **AI Agent Framework**\n   - Gemini 1 Pro as primary reasoning model\n   - Tool-based architecture with specialized chess functions\n   - Autonomous decision-making for video content\n\n## Technical Implementation\n\n### LLM Selection and Configuration\n\n```python\n# Model configuration\nmodel = GeminiPro(temperature=0.7)\nsystem_prompt = \"\"\"You are a chess analysis agent. Use available tools to analyze positions and generate educational content.\"\"\"\n```\n\n**Why Gemini 1 Pro?**\n- Superior chess reasoning compared to previous models\n- Visible reasoning traces show deeper understanding\n- Recent post-training improvements for tactical analysis\n\n### Tool Integration\n\n#### Legal Moves Validator\n```python\ndef validate_legal_moves(board_state, proposed_move):\n    \"\"\"Prevent illegal moves on the chessboard\"\"\"\n    return chess_engine.is_legal(board_state, proposed_move)\n```\n\n#### Tactical Context Provider\n```python\nclass TacticalAnalyzer:\n    def get_checks_captures_threats(self, position):\n        return {\n            'checks': self.find_checks(position),\n            'captures': self.find_captures(position),\n            'threats': self.find_threats(position)\n        }\n```\n\n### Workflow Process\n\n1. **Game Acquisition**: Automated Lichess game downloads\n2. **Position Analysis**: Engine evaluation + tactical context\n3. **Content Generation**: AI agent creates video script\n4. **Media Production**: Text-to-speech + visual annotations\n5. **Upload Automation**: Direct YouTube integration\n\n## Key Technical Challenges\n\n### Balancing AI and Human Elements\n\n- **Engine vs. Human Moves**: Mix of computer analysis and human-playable suggestions\n- **Rating-Based Targeting**: Potential for different skill level content\n- **Quality Control**: Maintaining educational value while automating\n\n### Cost Optimization\n\n| Component | Cost per Video | Notes |\n|-----------|----------------|-------|\n| LLM API Calls | $0.15-0.25 | Gemini 1 Pro usage |\n| Text-to-Speech | $0.05-0.10 | 11 Labs V3 |\n| Other Services | $0.00-0.05 | Engine processing |\n\n### Error Handling\n\n- **Error Rate**: ~5% (1 in 20 videos)\n- **Common Issues**: Missed checkmates, tactical oversights\n- **Mitigation**: Manual review option, post-upload corrections\n\n## Results and Performance\n\n### Channel Metrics\n\n- **Views**: 500,000+\n- **Subscribers**: 4,000+ (majority recent)\n- **Growth**: Rapid subscriber increase in last month\n\n### Production Efficiency\n\n- **Automation Level**: Near-complete workflow automation\n- **Manual Intervention**: Minimal (quality review phase)\n- **Scalability**: Can produce multiple videos daily\n\n## Future Considerations\n\n### Content Strategy\n\n- **Audience Segmentation**: Different videos for varying skill levels\n- **Game Selection**: Filtering for interesting/educational positions\n- **Historical Context**: Enhanced background information\n\n### Technical Improvements\n\n- **Redundant Tool Calls**: Optimization opportunities\n- **Cost Reduction**: Further automation and efficiency gains\n- **Quality Enhancement**: Advanced filtering and review processes\n\n## Conclusion\n\nThis AI-driven chess content system demonstrates the power of combining specialized tools with advanced LLMs. The architecture provides a scalable solution for educational content creation while maintaining quality through strategic human-AI collaboration.\n\nThe key success factors include:\n\n- Strategic LLM selection (Gemini 1 Pro)\n- Comprehensive tool integration\n- Balanced approach to automation vs. quality\n- Cost-effective production pipeline\n\nThis framework can be adapted for other educational content domains requiring similar analysis and explanation capabilities.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-BqZrTdgBaPw");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=BqZrTdgBaPw" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-qlHaO6laBlM">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
