@@ -395,6 +395,60 @@
 
     <main>
 
+        <article class="card" id="video-HEFSExa0xl0">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-08</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-HEFSExa0xl0"></div>
+            <script>
+                (function() {
+                    const md = "# Teaching Coding Agents to Master Spreadsheets\n\n## Overview\nThis tutorial details how Witan Labs trained AI agents to achieve 92% accuracy in spreadsheet tasks, starting from 50%. The focus is on overcoming spreadsheet-specific challenges through architectural innovation and systematic evaluation.\n\n## Core Challenges\n1. **Ambiguity in References**: LLMs struggle with terms like 'revenue' (net vs. gross).\n2. **Formula Dependencies**: Tracking and validating complex formula interactions.\n3. **High-Fidelity Execution**: Requires accurate formula engines and rendering to match Excel\u2019s behavior.\n\n## Architectural Breakthrough: The REPL\n- **Problem**: Fragmented tools led to sequential, error-prone workflows.\n- **Solution**: A single Node.js REPL unified actions. Agents combined JavaScript functions in one call, reducing timeouts and improving accuracy.\n- **Key Components**:\n  - *Persistent State*: Variables defined in one REPL call persisted across steps.\n  - *Type Safety*: TypeScript definitions ensured correct function usage.\n\n## Feedback Loops\n- **Formula Engine**: Calculated results accurately, critical for verification.\n- **Render Engine**: Generated images of spreadsheet ranges with formatting, enabling visual checks.\n- **Verification**: Agents compared outputs against golden datasets, ensuring correctness.\n\n## Evaluation Strategies\n1. **Deterministic Testing**: Used golden spreadsheets with known inputs/outputs.\n2. **Trace Analysis**: Debugged agent decisions by reviewing REPL logs.\n3. **Prompt Engineering**: Domain-specific prompts guided agents on spreadsheet terminology.\n\n## Key Learnings\n- **Framework Configurations**: Node.js REPL (scripting), C# (backend logic), TypeScript (type safety).\n- **Design Patterns**: REPL as a feedback loop, deterministic evaluation.\n- **Constraints**: High-fidelity engines are non-negotiable; incomplete tools degrade performance.\n\n## Future Directions\n- As models improve, interfaces may shift (e.g., computer use with mouse/keyboard).\n- Verification loops will remain critical regardless of model capabilities.\n\n## Conclusion\nThis project demonstrates that spreadsheet mastery requires a blend of domain knowledge, tooling innovation, and rigorous evaluation. The REPL\u2019s success highlights the value of unified interfaces in AI agent workflows.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-HEFSExa0xl0");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=HEFSExa0xl0" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
+        <article class="card" id="video-MpZzWMdmQCE">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-08</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-MpZzWMdmQCE"></div>
+            <script>
+                (function() {
+                    const md = "## Detailed Technical Deep\u2011Dive\n\n### 1. Problem Statement\nAutonomous coding agents such as Claude Code can generate subtasks and appear to complete, but without deterministic verification the output may be incomplete or incorrect. The core challenge is to create a reliable enforcement layer that checks agent results against a contract before considering the task finished.\n\n### 2. Core Concepts\n- **Agent**: LLM that produces code or subtasks.\n- **Verification**: Deterministic check that the agent\u2019s output satisfies predefined criteria.\n- **Enforcement Layer**: Post\u2011processing hook that validates, retries, or rejects output.\n- **Contract**: JSON/YAML file describing expected structure, data types, and business rules.\n\n### 3. Architecture Overview\n```\n+-------------------+      +-------------------+      +-------------------+\n|   Agent Session   | ---> |   Verification    | ---> |   Decision Logic  |\n|   (Claude Code)   |      |   Harness (Vector)|      |   (Retry / Fail)  |\n+-------------------+      +-------------------+      +-------------------+\n```\nThe harness loads the contract, runs the output through a series of checks, and either returns success or triggers a retry loop.\n\n### 4. Configuration Files\nCreate a `contract.yaml`:\n\n```yaml\ntask: generate_report\noutput:\n  type: string\n  format: markdown\n  constraints:\n    - must_contain: \"Revenue\"\n    - length_max: 500\n```\n\nThe harness reads this file and builds a validator that can be reused across agents.\n\n### 5. Hook Implementation\n```python\ndef verify(output, contract):\n    # Parse contract\n    # Run schema validation\n    # Return True/False and optional retry message\n```\nIntegrate this function as a post\u2011processing hook in the agent\u2019s execution pipeline.\n\n### 6. Step\u2011by\u2011Step Implementation\n1. **Environment Setup** \u2013 Install Python 3.11, `pyyaml`, and `jsonschema`.\n2. **Define Contracts** \u2013 Write YAML files for each task.\n3. **Build Validator** \u2013 Use `jsonschema` to validate against contracts.\n4. **Wrap Agent Call** \u2013 Execute the agent, capture stdout, pass to validator.\n5. **Retry Logic** \u2013 On failure, re\u2011invoke the agent with a corrected prompt.\n6. **Persist Results** \u2013 Store successful outputs in a database table `agent_results`.\n\n### 7. Database Schema\n```sql\nCREATE TABLE agent_results (\n    id SERIAL PRIMARY KEY,\n    task_name TEXT,\n    input_prompt TEXT,\n    generated_code TEXT,\n    verification_status TEXT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n```\n\n### 8. Design Patterns\n- **Chain\u2011of\u2011Responsibility**: Each verification step is a handler.\n- **Strategy**: Different validation strategies (schema, regex, LLM\u2011as\u2011judge) can be swapped.\n- **Factory**: Produce appropriate validator based on contract type.\n\n### 9. Constraints & Trade\u2011offs\n- **Determinism vs. Flexibility** \u2013 Tight contracts increase reliability but may limit creativity.\n- **Cost vs. Accuracy** \u2013 Smaller models with guardrails reduce token spend but require more validation cycles.\n- **Scalability** \u2013 The harness must be stateless to support async workflows.\n\n### 10. Real\u2011World Examples\n- **Anthropic Executed Advisor** \u2013 Uses a similar feedback loop.\n- **OpenAI Harness** \u2013 Employs multiple context windows for verification.\n- **Cudo Code Review** \u2013 Implements automated PR checks via LLM judges.\n\n### 11. Lessons Learned\n- Verification is the bottleneck and the most valuable engineering effort.\n- Contract\u2011driven design makes systems language\u2011agnostic.\n- Incremental retries can dramatically improve success rates without extra compute.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-MpZzWMdmQCE");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=MpZzWMdmQCE" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-BqZrTdgBaPw">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
