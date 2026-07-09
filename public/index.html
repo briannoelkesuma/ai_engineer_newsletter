@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-xUnRQ9vLXxo">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-08</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-xUnRQ9vLXxo"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: What Do We Build Now?\n\n## Overview\nThis presentation by Theo Browne analyzes the paradigm shift in software engineering caused by the rapid advancement of Large Language Models (LLMs). The central argument is that the cost of producing functional code has dropped so precipitously that the primary constraint is no longer <i>technical execution</i>, but <i>ambition and architectural vision</i>.\n\n---\n\n## 1. The Evolution of LLM Capabilities\nTheo categorizes the progression of AI models into distinct \"eras,\" each representing a leap in the type of work the AI can handle:\n\n| Era | Representative Model | Core Capability | Impact on Workflow |\n| :--- | :--- | :--- |\n| **Tool Call Era** | Sonnet 3.5 | Reliable and consistent tool calling within a codebase. | Day-to-day coding assistance and targeted fixes. |\n| **Long-Running Task Era** | Opus 4.5 | Ability to maintain context over hours rather than minutes. | End-to-end task completion without constant human steering. |\n| **Orchestration Era** | Mythos / Fable | Self-awareness of capabilities; ability to spawn sub-models. | Autonomous decomposition of work, execution, and verification. |\n\n### The Orchestration Shift\nIn the Orchestration Era, the model doesn't just write code; it acts as a project manager. It can: \n1. **Decompose** a high-level prompt into a series of sub-tasks.\n2. **Spawn** specialized agents to handle those tasks.\n3. **Verify** the output of those agents against the original goal.\n4. **Iterate** until the state is correct without requiring custom \"software factory\" tooling.\n\n---\n\n## 2. The \"Skeuomorphic\" Trap in Software Engineering\nTheo introduces the concept of <b>Skeuomorphism</b>\u2014the design practice of making digital interfaces mimic physical objects (e.g., early iOS apps looking like physical compasses). He argues that modern developers are doing the same with their workflows:\n\n- **The Terminal Obsession:** We cling to the CLI and Vim not because they are always the most efficient for the current AI-driven era, but because they represent our professional identity.\n- **Legacy Constraints:** He cites the example of <code>.env</code> files. The industry accepts the friction of managing environment variables across teams because \"that's how Git was built,\" rather than questioning if a better system should exist.\n- **Identity Crisis:** The tendency to define developers by their language (e.g., \"JavaScript Developer\") is viewed as a legacy mindset. In an agentic world, the language is an implementation detail, not a qualification.\n\n---\n\n## 3. The Shift in Product Tiers\nTheo posits that the \"difficulty ceiling\" has dropped, shifting the definition of project scales:\n\n- **The Markdown Tier:** A new category where a product is essentially a high-level instruction set (a `.md` file) executed by an LLM. \n    - *Example:* A PR triage system that reads GitHub repos, prioritizes work, generates HTML, and uploads to S3\u2014all triggered by a `cron` job and a prompt.\n- **The Side Project Tier:** What was previously considered a \"Startup\" (a functional SaaS) is now achievable as a side project.\n- **The \"Too Big\" Tier:** The boundary of what is \"too big\" to build has vanished. Building a database platform or a cloud infrastructure component is now a matter of days of prompting and effort rather than years of engineering.\n\n---\n\n## 4. System Design Strategy: Range vs. Depth\n\n### The Vercel vs. AWS Model\nTheo uses a spectrum of **Range** (how many different things the software does) and **Depth** (how deeply it handles a specific feature).\n\n- **AWS Approach:** Massive Range and Massive Depth. Impossible for small teams to compete with on a feature-for-feature basis.\n- **Vercel Approach:** Targeted Range with Extreme Depth in a specific vertical (Frontend/Serverless). This creates a \"gravity\" that attracts both developers and AI agents.\n\n### The New Strategy: Building for Range\nTheo suggests that developers should now build for **Range**. Because AI can generate a \"good enough\" version of almost any feature (even a database platform/RDS) quickly, the goal is to provide a wide enough spectrum of utility to get users into the ecosystem.\n\n**The \"Slack\" Pattern:**\nSlack is cited as a platform that succeeded not because it was a perfect product, but because it provided the right *shape* (an API and a communication hub) that allowed users to build their own features (bots/agents) into it.\n\n### Final Technical Directive\n- **Reject Sunk Cost:** Delete code that isn't working. Agents don't feel guilt; developers shouldn't either.\n- **Architect for Extensibility:** Build systems where users can build the missing vertical features themselves.\n- **Challenge the Giants:** The barrier to entry for building complex platforms (Salesforce, AWS, Slack) has been lowered by the ability to rapidly prototype and deploy complex infrastructure via AI orchestration.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-xUnRQ9vLXxo");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=xUnRQ9vLXxo" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-HEFSExa0xl0">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
