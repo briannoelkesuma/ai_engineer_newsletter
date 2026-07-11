@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-WLXxTaPagA8">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-11</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-WLXxTaPagA8"></div>
+            <script>
+                (function() {
+                    const md = "# YouTube Video Deep-Dive: Reinventing Worse CI/CD in Solo Agent Systems\n\n## Overview\nThis analysis breaks down Sumaiya Shrabony's video on how solo agent builders recreate flawed CI/CD processes. The focus is on seven critical handoffs in agent systems and the five controls repeatedly reinvented inefficiently.\n\n## Key Concepts\n### 1. Seven Handoffs in Agent Systems\n- **Scheduler to System**: Initial task allocation.\n- **Command to Research**: Skill activation for data gathering.\n- **Research to Content Plan**: Structuring output.\n- **Content Plan to Production**: Finalizing content.\n- **Production to Verifier**: Quality checks.\n- **Verifier to Reviewer**: Human oversight.\n- **Reviewer to Output Folder**: Final delivery.\n\nEach handoff is a potential leak point. Solo builders lack automated checks, leading to manual reinventions of CI/CD processes.\n\n### 2. Five Controls Rebuilt Poorly\n1. **Voice/Domain Contracts**: Ensuring output matches expected style/terminology.\n2. **Verification Mechanisms**: Validating factual claims or data accuracy.\n3. **Deduplication Checks**: Preventing redundant content.\n4. **Audit Trails**: Logging changes for traceability.\n5. **Staging Environments**: Testing before deployment.\n\nThese are often implemented reactively, causing delays and errors.\n\n## Technical Deep-Dive\n### 1. Handoff Failure Analysis\n#### Scheduler to System\n- **Problem**: Manual task assignment leads to misaligned priorities.\n- **Solution**: Automate scheduling with priority queues.\n\n#### Command to Research\n- **Issue**: Skills may fail due to outdated data.\n- **Fix**: Implement real-time data validation.\n\n#### Research to Content Plan\n- **Challenge**: Inconsistent output structure.\n- **Resolution**: Use schema validation for content plans.\n\n### 2. Reinvented CI/CD Processes\n#### Regression Testing\n- **Manual Approach**: Cron jobs checking output shapes.\n- **Improvement**: Integrate automated regression suites.\n\n#### Contract Testing\n- **Manual Checks**: Boundary validations at each handoff.\n- **Enhancement**: Define API-like contracts for skill outputs.\n\n#### Staging Environments\n- **Problem**: Errors detected too late.\n- **Solution**: Pre-save output contracts to block invalid artifacts.\n\n#### Audit Trails\n- **Manual Logging**: Boring but essential records.\n- **Upgrade**: Automated audit logs with failure reasons.\n\n### 3. Code and Architecture\n- **Framework**: Custom agent system with Python/JavaScript.\n- **Database**: Knowledge vault storing historical data.\n- **Tools**: Cron jobs, validation scripts, and audit loggers.\n\n### 4. Step-by-Step Implementation\n1. **Pre-Save Output Contract**: Validate schema before saving.\n2. **Voice Contract Check**: Ensure output matches domain-specific rules.\n3. **Verification Contract**: Trace claims to sources.\n4. **Deduplication Check**: Compare against vault history.\n5. **Audit Trail**: Log all failures with context.\n\n## Best Practices\n- **Map Handoffs**: Identify high-risk points (e.g., public claims).\n- **Add Boundaries**: Implement gates that block invalid outputs.\n- **Automate Checks**: Replace manual processes with code.\n\n## Conclusion\nSolo agents don't inherently fail\u2014poorly designed systems do. By adopting structured CI/CD principles, builders can avoid reinventing flawed processes. The key is proactive validation at every handoff, not just post-hoc fixes.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-WLXxTaPagA8");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=WLXxTaPagA8" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-9arM9b7JgOo">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
