@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-vJukHCIv7Ck">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-11</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-vJukHCIv7Ck"></div>
+            <script>
+                (function() {
+                    const md = "# Stopping AI Agent Hallucinations: 5 Technical Techniques\n\n## Introduction\nThis tutorial details five code-level strategies to eliminate AI agent hallucinations, focusing on architectural patterns, framework configurations, and runtime safeguards. Each method addresses specific failure modes in agent workflows.\n\n## 1. Semantic Tool Selection\n### Problem\nSending all tools to the model increases token costs and reduces accuracy.\n\n### Solution\n- **Dynamic Filtering**: Use semantic search (vector databases) to select top 3 relevant tools per query.\n- **Implementation**:\n  ```python\n  # Example Strands tool decorator\n  @tool\n  def search_flights(query: str):\n      # Return filtered tool schema\n  ```\n- **Impact**: Token usage drops from 3,000 to <300 per call.\n\n### Key Learnings\n- Reduces context window size via semantic search.\n- Improves cost efficiency and response accuracy.\n\n## 2. GraphRAG for Verifiable Queries\n### Problem\nText-based RAG struggles with aggregation or multi-hop reasoning.\n\n### Solution\n- **Knowledge Graph Construction**: Build a graph (e.g., Neo4j) from data.\n- **Cypher Queries**: Execute structured queries for factual answers.\n- **Implementation**:\n  ```cypher\n  MATCH (h:Hotel) WHERE h.city = 'Paris' RETURN AVG(h.rating)\n  ```\n- **Impact**: Provides verifiable results instead of probabilistic text.\n\n### Key Learnings\n- GraphRAG excels at structured queries (counts, aggregations).\n- Neo4j enables precise data traversal.\n\n## 3. Multi-Agent Validation (Swarm Pattern)\n### Problem\nSingle agents may fail silently without validation.\n\n### Solution\n- **Swarm Architecture**:\n  1. **Executor**: Handles the task.\n  2. **Validator**: Checks outputs against ground truth.\n  3. **Critic**: Rejects invalid responses.\n- **Implementation**:\n  ```python\n  # Swarm configuration\n  swarm = Swarm(executor=Executor(), validator=Validator(), critic=Critic())\n  ```\n- **Impact**: Catches hallucinations before user interaction.\n\n### Key Learnings\n- Layered validation ensures output reliability.\n- Swarm pattern decouples error handling from execution.\n\n## 4. Neuro-Symbolic Guardians\n### Problem\nPrompts cannot enforce hard constraints.\n\n### Solution\n- **Code-Based Rules**: Implement guards as Python functions.\n- **Hooks**: Execute rules before tool calls.\n- **Example**:\n  ```python\n  @hook(before_tool_call)\n  def validate_guest_limit(booking):\n      if booking.guests > 10: raise Exception('Exceeds limit')\n  ```\n- **Impact**: Blocks invalid actions at the code level.\n\n### Key Learnings\n- Rules in code are enforceable, unlike prompt-based suggestions.\n- Hooks intercept workflows pre-execution.\n\n## 5. Runtime Guardians (Agent Control)\n### Problem\nHard blocks may halt user tasks unnecessarily.\n\n### Solution\n- **Steering Mechanism**: Allow agents to adapt to constraints.\n- **Implementation**:\n  ```python\n  # Agent control logic\n  if rule_fails:\n      agent.find_alternative_solution()\n  ```\n- **Impact**: Completes tasks even with soft constraints (e.g., splitting bookings).\n\n### Key Learnings\n- Agent control enables dynamic workflow adjustments.\n- Rules can be managed via API without redeploying code.\n\n## Production Implementation\n- **AWS Bedrock Agent Core**: Manages tools, rules, and memory.\n- **Neo4j Aura DB**: Scalable graph database for production.\n- **Monitoring**: CloudWatch for observability.\n\n## Conclusion\nThese techniques shift responsibility from prompts to code and architecture, ensuring reliable AI agents in production.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-vJukHCIv7Ck");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=vJukHCIv7Ck" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-WLXxTaPagA8">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
