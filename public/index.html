@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-TJPInBjhE4Q">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-12</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-TJPInBjhE4Q"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: ReviewDebt Framework for PR Scoring\n\n## Introduction to Review Debt\nReview Debt is defined as the accumulating gap between the code an AI agent produces and the code humans have actually reviewed, trusted, and understood. Unlike technical debt, which is structural, Review Debt is financial in nature because it <b>compounds</b> through three feedback loops:\n1. **Generative Grounding:** Unreviewed code today becomes the RAG/context grounding for tomorrow's AI-generated PRs.\n2. **Attention Contraction:** Reviewers stop looking at the big picture and focus only on syntax and obvious bugs.\n3. **Velocity Reset:** Leadership sees increased throughput and removes the \"slack\" needed to pay back the debt.\n\n---\n\n## The Deterministic Scoring Framework\nTo measure this debt, the framework uses five deterministic signal families. The goal is to avoid using LLMs as judges to prevent \"moving target\" scores and ensure the metrics are defensible during leadership reviews.\n\n### 1. Dev Size and Coupling\n- **Logic:** Measures net lines changed and file distribution.\n- **The AI Problem:** Agents tend to fix at the call site (symptom) rather than the root cause, leading to changes sprawling across many files.\n- **Impact:** Cross-file coupling increases the mental model complexity exponentially, not linearly.\n\n### 2. Test Evidence Gap\n- **Metric:** $\\\text{Ratio} = \\\frac{\\\text{Test Lines Added}}{\\\text{Production Lines Added}}$\n- **The \"Test Theater\" Phenomenon:** AI often generates tests that simply mirror the current (potentially buggy) behavior of the code. The framework flags the absence of tests or a low ratio as a high-burden signal.\n\n### 3. Directory and Ownership Spread\n- **Logic:** Counts distinct code-owner teams whose files are modified.\n- **Impact:** A PR touching multiple team territories requires multi-party coordination, which often exceeds the time saved by the AI in writing the code.\n\n### 4. AI Authorship Indicators\n- **Detection Methods:**\n    - **Co-authored footers:** (e.g., \"Co-authored-by: GitHub Copilot\").\n    - **Branch naming:** Prefixes like `codex/`, `copilot/`, or `cursor/`.\n    - **PR Body/Commit phrases:** Specific generated phrasing.\n- **Role:** This acts as an *amplifier*. It doesn't penalize AI use but signals that the PR may require extra attention if other signals are weak.\n\n### 5. Evidence and Rational Gaps\n- **Logic:** Analyzes the PR body for a \"Why\" (Symptom $\\\rightarrow$ Diagnosis $\\\rightarrow$ Change $\\\rightarrow$ Benchmark link) versus a \"What\" (e.g., \"Fix leaky test\").\n- **Impact:** This is the strongest signal for \"reviewability.\" Without the \"Why,\" the reviewer cannot validate the intent.\n\n---\n\n## Implementation and Operationalization\n\n### Scoring Bands\n| Score | Category | Action Required |\n| :--- | :--- | :--- |\n| 0 - 24 | Low Burden | Standard merge process |\n| 25 - 49 | Normal | Standard care |\n| 50 - 74 | Needs Evidence | Author must provide evidence before senior review |\n| 75+ | High Burden | Split the PR or request significant more context |\n\n### Step-by-Step Adoption Strategy\n1. **Backfill:** Run the scorer over the last 200 merged PRs to establish a baseline.\n2. **Thresholding:** Set a \"justify line\" (e.g., 50). Any PR above this requires an author comment.\n3. **Surfacing:** Post the score as a non-blocking PR comment for visibility.\n4. **Aggregation:** Track the \"slope\" of review debt weekly per team. This serves as a leading indicator for Engineering Managers.\n5. **Governance:** Discuss the numbers in retrospectives and roadmap views to move from \"feeling\" to \"measurement.\"\n\n## Case Study Analysis\nIn a scan of 524 PRs across three public repositories, the following was observed:\n- **Volume is the Variable:** AI authorship was steady (5-20%), but the *burden* climbed based on the volume of changes.\n- **Complexity vs. Authorship:** High-burden PRs were typically large structural changes (SDK rewrites, multi-team refactors), regardless of whether they were AI-authored.\n- **The Cost:** One high-debt PR (Score: 73) was estimated to require **84 hours** of senior reviewer effort.\n\n## Best Practices for AI-Assisted Development\nTo keep the \"Review Debt\" score low, teams should follow these rules:\n- **One Logical Change:** One PR = one logical change.\n- **Human-Authored \"Why\":** The human author must write the PR body to ensure they understand the change.\n- **Territory Respect:** Keep changes within one owner's territory; split cross-cutting work into per-team PRs.\n- **No \"LGTM\" Culture:** Stop using \"Looks Good To Me\" as a substitute for actual review.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-TJPInBjhE4Q");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=TJPInBjhE4Q" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-5192csoTkVo">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
