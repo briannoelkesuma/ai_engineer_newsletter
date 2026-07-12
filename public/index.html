@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-5192csoTkVo">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-12</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-5192csoTkVo"></div>
+            <script>
+                (function() {
+                    const md = "# Remoby: Terminal Workflow on Mobile\n\n## Introduction\nRemoby is a mobile application that replicates the functionality of <i>tmux</i>, a terminal multiplexer, allowing users to manage remote coding sessions from their smartphones. The app addresses the challenge of maintaining terminal workflows (e.g., splitting panes, switching between agents) on mobile devices.\n\n## Core Concepts\n### tmux Integration\n- **tmux as a Foundation**: Remoby acts as a wrapper for tmux, translating mobile interactions (touch, gestures) into tmux commands.\n- **Session Management**: Users can create and switch between tmux sessions remotely, mirroring their desktop workflow.\n- **Custom Keybindings**: The app allows remapping tmux commands to touch gestures or virtual keyboard inputs.\n\n### Remote Access Architecture\n- **Tailscale Integration**: Secure tunneling via Tailscale ensures encrypted communication between the mobile device and the remote server.\n- **Alternative Options**: Cloudflare Tunnels or ngrok could be used, but Tailscale is the default due to its simplicity and security.\n- **Server Setup**: A Pi or any Linux machine hosts the tmux session, with Remoby acting as the client interface.\n\n## Implementation Steps\n### 1. Setting Up the Remote Server\n- Install tmux and configure sessions with desired panes/windows.\n- Set up a web server (e.g., Node.js) to serve Remoby\u2019s PWA and handle WebSocket connections.\n- Configure Tailscale for secure access.\n\n### 2. Developing the PWA\n- Build a responsive interface using HTML/CSS/JS, optimized for touch controls.\n- Implement gesture-based navigation (e.g., pinch-to-zoom, swipe-to-switch panes).\n- Integrate WebSocket for real-time communication with the tmux server.\n\n### 3. Custom Workflow Tools\n- Add tools like diff viewers (e.g., `lazygit` integration) and port monitors.\n- Allow users to define custom key commands for tmux actions (e.g., `Ctrl+B` \u2192 `Shift+Tab` on mobile).\n\n### 4. Security Considerations\n- Enforce Tailscale or similar VPN for all connections.\n- Limit public exposure of the server to prevent unauthorized access.\n\n## Key Features\n- **Touch-Optimized Interface**: Gestures for zooming, scrolling, and switching panes.\n- **Cross-Platform Compatibility**: Works on iOS and Android via PWA.\n- **Open-Source**: Users can fork and customize the app or tmux integration.\n\n## Conclusion\nRemoby bridges the gap between desktop terminal efficiency and mobile accessibility. Its success depends on users\u2019 familiarity with tmux and willingness to adopt Tailscale for security. While not visually stunning, its focus on functionality makes it a powerful tool for developers who rely on terminal workflows.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-5192csoTkVo");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=5192csoTkVo" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-vJukHCIv7Ck">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
