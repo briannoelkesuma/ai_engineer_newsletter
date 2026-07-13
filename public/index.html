@@ -395,6 +395,60 @@
 
     <main>
 
+        <article class="card" id="video-O3FEoMYvUf8">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-13</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-O3FEoMYvUf8"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: Modern LLM Evaluation Frameworks\n\n## Introduction: The Failure of Traditional Metrics\nTraditional software testing relies on deterministic outcomes: for a given input $X$, the output must be $Y$. However, LLMs are stochastic. This creates a fundamental mismatch where traditional metrics like <b>Accuracy, Precision, and Recall</b> are insufficient for generative tasks. Alejandro Vidal argues that we must move toward a multi-layered evaluation strategy that accounts for nuance, tone, and semantic correctness.\n\n## 1. The Problem: The \"Static Benchmark\" Trap\nMany engineers make the mistake of using a single static test set. The primary issues with this approach include:\n- **Overfitting:** The model may perform well on the test set but fail in production due to prompt drift.\n- **Lack of Nuance:** A model might provide a correct answer but in a tone that violates brand guidelines, which a binary check would mark as \"Correct.\"\n- **Brittleness:** Small changes in the system prompt can lead to wildly different outputs, making static benchmarks unreliable.\n\n## 2. The Solution: LLM-as-a-Judge Architecture\nTo solve the nuance problem, the industry is shifting toward using a \"Judge\" model. \n\n### The Workflow:\n1. **Input Generation:** A set of diverse prompts is fed into the Target Model.\n2. **Output Generation:** The Target Model produces a response.\n3. **Rubric Definition:** A detailed set of criteria is defined (e.g., *Accuracy, Conciseness, Politeness, Technical Correctness*).\n4. **Judging:** The Judge Model (a high-reasoning model) analyzes the response against the rubric and assigns a score (1-5) or a binary Pass/Fail.\n\n### Implementation Logic:\n```python\n# Conceptual Logic for LLM-as-a-Judge\njudge_prompt = f\"\"\"\nEvaluate the following response based on these criteria: {rubric}\n\nTarget Response: {model_output}\n\nScore the response from 1-5 and provide a justification.\n\"\"\"\n# The Judge model then processes this to provide a structured evaluation.\n```\n\n## 3. Building a \"Golden Dataset\"\nA Golden Dataset is not just a list of questions; it is a curated library of <b>Input $\\\rightarrow$ Ideal Output</b> pairs. \n\n| Component | Description | Purpose |\n| :--- | :--- | :--- |\n| **Edge Cases** | Rare but critical inputs | To test robustness and safety |\n| **Happy Path** | Standard user queries | To ensure baseline functionality |\n| **Adversarial Inputs** | Attempts to break the model | To test guardrails and security |\n\n## 4. Semantic Similarity and Embeddings\nInstead of checking if the output matches the ground truth exactly, we use <b>Vector Embeddings</b>. \n- **Process:** Convert both the ground truth and the model output into high-dimensional vectors using an embedding model (e.g., `text-embedding-3-small`).\n- **Metric:** Calculate the **Cosine Similarity** between the two vectors. \n- **Thresholding:** If the similarity score is $> 0.85$, the answer is considered semantically correct, regardless of the specific wording used.\n\n## 5. Integration into the CI/CD Pipeline\nEvaluation should not be a manual process. It must be automated within the deployment pipeline:\n\n1. **Trigger:** A developer pushes a change to the system prompt or the RAG retrieval logic.\n2. **Automated Eval:** The system runs the Golden Dataset through the model.\n3. **Comparison:** The Judge model compares the new outputs against the previous version's outputs.\n4. **Regression Detection:** If the average score drops by more than $X\\%$, the build is failed, preventing the regression from reaching production.\n\n## 6. Summary of Design Decisions\n- **Trade-off:** Using a Judge model increases latency and cost during testing, but drastically reduces the risk of production failures.\n- **Design Pattern:** The **Evaluator Pattern**, where the evaluation logic is decoupled from the application logic, allowing the evaluation rubric to evolve independently of the model version.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-O3FEoMYvUf8");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=O3FEoMYvUf8" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
+        <article class="card" id="video-V-EDrhIhHzQ">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-13</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-V-EDrhIhHzQ"></div>
+            <script>
+                (function() {
+                    const md = "# Prime Intellect Stack \u2013 Deep Dive\n\n## Overview\nThe stack targets **post\u2011training** workflows for large language models. It unifies environment definition, harness management, runtime execution, and async orchestration into a single, type\u2011safe toolkit.\n\n## 0:00 \u2013 Introduction\n- Brief intro by Will Brown, lead of applied research at Primed and Loaded.\n- Goal: make large\u2011scale AI research easier and enable companies to fine\u2011tune their own models.\n\n## 1:16 \u2013 Post\u2011Training Landscape\n- Discussion of evolving agent use\u2011cases and the need for clearer training pipelines.\n- Mention of policy distillation, self\u2011distillation, and emerging algorithms.\n\n## 2:47 \u2013 Core Components\n### Environments\n- Encapsulate data, scenario, interaction rules, and scoring.\n- Support multi\u2011turn, MCP, CLI, and recursive agents.\n### Harness\n- Backend\u2011agnostic container for system prompts, tools, and user simulators.\n- Agnostic to underlying compute (local, Docker, Prime sandboxes).\n### Runtime\n- Executes harness via UV scripts; supports sandboxing and GPU scaling.\n### Async Orchestrator\n- Separates inference and trainer processes.\n- Enables overlapping rollouts and efficient GPU sharing.\n\n## 3:48 \u2013 Design Patterns\n- **Task\u2011Set / Harness / Runtime** decomposition.\n- Configurable via Pydantic with TOML overrides.\n- Integration with Hugging Face datasets, NeMo\u2011Gym, and Open\u2011Ended.\n\n## 4:51 \u2013 Reward & Metric Engineering\n- Rewards drive RL; metrics log tool usage, errors, and conciseness.\n- Group\u2011level rewards for pairwise judging and length penalties.\n\n## 5:21 \u2013 Implementation Details\n### Code Structure\n```python\n# Example: defining a task\nclass MyTask(Task):\n    def __init__(self, data):\n        self.data = data\n    def __call__(self, model):\n        # rollout logic\n        ...\n```\n### Configuration Example (toml)\n```toml\n[task]\nsource = 'hf://dataset'\n... \n```\n\n## 6:22 \u2013 Scaling Strategies\n- FP8 training, wide\u2011expert routing, KV offloading.\n- Multi\u2011node expert parallelism and disintegrated prefill.\n- Benchmarks on GLM\u20115: 28\u2011node run <5\u202fmin for 1\u202f000\u2011step horizon.\n\n## 7:53 \u2013 Async RL Benefits\n- Decouples rollout speed from slowest step.\n- Overlaps long\u2011running agent tasks (30\u202fs to 3\u202fh).\n- Reduces idle GPU cycles.\n\n## 8:23 \u2013 Loss Functions & Algorithms\n- Support for OPD, GRPO, self\u2011distillation, and custom loss pipelines.\n- Modular algorithm registry allows per\u2011environment selection.\n\n## 9:23 \u2013 Trace & Rendering\n- Trace graph stores message\u2011level and token\u2011level data.\n- Renderers library abstracts tokenizer handling and chat templates.\n\n## 10:23 \u2013 Deployment Options\n- Self\u2011hosted multi\u2011tenant Laura for inference.\n- Hosted platform with auto\u2011scaling, unified billing, and dashboard.\n- Full fine\u2011tuning coming soon.\n\n## Key Learnings (Technical)\n- Environment as a composable unit for data, scenario, and scoring.\n- Harness agnosticism enables pluggable system prompts and tools.\n- Async orchestration maximizes GPU utilization and reduces latency.\n- Type\u2011safe Pydantic configs simplify parameter management.\n- FP8 and wide\u2011expert routing unlock efficient large\u2011model training.\n- Modular loss and algorithm registry facilitate rapid experimentation.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-V-EDrhIhHzQ");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=V-EDrhIhHzQ" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-7JgIS42mz7U">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
