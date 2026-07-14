@@ -692,6 +692,33 @@
             </a>
         </article>
         
+        <article class="card" id="video-EfcfUB2uprc">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-11</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-EfcfUB2uprc"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: Applying Psychometrics (IRT) to LLM Evaluation\n\n## [0:05] Introduction: Borrowing from Psychometrics\nThe talk opens with the premise that **psychometrics**\u2014the field measuring human intelligence\u2014provides mature frameworks for assessing latent traits. Large Language Models (LLMs) exhibit mutable capabilities that can be modeled similarly. The core thesis: stop using single-score accuracy; adopt **Item Response Theory (IRT)**.\n\n## [0:36] Basics of Current Benchmarking & Faulty Assumptions\nTraditional evaluation:\n- One number per model: `accuracy = correct_items / total_items`.\n- Implicit assumption: every item has equal weight, zero correlation, and no noise.\n\nThis violates basic measurement theory. Two items may be correlated; one item may be pure noise or mislabeled.\n\n## [1:07] Problems with Equal Weighting\n- Items may have different information content.\n- A single aggregate hides the structure of model strengths/weaknesses.\n\n## [1:37] Modern Psychometrics: IRT Modeling\nIRT estimates per-item and per-model parameters on a latent scale.\n\n### Key Parameters\n| Symbol | Name | Description |\n|--------|------|-------------|\n| `B` | Difficulty | Item's difficulty level; shifts logistic curve |\n| `a` | Discrimination (slope) | Steepness; higher = more informative |\n| `theta` | Ability | Model's latent intelligence; same scale as `B` |\n\nThe 2\u2011parameter logistic (2PL) model:\n```\nP(correct | theta, a, B) = 1 / (1 + exp(-a*(theta - B)))\n```\n\n## [2:08] Estimating Item Difficulty (B) and Model Ability (Theta)\nFor each item we fit a curve mapping `theta` \u2192 probability correct. For each model we estimate `theta` (typically prior `N(0,1)`). Theta of 0 is average.\n\n## [2:40] Normal Distribution Property\nTheta is distributed normally, aiding interpretation: a model with `theta=0` is at the population mean.\n\n## [3:11] Worked Example\nItem with `B = -0.2`, model `theta = 0.1` \u2192 predicted probability ~67% (matches observed).\n\n## [3:44] Discrimination Parameter `a`\n- Steep curve (`a` high) = informative.\n- Flat line (`a\u22480`) = noise.\n- Negative `a` = item hurts strong models (likely mislabeled).\n\n## [4:15] Likelihood Estimation & Confidence Intervals\nGiven response pattern, maximize likelihood of `theta`:\n```python\nimport numpy as np\nfrom scipy.optimize import minimize\n\ndef neg_log_lik_theta(theta, item_a, item_b, responses):\n    p = 1/(1+np.exp(-item_a*(theta-item_b)))\n    return -np.sum(responses*np.log(p+1e-12) + (1-responses)*np.log(1-p+1e-12))\n\n# responses: array of 0/1 for model on items\nres = minimize(neg_log_lik_theta, x0=0, args=(A_vec, B_vec, resp_vec))\ntheta_est = res.x[0]\n```\nIRT provides standard errors naturally.\n\n## [4:46] Same Theta Different Scores / Same Score Different Theta\nExample: Claude Opus 4.1 and Gemini 3 Pro have identical benchmark score but theta differs by 1 std dev because IRT uses actual response vectors.\n\n## [5:17] Application: Auditing Benchmarks\nUse `a` and `B` to flag bad items.\n\n## [5:49] Item Selection via Discrimination\nKeep items with high `a`; discard negative `a`.\n\n## [6:20] Flat Lines & Negative A\nNegative `a` often indicates labeling errors (gold answer wrong). Real dataset examples shown.\n\n## [7:58] Tiny Benchmarks Paper\nMethod to shrink benchmarks: order items by information, add until 99% correlation with full-set theta estimates.\n\n## [8:28] Step-by-Step Benchmark Reduction\n1. Estimate `a`, `B` on full benchmark.\n2. Sort items descending by `|a|`.\n3. Greedily add items, recompute theta correlations.\n4. Stop at 99% correlation (often <20% items).\n\n## [10:01] Residuals & Outlier Detection\nResidual = observed - predicted probability. Large residuals signal anomalies.\n\n## [10:32] Detecting Leaked Items\nIf a high-ability model fails easy item (negative residual), suspicion of leak or mislabel.\n\n## [12:05] Person-Fit (Model-Fit) Statistics\nCompute fit per model: identify inconsistent responders (e.g., GPU instability).\n\n## [13:05] Adaptive Testing & Privacy\nPolicy-driven item exposure:\n- Private item bank.\n- Anchor set (common medium difficulty) for scale alignment.\n- Fingerprint set (hard items unique per org).\n\n## [14:38] Org A vs Org B Fingerprinting\nAssign different hard items; monitor if specific org's models improve abnormally \u2192 leak source.\n\n## [15:40] Synthetic Leak Experiment\nFine-tune on Org A's fingerprint; residual z-score >2 detects leak.\n\n## [16:42] Fairness / Differential Item Functioning (DIF)\nSplit models by vendor (Anthropic/OpenAI). Plot curves per group; gap indicates item favoring one.\n\n## [18:49] Model Lineage via Residual Correlation\nCompute residual vector per model; correlation matrix reveals families:\n- DeepSeek R1 distillations correlate 0.3.\n- Same model different effort levels correlate ~1.0.\n- Gemini 3 Pro vs 2.5 Pro successor correlation.\n\n## [21:59] Selecting Anti-Correlated Models\nFor robust systems, combine models with negative residual correlation.\n\n## [22:31] Future Work\nMulti-dimensional IRT, merging benchmarks, using token/latency signals.\n\n## System Design & Database Schema\n```sql\nCREATE TABLE item_responses (\n    model_id VARCHAR,\n    item_id VARCHAR,\n    correct BOOLEAN,\n    timestamp TIMESTAMPTZ\n);\nCREATE TABLE item_params (\n    item_id VARCHAR PRIMARY KEY,\n    a FLOAT,\n    b FLOAT\n);\nCREATE TABLE model_params (\n    model_id VARCHAR PRIMARY KEY,\n    theta FLOAT,\n    std_error FLOAT\n);\n```\n**Architecture**: Batch job estimates parameters with EM algorithm; API serves adaptive test items based on policy engine.\n\n## Implementation Logic Block\n```python\ndef select_items_for_org(org, n=10):\n    anchor = get_anchor_set()\n    fingerprint = get_fingerprint_set(org)\n    return anchor + sample(fingerprint, n)\n```\n\nThis deep-dive provides a complete blueprint for productionizing psychometric LLM evaluation.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-EfcfUB2uprc");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=EfcfUB2uprc" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-vJukHCIv7Ck">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
@@ -901,6 +928,33 @@
             </script>
             
             <a href="https://youtube.com/watch?v=ZpK5PWX2YRM" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
+        <article class="card" id="video-OqM67QG_Ikk">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-08</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-OqM67QG_Ikk"></div>
+            <script>
+                (function() {
+                    const md = "# Designing an Agent Sandbox Cloud: From Fork() to Fleet\n\n## Introduction\nThis technical deep-dive explores the evolution of secure code execution environments for AI agents, focusing on transitioning from basic fork/exec models to advanced microVM-based sandboxes. The talk by Abhishek Bhardwaj (OpenAI) addresses security, performance, and scalability challenges in running untrusted code at scale.\n\n## Core Concepts\n### 1. **Sandbox Requirements**\n- **Security**: Prevent untrusted code from exploiting the host kernel or accessing sensitive data.\n- **Performance**: Minimize latency for real-time execution.\n- **Reliability**: Ensure fault tolerance and state persistence.\n- **Scalability**: Support distributed execution across nodes.\n\n### 2. **Execution Models**\n- **Fork/Exec**: Simple but insecure (noisy neighbors, kernel exploits).\n- **Containers**: Improved isolation via namespaces/cgroups but still kernel-dependent.\n- **MicroVMs**: Hardware-level isolation (e.g., Firecracker, GVisor) for stronger security.\n\n### 3. **Security Challenges**\n- **Kernel Exploits**: Even microVMs can be chained to attack the host.\n- **Resource Contention**: Fork/exec models can monopolize node resources.\n- **Persistence**: Losing state during node failures.\n\n## Technical Solutions\n### 1. **MicroVMs**\n- **Firecracker**: Lightweight, fast VMs for serverless environments (e.g., AWS Lambda).\n- **GVisor**: User-space kernel for reduced attack surface.\n- **Advantages**: Isolate guest OS from host kernel, prevent escape attacks.\n- **Trade-offs**: Performance overhead due to hypervisor context switching.\n\n### 2. **Snapshotting for Persistence**\n- **Block-level Snapshots**: Efficiently capture changes using file system metadata (e.g., XFS).\n- **Copy-on-Write (CoW)**: Minimize latency by sharing unchanged blocks.\n- **Always-on vs. Explicit Snapshots**: Balance between automatic and manual state saving.\n- **Orchestration**: Route restores to nodes with minimal data transfer using snapshot lineage.\n\n### 3. **Distributed Orchestration**\n- **Cluster Management**: Group nodes by region/load for low-latency execution.\n- **Warm Pools**: Pre-warm microVMs for rapid deployment.\n- **Hybrid Approaches**: Combine memory snapshots with block storage for scalability.\n\n## Implementation Details\n### 1. **MicroVM Architecture**\n- **VMM (Virtual Machine Monitor)**: Manages guest OS execution (e.g., Firecracker).\n- **Paravirtualization**: Optimize hardware access via virtio drivers.\n- **Device Jailing**: Restrict guest access to specific hardware (e.g., block devices).\n\n### 2. **Snapshotting Workflow**\n1. **Change Detection**: Use file system metadata (e.g., iode) to identify modified blocks.\n2. **Diff Packaging**: Compress changed blocks into an artifact.\n3. **Cloud Storage**: Upload diffs to durable storage (e.g., GCS, S3).\n4. **Restore**: Apply diffs to a base image on a new node.\n\n### 3. **Code Execution Pipeline**\n- **Harness Role**: Parses model output, triggers tool calls, executes in sandbox.\n- **Grader**: Validates results against expected outcomes.\n- **Feedback Loop**: Adjust model weights based on execution success.\n\n## Key Design Decisions\n- **MicroVMs over Containers**: Prioritize security for AI agents handling sensitive tasks.\n- **Incremental Snapshots**: Reduce storage costs by capturing only changes.\n- **Hybrid Persistence**: Use in-cluster caches for low-latency access with fallback to object storage.\n- **Orchestration Intelligence**: Route tasks based on snapshot lineage and node health.\n\n## Conclusion\nThe talk emphasizes that secure, scalable agent sandboxes require a combination of hardware isolation (microVMs), efficient state management (snapshotting), and intelligent orchestration. As AI agents grow more capable, these principles will be critical for safe deployment in both research and production environments.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-OqM67QG_Ikk");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=OqM67QG_Ikk" target="_blank" class="youtube-link">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
                 </svg>
