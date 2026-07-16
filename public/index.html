@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-iCj_ATyThvc">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-16</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-iCj_ATyThvc"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: Aiden \u2014 Autoresearch Agent vs 1000 Researchers in Parameter Golf\n\n## 1. Problem Definition & Competition Setup (0:16\u20131:17)\n**Parameter Golf** is a hiring challenge by OBI. Objective: train the best language model under:\n- Strict parameter count / file size limit (16 MB observed)\n- Computation constraints (total competition compute budget)\n\nParticipants: ~1000 ML engineers, 2000 submissions, 47 passed open review to leaderboard. 7 entries were agents.\n\nBusiness rule: entries must be mergeable/forkable by community \u2014 not just local score optimization.\n\n## 2. System Identity & Company Context (1:17\u20132:18)\n- **Weco**: auto research company, 2.5 yrs old. Previous agent evaluated by OpenAI MLE-bench.\n- **Aiden**: experimental prototype, multi-agent self-improving system.\n\nArchitecture pattern:\n```\n[Paper/PR Ingestion] -> [Idea Extractor Agent]\n       |                     |\n[Experiment Runner] <- [Quality Gate]\n       |                     |\n   [PR Submitter] -> [Leaderboard/Community]\n```\n\n## 3. Deployment Results (2:18\u20134:55)\n- Duration: 22 days, single H100 node.\n- 1300 experiments executed.\n- 7 leaderboard records (best human: 3).\n- Compute: \u22644% of competition total; 15% of records; 28% submissions passed (6x avg).\n- Impact metric: H-index over PRs = 10 (next human 7).\n\n| Metric | Aiden | Community Avg |\n|---|---|---|\n| Submissions passed | 28% | ~4.6% |\n| Compute used | 4% | - |\n| H-index | 10 | 7 |\n\n## 4. Idea Sourcing & Execution Logic (4:55\u20138:33)\nAiden traces ideas from:\n- Public research papers (e.g., Quen gated attention)\n- Human abandoned PRs (implementation difficulty)\n- Small original emergent ideas from file-size navigation\n\nConcrete code logic flow:\n```python\nif add_gated_attention():\n    params += delta\n    if file_size > 16MB:\n        apply_quantization()  # reduces size\n    score = eval()\n    if score ~ baseline:\n        wait_for_tokenizer_pr()\n        combine(tokenizer + arch)\n        # synergy -> big jump\n```\n\n## 5. Human-AI Division & Meta-Design (8:33\u201311:08)\n- Humans: creative ideation, competition design.\n- Agent: execution, combination search.\n- Bad competition design = useless community effort; leverages agent misuse.\n\nMetaphor: gradient descent vs hand-coding \u2192 auto research vs manual ML engineering.\n\n## 6. Framework: Eval & Abstraction as Training (11:08\u201314:52)\n**Eval = Loss Function**\n- Proprietary eval data amplifies agent strength.\n- Sets optimization target.\n\n**Codebase Abstraction = Architecture**\n- Fraud detection case:\n  - Loose API: `process(train+test)` \u2192 leakage, good score but invalid.\n  - Strict API: `process_train()`, `process_test()` isolated \u2192 leakage 0.\n\n```python\n# Strict abstraction\nclass Pipeline:\n    def fit(self, train): ...\n    def predict(self, test): # no train access\n```\n\n## 7. Conclusion & New Skills (14:52\u201315:52)\n- Auto research is craft of designing climbable space.\n- Valuable skills: creativity, eval design, abstraction judgment.\n- Engineers move up stack; system-driving is new role.\n\n## Step-by-Step Implementation Summary\n1. Define constraint config (size, compute).\n2. Build ingestion from papers/PRs.\n3. Multi-agent loop: propose \u2192 experiment \u2192 gate \u2192 PR.\n4. Set eval as citation + review + score.\n5. Tighten abstraction to prevent leakage.\n6. Measure community H-index for impact.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-iCj_ATyThvc");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=iCj_ATyThvc" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-q4Tr-DknG2M">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
