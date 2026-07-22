@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-Q0VkgCyNVUg">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-22</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-Q0VkgCyNVUg"></div>
+            <script>
+                (function() {
+                    const md = "# CrabRAG Technical Deep Dive\n\n## Architecture Overview\n![System Architecture](https://example.com/architecture-diagram.png)\n\n### Components\n1. **Memory Layer**:\n   - Neo4j Graph Database (primary)\n   - Pgvector (secondary vector store)\n   - Cognite (enterprise management)\n\n2. **Processing Layer**:\n   - Claude 3.5 (query generation)\n   - Custom Cypher engine\n   - Vector similarity module\n\n3. **UI Layer**:\n   - Web-based dashboard\n   - CLI tools\n   - API endpoints\n\n## Implementation Workflow\n1. **Data Preparation**:\n   - Parse markdown files\n   - Extract entities/relationships\n   - Generate embeddings\n\n2. **Graph Construction**:\n   - Create nodes with properties\n   - Define relationship types\n   - Index critical fields\n\n3. **Query Execution**:\n   - Hybrid search pipeline\n   - Cypher pathfinding\n   - Result validation\n\n## Performance Metrics\n| Metric              | Vector-Only | Graph-Based |\n|---------------------|-------------|-------------|\n| Query Latency       | 4.2s        | 1.8s        |\n| Accuracy            | 65%         | 98%         |\n| Token Efficiency    | 100k        | 25k         |\n\n## Case Study: Home Network Security\n1. **Problem**: Exposed management ports\n2. **Vector Approach**: Missed 3/5 instances\n3. **Graph Solution**:\n   - Identified PFSense router\n   - Traced exposed ports through relationships\n   - Provided remediation path\n\n## Code Examples\n### Cypher Query for Security Scan\n```cypher\nMATCH (n:Device {type: \"Router\"})-[:EXPOSED_TO]->(p:Port)\nWHERE p.port IN [22, 80, 443]\nRETURN n, p\n```\n\n### Python Integration\n```python\nfrom neo4j import GraphDatabase\n\ndef scan_network():\n    driver = GraphDatabase.driver(\"neo4j://localhost\")\n    with driver.session() as session:\n        results = session.run(\"MATCH (n)-[:EXPOSED_TO]->() RETURN n LIMIT 10\")\n        return [record.data() for record in results]\n```\n\n## Best Practices\n1. **Schema Design**:\n   - Normalize relationship types\n   - Index frequently queried properties\n2. **Hybrid Optimization**:\n   - Use vector search for initial candidates\n   - Validate with graph constraints\n3. **Security**:\n   - Encrypt sensitive graph data\n   - Implement access controls\n\n## Future Enhancements\n- Auto-generate graph schemas from markdown\n- Real-time graph updates via WebSocket\n- Multi-graph support for hybrid environments";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-Q0VkgCyNVUg");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=Q0VkgCyNVUg" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-VGN22pPpb-8">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
