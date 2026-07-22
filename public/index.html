@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-VGN22pPpb-8">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-22</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-VGN22pPpb-8"></div>
+            <script>
+                (function() {
+                    const md = "# Ontology-Based Semantic Layer for AI Agents: A Technical Deep-Dive\n\n## Introduction\n\nIn enterprise environments, AI agents face significant challenges when integrating with fragmented data ecosystems. Emil Eifrem of Neo Forj introduces a solution: a <b>shared ontology-based semantic layer</b> that enables scalable, intelligent agent deployment. This architecture addresses four core problems:\n\n1. Manual data discovery and wiring for each agent.\n2. Lack of trust validation for data sources.\n3. Violation of the DRY (Don\u2019t Repeat Yourself) principle.\n4. Absence of cross-agent learning.\n\n---\n\n## The Three Pillars of the Semantic Layer\n\n### 1. Business-Facing Ontology\n\nA **human-readable model** of business concepts that aligns with organizational knowledge. Examples include:\n\n- Customers\n- Accounts\n- Debit cards\n- Transactions\n- Credit history\n\nThis ontology ensures that all stakeholders (e.g., bank employees) can understand and validate the agent\u2019s logic. For instance, in a banking context, the ontology defines relationships like:\n\n```\nCustomer \u2192 has \u2192 Account\nAccount \u2192 has \u2192 Debit Card\nTransaction \u2192 belongs to \u2192 Account\n```\n\n### 2. Technical Ontology\n\nA **metadata catalog** of all data sources in the enterprise ecosystem. This includes:\n\n| Data Source Type | Examples |\n|------------------|----------|\n| Relational Databases | Oracle, PostgreSQL |\n| Data Warehouses | Snowflake, BigQuery |\n| Data Lakes | S3, Azure Data Lake |\n| Graph Databases | Neo4j |\n\nThe technical ontology maps business concepts to physical data locations. For example:\n\n```\nBusiness Concept: Customer First Name\nTechnical Mapping:\n- System of Record: Oracle Database\n- Schema: customer_info\n- Column: F_name\n```\n\n### 3. Runtime Signals (Execution Traces)\n\nAgents leave **execution traces** during operations, capturing:\n\n- What actions were taken (e.g., DMV lookup vs. passport verification).\n- Outcomes (success/failure).\n- Contextual metadata (e.g., time, user ID).\n\nThese traces enable:\n\n- **Self-learning**: Agents adapt based on past performance (e.g., preferring DMV over passport if DMV succeeds 90% of the time).\n- **Cross-agent learning**: Insights from one agent (e.g., optimal data source for identity verification) inform others.\n\n---\n\n## Implementation Example: Bank Account Opening Agent\n\n### Step 1: Define Business Ontology\n\n```\nEntity: Customer\n  Attributes: first_name, last_name, date_of_birth\nEntity: Account\n  Attributes: account_number, type, status\nRelationship: Customer owns Account\n```\n\n### Step 2: Map Technical Ontology\n\n```\nCustomer.first_name \u2192 Oracle.customer_info.F_name\nCustomer.date_of_birth \u2192 Snowflake.user_data.DOB\n```\n\n### Step 3: Execute with Runtime Signals\n\nWhen an agent needs to verify identity:\n\n1. Query the semantic layer for available data sources (DMV, passport).\n2. Attempt verification via DMV (success \u2192 log trace).\n3. Use trace data to prioritize DMV in future requests.\n\n---\n\n## Benefits of the Semantic Layer\n\n| Problem | Solution | Benefit |\n|---------|----------|--------|\n| Manual data discovery | Centralized ontology | Automated source identification |\n| Trust validation | Curated + empirical signals | Reliable data selection |\n| DRY violations | Single source of truth | Reduced redundancy |\n| No learning | Execution traces | Adaptive agents |\n\n---\n\n## Conclusion\n\nThe ontology-based semantic layer transforms AI agent development by:\n\n- **Decoupling business logic from data infrastructure**.\n- **Enabling cross-agent collaboration** through shared knowledge.\n- **Accelerating deployment** via reusable mappings and self-learning.\n\nFor startups, Neo4j offers free credits and expert support to model and optimize this architecture. Enterprises can scale agents without re-engineering for each use case, ensuring long-term adaptability in data-rich environments.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-VGN22pPpb-8");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=VGN22pPpb-8" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-JvKO40CFq-s">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
