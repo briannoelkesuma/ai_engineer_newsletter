@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-H7puB0RwJMM">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-23</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-H7puB0RwJMM"></div>
+            <script>
+                (function() {
+                    const md = "# Provenance for LLM\u2011Built Knowledge Graphs \u2013 Technical Deep\u2011Dive\n\n## Overview\nLarge language models (LLMs) excel at synthesizing facts from heterogeneous sources, but the resulting outputs often lack a clear provenance trail. This loss of traceability poses risks for compliance, debugging, and privacy. The video introduces **Graffiti**, an open\u2011source temporal graph framework that embeds provenance directly into the data model.\n\n## Core Concepts\n- **Fact**: A triple (subject, verb, object) derived from one or more source episodes.\n- **Episode**: An atomic ingestion unit (e.g., EHR record, PDF lab report, user chat) that carries metadata tags.\n- **Graph**: Nodes represent entities or episodes; edges represent relationships and are annotated with provenance metadata.\n\n## Architecture\n### 1. Ingestion Pipeline\n```python\ndef ingest_episode(source, metadata):\n    episode = Episode(id=uuid4(), source=source, tags=metadata)\n    graph.add_node(episode)\n    for fact in extract_facts(source):\n        graph.add_edge(episode, fact, label='derived_from')\n    return episode\n```\n- **Extraction**: Structured extraction of entities and relationships using LLMs.\n- **Tagging**: Each episode receives tags such as `<code>ehr</code>`, `<code>verified</code>`, `<code>patient_input</code>`.\n\n### 2. Graph Mutation & Provenance\n- When a source episode is updated or deleted, Graffiti propagates an **invalidation flag** to all dependent facts.\n- **Edge update rule**: A fact survives only if at least one supporting episode remains un\u2011invalidated.\n\n### 3. Querying & Filtering\nAgents can query by tag:\n```cypher\nMATCH (e:Episode {tag: 'verified'})-[:DERIVED_FROM]->(f:Fact)\nRETURN f\n```\n- This enables compliance checks (e.g., require `<code>verified</code>` for clinical decisions).\n\n## Database Choice\nGraffiti can be backed by any property graph database (Neo4j, JanusGraph) or a custom storage layer. Key requirements:\n- **Temporal support**: Ability to store versioned nodes/edges.\n- **Efficient traversal**: BFS/DFS for lineage walks.\n- **Metadata projection**: Fast tag\u2011based filtering.\n\n## Design Patterns\n| Pattern | Description | Use\u2011Case |\n|---------|-------------|----------|\n| **Temporal Graph** | Nodes/edges carry timestamps and version IDs. | Modeling evolving facts. |\n| **Tag\u2011Based Propagation** | Metadata spreads from source to derived artifacts. | Enforcing compliance rules. |\n| **Invalidation Flag** | Marks facts that lose all supporting sources. | Deleting obsolete data. |\n\n## Implementation Steps\n1. **Set up graph database** (e.g., Neo4j) and define node/relationship schemas.\n2. **Implement ingestion service** that extracts entities, creates episodes, and attaches tags.\n3. **Run extraction pipeline** using LLMs to generate candidate facts; store them as nodes.\n4. **Link facts to episodes** via `DERIVED_FROM` edges.\n5. **Add indexing** on tags for fast filtering.\n6. **Deploy mutation handlers** that update invalidation flags when source data changes.\n7. **Expose query API** for agents to retrieve facts with provenance metadata.\n\n## Cost & Latency Optimizations\n- **Caching** of extracted entities to avoid recomputation.\n- **Similarity search** on textual artifacts to prune unnecessary LLM calls.\n- **Batch processing** of episodes to amortize LLM inference cost.\n\n## Example Scenario\nA healthcare agent synthesizes a fact \u201cPatient has a penicillin allergy\u201d from three sources: an EHR record, a PDF lab report, and a patient chat. The EHR episode is tagged `<code>ehr</code>` and marked `<code>verified</code>`. The agent queries for verified facts, receives the allergy fact, and can trace it back to the EHR source. If a later lab report is retracted, Graffiti flags the derived fact for review, ensuring the clinician is not misled.\n\n## Key Takeaways\n- Provenance must be baked into the data model, not added post\u2011hoc.\n- Graph\u2011based lineage enables dynamic updates and compliance enforcement.\n- Tagging and invalidation flags provide a scalable way to manage mutability.\n\n## References\n- Graffiti repository: https://github.com/yourorg/graffiti\n- Zep AI documentation: https://zep.ai/docs\n";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-H7puB0RwJMM");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=H7puB0RwJMM" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-418t26CVz-w">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
