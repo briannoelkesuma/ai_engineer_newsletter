@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-O72p-rBb2bA">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-25</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-O72p-rBb2bA"></div>
+            <script>
+                (function() {
+                    const md = "# Evals-Driven Development for a Mental Health AI Coach\n\n## Introduction\nThis technical presentation by Akele Reed and Dave Revere from **SonderMind** explores the engineering complexities of building a clinically grounded AI coach (Sonder) for mental health. The primary focus is on moving beyond general-purpose LLM limitations to create a system that is safe, ethical, and clinically accurate through a rigorous **Evals-Driven Development** lifecycle.\n\n## The Problem: General-Purpose LLM Limitations\nGeneral-purpose Large Language Models (LLMs) present significant risks in the mental health domain:\n* **Over-Calibration:** Standard safety filters are often too conservative, leading to \"false positive\" triggers that can make a vulnerable user feel isolated or shut down during a crisis.\n* **Lack of Clinical Nuance:** LLMs often fail to detect the \"signal underneath the sentence\"\u2014the subtle implications of language that indicate high-risk scenarios (e.g., indirect references to self-harm).\n* **Safety vs. Capability Trade-off:** Traditional moderation APIs often lack the context required to distinguish between a user discussing a past trauma and a user in an active, life-threatening crisis.\n\n## Architectural Design: The Safety Sandwich\nSonderMind utilizes a modular architecture where safety is not an afterthought but a primary architectural objective. The system is designed as a \"sandwich\" of guardrails:\n\n### 1. Input Guardrails\nAnalyzes the user's message as it arrives. It checks for immediate crisis indicators (e.g., active self-harm or violence) to determine if the AI should engage or if the user needs immediate human intervention/local resources.\n\n### 2. Core LLM (Sonder Core)\nThe central conversational engine. Because the guardrails are modular and separate, the core model can be iterated upon without compromising the safety layer.\n\n### 3. Output Guardrails\nAnalyzes the AI's generated response and the conversation context as a whole. This ensures the AI's response is clinically appropriate and does not inadvertently escalate a situation.\n\n### 4. Modular Guardrail Implementation\n- **Separate LLM-as-a-Judge:** Guardrails are implemented as separate LLM calls. While this increases latency and cost, it makes the system significantly more robust against prompt injection and jailbreaking compared to a single monolithic prompt.\n- **Modularity:** This allows for rapid iteration on the core conversational capabilities while maintaining a stable, verified safety layer.\n\n## The Learning Loop: Evals-Driven Development\nThe most critical component is the feedback loop that turns clinical expertise into engineering constraints.\n\n### The Annotation Process\nWhen a conversation trace is captured, it is sent to a **Clinical Annotation Queue**. Licensed professionals review the trace and use a specific rubric to annotate the interaction. Key fields include:\n* **Expected Observation:** The clinical outcome that *should* have occurred (e.g., \"Trigger safety resource and disengage\").\n* **Turn Index:** The specific point in the conversation where the guardrail should have fired.\n* **Category/Metadata:** The specific clinical category (e.g., self-harm, domestic violence).\n\n### From Annotation to CI/CD\nOnce annotated, these traces are converted into **Typed Evaluations**. This turns clinical judgment into code-based assertions:\n1. **Extraction Script:** A script parses clinician annotations and normalizes them into a structured evaluation schema.\n2. **Automated Testing:** Every change to the prompt, the model version, or the guardrail configuration must pass these clinical evaluations.\n3. **Regression Testing:** This ensures that fixing one edge case (e.g., a specific self-harm scenario) doesn't break the system's ability to handle another (e.g., relationship challenges).\n\n## Design Philosophy: Human-Centric Safety\nSonderMind emphasizes three core principles for high-stakes AI:\n1. **Clinical Ownership:** The clinical team, not the engineering team, defines the \"definition of good.\"\n2. **Concrete Benchmarks:** Instead of chasing abstract benchmarks, the system focuses on real-world failure modes and real data.\n3. **Mitigating Over-Calibration:** The goal is not to maximize the number of triggers, but to maximize the **correctness** of triggers. A false positive in mental health can be as damaging as a false negative.\n\n## Conclusion & Open Source Contribution\nTo foster a safer ecosystem, SonderMind has open-sourced their datasets, including:\n* **200 Input Guardrail Scenarios**\n* **100 Output Guardrail Scenarios**\n\nThese datasets are clinically reviewed and calibrated against real conversation patterns to provide a shared baseline for the industry.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-O72p-rBb2bA");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=O72p-rBb2bA" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-xIt_mTQp6mY">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
