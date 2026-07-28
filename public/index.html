@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-7wu2hsRfvV0">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-28</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-7wu2hsRfvV0"></div>
+            <script>
+                (function() {
+                    const md = "# YouTube Transcript API Scaling for High-Volume Applications\n\n## Introduction\nThis guide details the technical and business strategies required to scale YouTube's transcript API for high-volume use cases. The focus is on transitioning from standard API usage to a partnership model that accommodates commercial demands.\n\n## Section 1: Understanding High-Volume API Challenges\n\n### 1.1 Rate Limiting Constraints\n- Standard YouTube API tiers impose strict rate limits (e.g., 100 requests/minute for free tiers).\n- High-volume applications (e.g., 10,000+ daily requests) exceed these limits, causing service interruptions.\n- Example: A news platform fetching real-time transcripts for 500 articles/day would hit rate limits within hours.\n\n### 1.2 Stability Requirements\n- Commercial applications require SLAs (Service Level Agreements) guaranteeing uptime (e.g., 99.9% availability).\n- Partnership plans often include priority support and dedicated API quotas.\n\n## Section 2: Partnership Model Overview\n\n### 2.1 Commercial Intent\n- Partnership plans are reserved for revenue-generating or mission-critical applications.\n- Example: A SaaS platform offering YouTube transcript analytics as a core feature.\n\n### 2.2 Volume Thresholds\n- Approval depends on demonstrated need. YouTube evaluates:\n  - Daily API call volume\n  - Data storage requirements (e.g., transcript storage)\n  - Geographic distribution of requests\n\n### 2.3 Cost Models\n- Partnership tiers may involve:\n  - Tiered pricing (e.g., $0.01 per 1,000 API calls)\n  - Volume-based discounts\n  - Custom pricing for enterprise clients\n\n## Section 3: Technical Implementation Steps\n\n### 3.1 API Configuration\n- **Step 1:** Audit current API usage with tools like Google Cloud Monitoring.\n- **Step 2:** Identify bottlenecks (e.g., frequent retries due to rate limits).\n- **Step 3:** Request partnership tier with specific requirements (e.g., 500 RPM - requests per minute).\n\n### 3.2 Database Setup\n- Store transcripts in a scalable database (e.g., PostgreSQL with partitioning).\n- Example schema:\n  ```sql\n  CREATE TABLE transcripts (\n    video_id TEXT PRIMARY KEY,\n    transcript TEXT NOT NULL,\n    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n  );\n  ```\n- Implement caching (e.g., Redis) for frequently accessed transcripts.\n\n### 3.3 Rate Limiting Mitigation\n- **Strategy 1:** Batch requests (e.g., fetch 10 transcripts in a single call).\n- **Strategy 2:** Implement exponential backoff for retries.\n- **Strategy 3:** Use API gateways (e.g., NGINX) to distribute load.\n\n## Section 4: Partnership Negotiation Checklist\n\n| Requirement          | Description                          | Negotiation Focus          |\n|----------------------|--------------------------------------|----------------------------|\n| Rate Limits          | Custom RPM (e.g., 1,000 RPM)         | Volume-based quota         |\n| SLAs                 | 99.9% uptime guarantee               | Penalty clauses            |\n| Cost Structure       | Tiered pricing model                 | Budget alignment           |\n| Support              | Dedicated account manager            | Response time SLA          |\n\n## Section 5: Post-Approval Workflow\n\n1. **Activation:** Receive partnership API keys with elevated permissions.\n2. **Monitoring:** Set up alerts for rate limit approaches using Prometheus/Grafana.\n3. **Optimization:** Continuously refine batch sizes and caching strategies.\n\n## Conclusion\nScaling YouTube's transcript API requires a strategic partnership approach. By aligning technical needs with commercial terms, high-volume applications can achieve stability and cost efficiency. Immediate action is recommended to avoid service disruptions.\n";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-7wu2hsRfvV0");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=7wu2hsRfvV0" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-1OMHGsUZiqA">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
