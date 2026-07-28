@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-lyL5QhgIOxc">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-28</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-lyL5QhgIOxc"></div>
+            <script>
+                (function() {
+                    const md = "# Scaling the Hugging Face Hub: Technical Deep Dive\n\n## Overview\nThe Hugging Face Hub has scaled to 3 million public models, 1 million datasets, and 14 million users. This growth required rearchitecting infrastructure to handle metadata, search, and compute demands efficiently.\n\n## System Architecture\n### Kubernetes Cluster\n- **Horizontal Pod Autoscaler (HPA)**: Scales pods based on CPU/memory usage during traffic spikes.\n- **Cast AI Integration**: Provisioning additional nodes when Kubernetes lacks capacity, ensuring no downtime.\n- **Deployment Range**: 10\u2013500 bots scaled dynamically based on traffic.\n\n### MongoDB Atlas\n- **Metadata Storage**: Stores model metadata (names, descriptions), user data, and configuration.\n- **Binary Separation**: Model artifacts (tokenizers, weights) stored in AWS S3 for independent scaling.\n- **Denormalized Read Collections**: Optimized for fast searches, avoiding joins.\n\n### Search Optimization\n- **Apache Lucene via Atlas Search**: Enables fast full-text search on model names.\n- **Premputee Tokens**: Model names tokenized at insert time for instant autocomplete.\n- **Query Strategy**: Uses `$search` operator in MongoDB with Lucene index for efficient matching.\n\n## Search Workflow\n1. User queries model names (e.g., \"llama\").\n2. Request routed to MongoDB Atlas via optimized read collection.\n3. Atlas Search matches tokens against pre-indexed model names.\n4. Results sorted by trending score (downloads, likes) calculated every 5 minutes.\n\n## Scaling Strategies\n### Deployment-Level Scaling\n- Kubernetes HPA adjusts pod count based on resource thresholds.\n- Cast AI supplements Kubernetes by adding nodes during capacity shortages.\n\n### Infrastructure-Level Scaling\n- **Sharding Plan**: Future MongoDB sharding to distribute data across nodes.\n- **Read Replicas**: Secondary nodes handle read-heavy workloads, reducing primary load.\n\n## Technical Challenges\n- **Latency at Scale**: Transition from regex-based search to Atlas Search reduced P99 latency.\n- **Consistency Trade-offs**: Strong consistency queries routed to primary MongoDB node; others use secondaries.\n- **Cost Efficiency**: Auto-scaling avoids overprovisioning, balancing cost and performance.\n\n## Future Improvements\n- Full MongoDB sharding implementation.\n- Event-driven autoscaling (KDA) based on request metrics rather than resource usage.\n\n## Conclusion\nThe Hugging Face Hub\u2019s architecture prioritizes scalability and user experience. By decoupling metadata and binaries, optimizing search with Lucene, and leveraging multi-layer auto-scaling, it maintains performance even at 3 million models. Future steps focus on sharding and event-driven scaling to handle continued growth.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-lyL5QhgIOxc");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=lyL5QhgIOxc" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-CgsWxRUY5Eo">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
