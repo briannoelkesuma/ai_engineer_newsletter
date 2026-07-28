@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-CgsWxRUY5Eo">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-28</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-CgsWxRUY5Eo"></div>
+            <script>
+                (function() {
+                    const md = "# AI Agents for Performance Engineering: Netflix's Case Study\n\n## Introduction\nThis talk by Rajat Shah (Netflix) details how AI agents can revolutionize performance engineering by automating bottleneck detection and fix generation in large-scale distributed systems. The focus is on addressing the inefficiencies caused by rapid code generation from AI tools, which often introduce suboptimal code.\n\n## Problem Statement\n- **Scalability of Performance Engineering**: Traditional manual profiling and optimization are time-consuming and don't scale with faster code generation.\n- **Cost of Suboptimal Code**: AI agents may write performant-looking code that still has inefficiencies (e.g., O(n\u00b2) algorithms), increasing compute costs.\n\n## Key Assumptions\n1. **Profiling Data Standardization**: Profiling tools across languages (Java, Python, Go) produce structured data (call stacks, CPU usage) that AI can parse.\n2. **Pattern Knowledge**: AI agents trained on quality code can recognize common anti-patterns (e.g., redundant allocations, poor batching).\n\n## Experiment Overview\nNetflix tested an AI agent that:\n1. Analyzes profiling data to identify hot paths.\n2. Searches the codebase for the problematic code.\n3. Proposes fixes via code reviews.\n4. Validates fixes using canary deployments.\n\n### Step-by-Step Process\n1. **Profiling Data Ingestion**: The agent consumes CPU usage and call stack data from production instances.\n2. **Pattern Matching**: It identifies anti-patterns (e.g., quadratic algorithms) using its training data.\n3. **Code Search**: The agent locates the exact code in the repository (using Git commit info).\n4. **Fix Proposal**: It generates a code review with suggested optimizations.\n5. **Validation**: Canary deployments test the fix's impact on CPU/latency before human approval.\n\n## Technical Implementation\n### AI Agent Workflow\n- **Input**: Profiling data (structured JSON with method-level CPU usage).\n- **Processing**: Pattern recognition + codebase search.\n- **Output**: Code review diff with performance impact estimates.\n\n### Tools & Integrations\n- **Profiling Tools**: Custom or third-party profilers (e.g., Java Flight Recorder, Python cProfile).\n- **Git Integration**: Agent clones repos at specific commits to analyze code context.\n- **Canary Deployment**: Automated A/B testing of fixes.\n\n### Challenges\n- **Memory Constraints**: Agents need long-term memory for pattern catalogs (solved via Git-based catalogs).\n- **Security**: Risk of prompt injection; requires guardrails for safe code generation.\n- **False Positives**: Agents may suggest fixes without full context (mitigated by canary tests).\n\n## Key Learnings (Detailed)\n| Concept | Implementation | Constraint |\n|--------|----------------|------------|\n| Pattern Catalog | Centralized Git repo with markdown files | Must be human-maintained for accuracy |\n| Profiling Integration | Direct API access to profiling tools | Requires low-latency data pipelines |\n| Human Oversight | Final approval for production fixes | Balances automation with safety |\n| Canary Validation | Automated deployment pipelines | Needs robust monitoring setup |\n\n## Proactive vs. Reactive Approach\n- **Reactive Path**: AI fixes issues in production (common but risky).\n- **Proactive Path**: AI prevents anti-patterns during code authoring (requires catalog integration).\n\n## Future Steps\n- Expand pattern catalogs to include framework-specific optimizations (e.g., PyTorch kernel improvements).\n- Integrate AI into IDEs for real-time performance suggestions.\n\n## Conclusion\nAI agents can significantly enhance performance engineering but require careful design. Success hinges on combining AI's pattern recognition with human expertise and robust engineering practices.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-CgsWxRUY5Eo");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=CgsWxRUY5Eo" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-O72p-rBb2bA">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
