@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-kiqubc5b5Yo">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-29</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-kiqubc5b5Yo"></div>
+            <script>
+                (function() {
+                    const md = "# AlphaLab: Multi-Agent Research Automation at Morgan Stanley\n\n## Overview\nAlphaLab is an AI-driven research automation system developed by Morgan Stanley's 30-person PhD AI research team. It automates quantitative research cycles by leveraging large language models (LLMs) for hypothesis generation, evaluation, and experimentation. The system operates in three phases: research, evaluation, and mass experimentation, with a focus on integrating enterprise knowledge and quant expertise.\n\n## System Architecture\n### 1. Agentic Harness\n- **Custom Framework**: Replaces off-the-shelf agent tools (e.g., LangChain) to maximize control over LLM interactions and tool calls.\n- **Tool Integration**:\n  - **Shell Access**: Executes bash commands for environment setup, code execution, and data processing.\n  - **Web Search**: Retrieves public-domain research and technical blogs for context.\n  - **Slurm GPU Management**: Abstracts hardware orchestration for training large models (e.g., 4x H100 GPUs).\n- **Provider Agnosticism**: Supports OpenAI, Anthropic, and open-source models (e.g., via GRPL distillation).\n\n### 2. Multi-Agent Evaluation System\n- **Builder Agent**: Constructs evaluations (code, metrics, backtests).\n- **Critics**:\n  - **High-Level Critic**: Audits for conceptual errors, leakage, and logical flaws.\n  - **Programmatic Critic**: Writes unit/integration tests and checks code quality.\n- **Feedback Loop**: Issues are resolved iteratively until evaluations meet rigor standards.\n\n### 3. Experimentation Phase\n- **Jira-Inspired UI**: Manages tasks as a Kanban board, allowing users to cancel or add experiments.\n- **Strategist Agent**: Proposes experiments based on prior context and user input.\n- **Worker Agents**: Implement strategies, submit Slurm jobs, and analyze results (training curves, eval scores).\n- **Postmortem Analysis**: Generates insights for strategy refinement.\n\n## Key Design Decisions\n1. **Environment-Centric Expertise**: Environments encode Morgan Stanley's proprietary data and quant methodologies, acting as reinforcement learning signals.\n2. **Rigorous Evaluations**: Strict, verifiable metrics replace subjective human judgment to avoid LLM hallucinations.\n3. **Open-Source Scalability**: Code and models are open-sourced to enable community contributions and iterative improvements.\n\n## Technical Implementation\n### Research Phase\n- **Context Building**: The system generates a to-do list (e.g., data loading, statistical tests) to guide research.\n- **Markdown Note-Taking**: Agents document findings in markdown files for dynamic context management.\n- **Duration**: ~3-4 hours per research cycle.\n\n### Evaluation Phase\n- **Multi-Agent Auditing**: Ensures evaluations are free from leakage and conceptual errors.\n- **Validation**: Uses held-out private datasets to measure model performance.\n\n### Experimentation Phase\n- **Automated Code Deployment**: Worker agents write Slurm configs, submit jobs, and analyze results.\n- **Leaderboard**: Tracks model performance against private validation sets.\n- **User Steering**: Allows manual intervention via chat or Jira card adjustments.\n\n## Challenges & Solutions\n- **LLM Hallucinations**: Mitigated via multi-agent evaluation and strict environment definitions.\n- **Expert Knowledge Encoding**: Achieved through environment design and qualitative rubrics for thought processes.\n- **Scalability**: Open-source code and model distillation (e.g., GRPL) enable adaptation to better models.\n\n## Results\n- AlphaLab outperformed a single-agent loop in a Kaggle competition, achieving top 12% rankings.\n- Internal use cases show meaningful improvements in production models, though more iterations enhance results.\n\n## Future Vision\n- **AlphaLab 2.0**: Focuses on self-improving systems where environments encode expertise, reducing manual tuning.\n- **Commodity Auto-Research**: As models improve, AlphaLab's value shifts to environment design, making it a strategic asset for enterprises.\n\n## Conclusion\nAlphaLab demonstrates that environment design is critical for AI-driven research automation. By encoding institutional knowledge into verifiable environments, Morgan Stanley positions itself to scale quant research efficiently.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-kiqubc5b5Yo");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=kiqubc5b5Yo" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-Byv311hdoHE">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
