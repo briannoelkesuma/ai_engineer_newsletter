@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-3ZMUiFaQ3qg">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-31</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-3ZMUiFaQ3qg"></div>
+            <script>
+                (function() {
+                    const md = "# Verifiable Environments for AI in Biology \u2013 Deep Dive\n\n## 0:00 \u2013 Opening & Context\n- Speaker: Kenny Workman, Co\u2011founder & CTO, LatchBio\n- Audience: Researchers, engineers, biotech partners\n- Core theme: Building **agentic biology** \u2013 executable, verifiable pipelines for massive biological datasets.\n\n## 0:13 \u2013 Motivation from Data Growth\n- **Single\u2011cell biology**: isolates cells, measures RNA \u2192 2\u20116\u202fTB per run.\n- **Spatial biology**: adds geometric resolution \u2192 up to 7\u202fTB per run.\n- **Proteomics**: lower volume but critical protein\u2011level insight.\n- Data volume outpaces consumer storage \u2192 need for scalable processing.\n\n## 1:13 \u2013 From Data Tool Vendor to Agent Platform\n- Early business: store, transform, file biotech data as a service.\n- Shift: white\u2011label tools for scientists, expose infrastructure as reusable components.\n- Introduced **coding models** that ingest multi\u2011GB spatial images, execute multi\u2011step pipelines, and output interpretable results.\n- Limitation: frontier LLMs lack biology\u2011specific post\u2011training.\n\n## 2:45 \u2013 Design of the Agent Framework\n- **Multi\u2011stage DAG**: data ingestion \u2192 preprocessing \u2192 model inference \u2192 deterministic grader \u2192 rubric.\n- **Deterministic Grader**: Python function that evaluates success condition against a ground\u2011truth.\n- **Rubric**: set of invariant checkpoints (e.g., correct gene list split, correct radius calculation) that must hold across analysis paths.\n- **Design Pattern**: `prompt \u2192 model \u2192 grader \u2192 rubric`.\n\n## 3:30 \u2013 Benchmark Specification (Spatial Bench)\n- 146 tasks covering the full workflow from raw image to biological insight.\n- Each task expressed as:\n  - `<code>JSON</code>` prompt describing scientific goal.\n  - Model inference step.\n  - Deterministic grader function.\n- Example task: split a gene list into microglial vs oligodendrocyte activation groups, compute Spearman correlation, verify radius.\n- Invariance checks prevent ambiguous wording (e.g., \u201cappropriate radius\u201d).\n\n## 4:10 \u2013 Deterministic Grader Implementation (Python)\n```python\ndef evaluate(task_output, ground_truth):\n    # Example: check that the correct number of clusters was identified\n    if len(task_output['clusters']) != ground_truth['expected_clusters']:\n        return False\n    # Additional invariant checks...\n    return True\n```\n- Guarantees reproducibility; can be version\u2011controlled.\n\n## 5:00 \u2013 Rubric Construction & Verifiable Outcomes\n- Identify **invariant nodes** in the analysis DAG that are independent of path.\n- Build rubrics around these nodes (e.g., correct gene\u2011set cardinality, correct spatial alignment).\n- Use rubrics to score tasks; they serve as the basis for RL reward shaping.\n- Human\u2011in\u2011the\u2011loop verification used to create a verified subset of the benchmark.\n\n## 6:20 \u2013 Verification & Human\u2011in\u2011the\u2011Loop\n- Early benchmarks suffered from ambiguous prompts \u2192 multiple valid answers.\n- Introduced **human verification**: multiple scientists grade each other's work.\n- Result: a verified subset where ground truth is unambiguous.\n- Ongoing work: expand rubrics, incorporate red\u2011team adversarial tasks.\n\n## 7:00 \u2013 Deployment & Feedback Loop\n- Benchmarks integrated into Anthropic model cards and other frontier model releases.\n- Continuous data collection from kit manufacturers informs new benchmark tasks.\n- Feedback drives iterative improvement of models, rubrics, and verification pipelines.\n\n## 8:30 \u2013 Future Directions\n- Extend benchmarks to **single\u2011cell**, **epigenomics**, **DNA\u2011seq**, and **drug discovery** pipelines.\n- Build **long\u2011horizon** extensions that simulate multi\u2011step experimental design.\n- Explore **self\u2011supervised** verification using invariant properties.\n- Scale to **biosecurity** and **surveillance** use\u2011cases (e.g., Aquid collaboration).\n\n## Appendix \u2013 Sample Database Schema\n```sql\nCREATE TABLE experiments (\n    id SERIAL PRIMARY KEY,\n    sample_id TEXT,\n    technology TEXT,\n    data_path TEXT,\n    processed_data JSONB,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE tasks (\n    id SERIAL PRIMARY KEY,\n    experiment_id INT REFERENCES experiments(id),\n    prompt TEXT,\n    grader_function TEXT,\n    rubric JSONB,\n    status TEXT CHECK (status IN ('pending','passed','failed'))\n);\n```\n\n---\n*References*: LatchBio blog, Anthropic Claude Science announcement, SweetBench benchmark literature.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-3ZMUiFaQ3qg");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=3ZMUiFaQ3qg" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-lCBf9slCanI">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
