@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-lCBf9slCanI">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-31</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-lCBf9slCanI"></div>
+            <script>
+                (function() {
+                    const md = "# Ending AI Slop: Technical Deep Dive\n\n## Overview\nThis document provides a granular analysis of the video \"YouTube video feed\" by Thais Castello Branco, focusing on strategies to eliminate AI-generated \"slop\" in subjective domains. Key topics include problem decomposition, verification frameworks, data quality, and human-AI collaboration.\n\n## 1. Problem Decomposition in Subjective Domains\n### 1.1 Challenge\nSubjective domains (e.g., design, writing) lack verifiability due to:\n- Context-dependency (e.g., brand guidelines vary by industry).\n- Temporal changes (e.g., design trends evolve).\n- Ambiguity in defining \"greatness.\"\n\n### 1.2 Solution: Decompose into Verifiable Sub-Problems\n- **Example**: Brand adherence \u2192 Break into colors, typography, motion.\n- **Technical Implementation**:\n  - Use RL environments to train models on codifiable rules (e.g., \"Does this color palette match brand guidelines?\").\n  - Post-training adjustments for contextual factors (e.g., user intent).\n\n## 2. Verification Frameworks\n### 2.1 Ground Truth Creation\n- **Objective Sub-Problems**: Define measurable criteria (e.g., \"Is this font size within brand specs?\").\n- **Subjective Sub-Problems**: Use human judgment for nuanced aspects (e.g., creativity).\n\n### 2.2 Tools & Techniques\n- **LLM Judges**: Limited utility due to hallucination risks. Better for initial filtering.\n- **Expert Consensus**: Curate data via panels of domain experts to establish valid disagreements.\n- **Preference Vectors**: Map user preferences to training data to capture pluralism.\n\n## 3. Data Quality & Curation\n### 3.1 Challenges\n- Noisy data from unstructured preference collection.\n- Mode collapse in training data.\n\n### 3.2 Solutions\n- **Expert Selection**: Strictly curate data from vetted experts across diverse styles.\n- **QA Processes**:\n  - **Specificity Checks**: Ensure expert feedback includes precise reasoning (e.g., \"This layout fails because X aligns with brand guidelines.\").\n  - **Consensus Analysis**: Identify valid disagreements (e.g., aesthetic preferences) vs. flaws (e.g., misalignment).\n- **Data Pipelines**: Tie expert commentary to specific code/components for traceability.\n\n## 4. Human-AI Collaboration\n### 4.1 Role of Human Judgment\n- **Strengths**: Capturing nuanced preferences and creativity.\n- **Integration**: Use human preference vectors to train models on pluralistic data.\n\n### 4.2 Technical Integration\n- **Feedback Loops**: Monitor model outputs against human QA metrics (e.g., brand adherence rates).\n- **Dynamic Routing**: Direct subjective tasks to human review when verifiability thresholds are unmet.\n\n## 5. Implementation Roadmap\n1. **Phase 1**: Decompose target domain into objective/subjective sub-problems.\n2. **Phase 2**: Build RL environments for verifiable sub-problems.\n3. **Phase 3**: Curate high-quality data with expert consensus.\n4. **Phase 4**: Integrate human preference vectors and QA checks.\n5. **Phase 5**: Iterate using feedback loops to refine models.\n\n## Conclusion\nThe video emphasizes that ending AI slop requires a hybrid approach: leveraging technical frameworks for verifiable tasks while preserving human judgment for subjective elements. Success hinges on rigorous data curation, problem decomposition, and intentional task design.\n\n*Generated using transcript analysis from [video source].*";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-lCBf9slCanI");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=lCBf9slCanI" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-AVMr9PMINyo">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
