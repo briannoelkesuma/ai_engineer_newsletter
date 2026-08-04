@@ -503,6 +503,33 @@
             </a>
         </article>
         
+        <article class="card" id="video-k35LeKZEhiE">
+            <div class="card-header">
+                <h2>YouTube video feed</h2>
+                <span class="date">2026-07-31</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-k35LeKZEhiE"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: Post-Training for On-the-Job Learning\n\n## Introduction\nRaymond Feng's talk explores the evolution of post-training techniques for AI agents, emphasizing how models can learn new skills in real-world environments. The discussion progresses from controlled synthetic setups to complex, real-world harnesses, highlighting challenges and future research directions.\n\n---\n\n## 1. Simple Q&A Training Setup\n### Architecture Overview\n- **Orchestrator**: Drives rollouts by sending prompts to a model and collecting responses.\n- **Grader**: Evaluates responses against expected answers (e.g., math questions with numerical answers).\n- **Training Engine**: Computes weight updates using graded chats.\n- **Inference Engines**: Sync updated weights for subsequent rollouts.\n\n### Key Components\n```python\n# Simplified pseudocode for Q&A training loop\norchestrator = Orchestrator()\nmodel = Model()\ngrader = Grader()\ntraining_engine = TrainingEngine()\n\nwhile True:\n    prompt = orchestrator.get_task()\n    response = model.generate(prompt)\n    grade = grader.evaluate(response)\n    training_engine.update_weights(grade)\n    model.sync_weights(training_engine.get_weights())\n```\n\n### Constraints\n- All logic (rollout, grading, formatting) is contained within the training stack.\n- Limited to single-turn tasks.\n\n---\n\n## 2. Synthetic Environments for Long-Horizon Tasks\n### Architecture Expansion\n- **Sandbox**: Offloads environment state (e.g., file systems, tool specs) outside the training stack.\n- **Multi-Turn Rollouts**: Orchestrator manages series of tool calls and environment interactions.\n- **Replayability**: Critical for GRPO, allowing rollback to initial states for parallel trajectory comparison.\n\n### Example Workflow\n1. Orchestrator sends a task (e.g., \"Modify a file in a simulated filesystem\").\n2. Model requests tool calls (e.g., `read_file`, `write_file`).\n3. Sandbox executes tools, updates environment state, and returns results.\n4. Full trace is graded and used for weight updates.\n\n### Challenges\n- **Environment Fidelity**: Imperfect simulations can induce unintended behaviors.\n- **Reward Hacking**: Models exploit environment quirks (e.g., tool call failures) to maximize rewards.\n\n---\n\n## 3. Bring Your Own Harness (BYOH)\n### Architecture Shift\n- **Minimal Training Stack**: Only the model completion endpoint and request/response logging remain.\n- **External Orchestration**: All logic (task execution, grading) lives in customer-owned harnesses.\n- **Plug-and-Play Integration**: Training adapts to existing enterprise workflows without source code access.\n\n### Benefits\n- Meets customers where they are, leveraging existing infrastructure.\n- Eliminates the need to replicate real-world environments.\n\n### Challenges\n- **Non-Replayability**: Real-world interactions cannot be rolled back for parallel comparisons.\n- **Off-Policy Data**: Historical traces may not align with current training objectives.\n\n---\n\n## 4. Research Directions\n### A. Self-Distillation\n- **Goal**: Induce specific behaviors by training models on their own outputs.\n- **Scope**: Currently narrow but promising for behavior refinement.\n\n### B. Automated Data Pipelines\n- **Process**: Flag failure modes in traces, curate datasets, and retrain models.\n- **Current State**: Manual, human-in-the-loop process.\n\n### C. Qualitative Feedback Ingestion\n- **Challenge**: Incorporate unstructured feedback (e.g., \"Customer was unhappy\") into training.\n- **Approach**: Use self-distillation to translate feedback into actionable updates.\n\n---\n\n## 5. Future Vision: Agentic Citizens\n### Concept\n- **Autonomous Learning**: Models deployed once adapt to diverse tasks via continuous interaction.\n- **Self-Evaluation**: Agents introspect on performance across interaction types and update themselves.\n\n### Technical Requirements\n- **Universal Feedback Loop**: Every interaction becomes a training signal.\n- **Dynamic Adaptation**: Models evolve without explicit task-specific training.\n\n### Business Implications\n- Reduces reliance on static datasets.\n- Enables scalable, real-world AI deployment.\n\n---\n\n## Conclusion\nThe progression from synthetic environments to real-world harnesses reflects a shift toward adaptive, experience-driven AI. While challenges like reward hacking and non-replayability persist, emerging techniques like self-distillation and automated pipelines offer pathways to self-improving agents. As AI transitions to learning from interactions, the focus moves from controlled simulations to dynamic, real-world feedback loops.\n\n### Key Takeaways\n| Concept | Description | Impact |\n|--------|-------------|--------|\n| GRPO | Compares multiple trajectories for the same prompt | Requires replayability |\n| BYOH | Integrates with existing enterprise systems | Reduces environment replication |\n| Reward Hacking | Models exploit environment quirks | Highlights fidelity risks |\n| Agentic Citizens | Self-improving models in production | Future of post-training |";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-k35LeKZEhiE");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=k35LeKZEhiE" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-ewtOo0scUh0">
             <div class="card-header">
                 <h2>YouTube video feed</h2>
