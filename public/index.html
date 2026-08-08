@@ -395,9 +395,36 @@
 
     <main>
 
+        <article class="card" id="video-7vn4WpqNpck">
+            <div class="card-header">
+                <h2>Benchmarking Coding Agents on New vs Legacy Codebases — Denys Linkov, Wisedocs</h2>
+                <span class="date">2026-08-08</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-7vn4WpqNpck"></div>
+            <script>
+                (function() {
+                    const md = "# Benchmarking Coding Agents on New vs Legacy Codebases \u2014 Denys Linkov, Wisedocs\n\n## 0:14 - Introduction: The Scaling Problem\nWisedocs processes complex medical claims (PDFs >10,000 pages, some larger than video files). By 2025, scaling as a business revealed three critical issues:\n1. Too slow to meet customer demand\n2. AI pipeline too complicated to update\n3. Legacy codebase (10+ repos) so undesirable nobody wants to touch it\n\nThis led to a 6-month refactor decision, with the core question: *Was this the right move?*\n\n## 1:17 - Chapter 1: Understanding Technical Debt\nTechnical debt is framed as financial debt: it compounds in mysterious, unexpected ways. However, unlike financial debt, technical debt must be evaluated rigorously for ROI.\n\n- **ROI Principle**: Taking on technical debt (e.g., building a feature) only makes sense if the ROI justifies the added complexity.\n- **Danger**: Introducing complexity can quickly outrun generated ROI.\n- **AI Engineering Context**: While AI boosts shipping velocity (e.g., Anthropic case studies with Spotify/Stripe), maintainability and reliability have degraded\u2014shipping faster doesn\u2019t mean better product quality.\n\n## 2:49 - Chapter 2: The Velocity-Quality Tradeoff\nData shows leading companies shipping faster but with declining reliability (blurred examples show <39-49% uptime). The paradox: we\u2019re moving faster through the tech lifecycle but losing customer focus, maintainability, and reliability.\n\n## 3:51 - Chapter 3: Orchestrator Evaluation & Early Experiments\nThe team spent ~2 months evaluating orchestrators for their AI pipeline:\n\n### Evaluation Process (Pre-Agentic Era):\n- Reviewed 5 open-source projects\n- Built proof-of-concepts with a 3-person team\n- Manually assessed across 17 criteria (e.g., latency, scalability, ease of use) using Confluence docs\n- Process was slow and brittle; prone to \"AI psychosis\" (overtrusting 20-page agent reports that don\u2019t reflect reality)\n\n### Early Coding Experiment (Temporal Workflow):\n- Initial research with Temporal\n- Committed workflow code to replicate legacy behavior\n- Gave task to model (GPT-3 era):\n  - Took 3 hours of back-and-forth in Cursor\n  - Made 10 major mistakes\n  - Required manual intervention to guide model and edit/delete code\n- **Key Limitation**: Model execution was accurate but process was highly manual\n\n### Modern Model Rerun (Sonnet 4.6 / Opus 4.8):\n- Same task now:\n  - Sonnet 4.6 + 1 iteration: solved task\n  - Opus 4.8: one-shot solution\n- **Why Faster?** Modern harnesses now enable:\n  - Sub-agents\n  - Plan calls\n  - Diverse shell commands\n  - Automated verifications\n- **Tradeoff**: Slightly higher compute cost but *much* less manual effort \u2192 5x time reduction\n\n## 6:55 - Chapter 4: Mental Models for Agent Reliability\nThe speaker introduces a critical framework: **measuring model capability at high accuracy thresholds**.\n\n- **Problem with 50% Accuracy Metrics**:\n  - If an agent takes 1 hour with 50% success chance, you likely wasted that hour\n  - Leads to frustration: \"I\u2019m ready to go\u2026 but prompt/plan/requirements were incomplete\"\n- **Better Approach**: Measure at 80-99% accuracy\n  - Enables reliable mental model: construct spec \u2192 hand off to agent \u2192 confident it\u2019ll succeed\n  - Avoids wasted compute and attention span\n\n### Frontier Model Data (Mythos Preview):\n- Success rate declines significantly after 4-hour mark\n- Even at 15-second/15-minute marks, certain tasks fail inconsistently due to:\n  - Missing tool use\n  - Poor reasoning\n  - Incomplete context handling\n\n**Takeaway**: Models are improving rapidly but still unreliable for autonomous long-horizon tasks without strong scaffolding.\n\n## 9:55 - Chapter 5: Prerequisites for Effective Agentic Development\nTo avoid \"doom loops\" (wasted cycles with models), the team implemented:\n\n### Essential Guardrails & Patterns:\n1. **Clear Specifications**: Well-constructed prompts/specs as input to agents\n2. **Verification Loops**: Automated checks for code quality, hidden assumptions (e.g., \"Does this open-source lib actually have this feature?\")\n3. **Tool Use Training**: Ensuring models can call APIs, run shells, access sandboxes\n4. **Plan Mode Adoption**: Using structured planning (e.g., in Cursor/Cloud Code) before execution\n5. **Incremental Validation**: Checking assumptions early (e.g., beta features vs. stable)\n\nThese patterns prevented wasted effort and enabled trust in agent outputs.\n\n## 10:26 - Chapter 6: The Refactor Execution\n### Legacy State:\n- 10+ repositories, some >6 years old\n- Slow progress due to:\n  - Tech debt from shortcuts\n  - Lack of AI coding tools\n\n### Refactor Strategy:\n- Consolidated into monorepo\n- Goal: build additional features on top of cleaned foundation\n\n### Results (First 6 Months):\n- **Velocity**: Steep commit growth curve\u2014reached pre-refactor levels quickly, then accelerated\n- **Commit Log Analysis**:\n  - Initial: High commit frequency (refactoring/replicating)\n  - Onboarding: Fewer commits as more developers joined (easier to contribute)\n  - End: Sustained high velocity while adding product features\n- **Outcome**:\n  - Almost all developers now commit to monorepo (even outside expertise)\n  - Schema/API changes flow smoothly\n  - Patterns from refactor spread to other repos\n\n## 11:57 - Chapter 7: Can LLMs Zero-Shot the Refactor?\nExperiment with GPT-5.5 (extra high):\n- Goal: \"Refactor this codebase\"\n- Gave repo names, models, components\n- **Result**:\n  - Completed in 10m 22s\n  - Wrote only 2,000 lines (suspiciously low)\n  - **Reality**: Generated scaffolding only\u2014no actual models deployed\n  - Missing: bootstrap/deployment commands\n\n**Verdict**: Not yet capable of full autonomous refactor, but closing gap. Prediction: 6 months to reliable substantial refactors (cf. Stripe examples).\n\n## 12:30 - Chapter 8: Was the Refactor Worthwhile?\n### Counterargument: \"Wait for Better Models\"\n- Models are improving exponentially (better tool use, sandboxes, monitoring)\n- Risk: Building AI-native code that looks like legacy low-quality spaghetti\n- Problem: If you don\u2019t understand what\u2019s happening, adjusting for customer needs becomes hard\n\n### Why We Proceeded:\n1. **Built Foundational Patterns**: Matched customer requirements using multi-repo patterns\n2. **Achieved Business Goals**: Despite time investment, goals were met\n3. **Post-Refactor Acceleration**:\n   - Reduced pipeline time/costs\n   - Supported larger files\n   - Shipped features that took months \u2192 now under a week\n   - Increased developer satisfaction: \"This codebase is much cleaner\"\n   - Guardrails framework evolved (e.g., plan mode adoption)\n\n**Conclusion**: Yes, worthwhile. Pausing to build a monorepo and forge ahead created leverage that compounded as AI improved.\n\n## 14:31 - Key Architectural Decisions\n- **Monorepo Tradeoff**:\n  - \u2705 Pros: Easier AI navigation, simpler sandbox setup, shared patterns\n  - \u274c Cons: Harder end-to-end testing/deployment across components; slower repo cloning\n- **Guardrails Framework**: Evolved from basic PR reviews to include:\n  - Autonomous AI engineering verification\n  - Plan mode integration\n  - Skills-based local checks (\"Review this code. Make sure it\u2019s good.\")\n- **PR Reviews**: Initially all-human; became more autonomous over time as context built\n\n## 17:11 - Final Insight: The Number One Factor\nSix months post-refactor, the dominant factor enabling success is:\n> **The complexity of the task you can give to a model**\n\nThis depends on:\n- Scaffolding quality (e.g., pre-built validation, assumption checks)\n- Ability to handle hidden complexities (e.g., beta features masquerading as stable)\n- Investment in agent harnesses that reduce cognitive load on humans\n\nAs scaffolding improves, more companies will achieve reliable agentic refactors\u2014not just file rewrites, but full system modernization.\n\n---\n*Talk concludes with Q&A confirming monorepo improved model navigation for repo-level tasks but multi-repo sandbox/deployment remains harder.*";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-7vn4WpqNpck");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=7vn4WpqNpck" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-LZuWZRze3MU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Welcome to the voice track at AI Engineer Worlds Fair</h2>
                 <span class="date">2026-08-07</span>
             </div>
             
@@ -424,7 +451,7 @@
         
         <article class="card" id="video-CoEIs6Xm8m8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Open Source Is Dead? Long Live Open Source</h2>
                 <span class="date">2026-08-07</span>
             </div>
             
@@ -451,7 +478,7 @@
         
         <article class="card" id="video-FWMJQDH3iK0">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Local Models: Trust, Control, and Optimization</h2>
                 <span class="date">2026-08-07</span>
             </div>
             
@@ -478,7 +505,7 @@
         
         <article class="card" id="video-J4_jCrTxMkk">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Compression at the Edge: Panel Deep Dive</h2>
                 <span class="date">2026-08-07</span>
             </div>
             
@@ -505,7 +532,7 @@
         
         <article class="card" id="video-QHBjufYK8TA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The State of Model Routing: Multi-Model Orchestration and Cost Efficiency</h2>
                 <span class="date">2026-08-06</span>
             </div>
             
@@ -532,7 +559,7 @@
         
         <article class="card" id="video-RmS5s6Wbin4">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Personal AI Codegen Shatters Traditional Cloud Infrastructure</h2>
                 <span class="date">2026-08-05</span>
             </div>
             
@@ -559,7 +586,7 @@
         
         <article class="card" id="video-jQDXzEVHMSE">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Telegram Summary:</h2>
                 <span class="date">2026-08-03</span>
             </div>
             
@@ -586,7 +613,7 @@
         
         <article class="card" id="video--jY2T2PiJBE">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>MCP Apps: Unlocking Interactive UI in Chat Interfaces</h2>
                 <span class="date">2026-08-01</span>
             </div>
             
@@ -613,7 +640,7 @@
         
         <article class="card" id="video-s4r6nk5WsZw">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Core Concepts</h2>
                 <span class="date">2026-08-01</span>
             </div>
             
@@ -640,7 +667,7 @@
         
         <article class="card" id="video--npY6XjM8CQ">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>When Will The Benchmaxxing Plague End? — Nick Heiner, Surge AI</h2>
                 <span class="date">2026-08-01</span>
             </div>
             
@@ -667,7 +694,7 @@
         
         <article class="card" id="video-k35LeKZEhiE">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Post-Training Evolution: From Synthetic Environments to Real-World Agents</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -694,7 +721,7 @@
         
         <article class="card" id="video-ewtOo0scUh0">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Data and Environment Curation for Post‑Training LLMs</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -721,7 +748,7 @@
         
         <article class="card" id="video-_PdK6x7PQNM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Data Quality as a Compute Multiplier</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -748,7 +775,7 @@
         
         <article class="card" id="video-2bvtay8wGYI">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Telegram Summary:</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -775,7 +802,7 @@
         
         <article class="card" id="video-2aS7aKoXn64">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Rethinking Environments for Long-Horizon Work — Rayan Garg, Theta Software</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -802,7 +829,7 @@
         
         <article class="card" id="video-ZFxh7sqbUZo">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>David Brumley</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -829,7 +856,7 @@
         
         <article class="card" id="video-cJ0EOzey--o">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Telegram Summary:</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -856,7 +883,7 @@
         
         <article class="card" id="video-zkX03APVj0M">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Emulated: Building Data for Fully Autonomous Software Engineers</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -883,7 +910,7 @@
         
         <article class="card" id="video-xbPriQWXtWM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Key Learnings</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -910,7 +937,7 @@
         
         <article class="card" id="video-3ZMUiFaQ3qg">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>agentic biology</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -937,7 +964,7 @@
         
         <article class="card" id="video-lCBf9slCanI">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Telegram Summary:</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -964,7 +991,7 @@
         
         <article class="card" id="video-AVMr9PMINyo">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>MiniMax M3 Open-Source Strategy & Technical Breakdown</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -991,7 +1018,7 @@
         
         <article class="card" id="video-AQv3qRCG6Gw">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Reinforcement Learning Without Verifiable Rewards — Key Insights</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -1018,7 +1045,7 @@
         
         <article class="card" id="video-jWq-aZIU0kM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Benchmarks: The Good, the Bad, and the Ugly — A Deep Dive into LLM Evaluation Quality</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -1045,7 +1072,7 @@
         
         <article class="card" id="video-AMiyLItEtLA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Fighting Slop with Slop: Agent‑Driven Engineering at Boundary</h2>
                 <span class="date">2026-07-31</span>
             </div>
             
@@ -1072,7 +1099,7 @@
         
         <article class="card" id="video-sJHg0mC5Png">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Key Learnings</h2>
                 <span class="date">2026-07-30</span>
             </div>
             
@@ -1099,7 +1126,7 @@
         
         <article class="card" id="video-pWXUkLP9uWM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>"Eureka machine"</h2>
                 <span class="date">2026-07-30</span>
             </div>
             
@@ -1126,7 +1153,7 @@
         
         <article class="card" id="video-YnNF55QV0zs">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Prompt grounding:</h2>
                 <span class="date">2026-07-29</span>
             </div>
             
@@ -1153,7 +1180,7 @@
         
         <article class="card" id="video-s67bE2Ur3bY">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Agentic systems</h2>
                 <span class="date">2026-07-29</span>
             </div>
             
@@ -1180,7 +1207,7 @@
         
         <article class="card" id="video-Owb8g3yDyzo">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Why Off-the-Shelf AI Doesn't Understand Money — Udi Menkes, Intuit</h2>
                 <span class="date">2026-07-29</span>
             </div>
             
@@ -1207,7 +1234,7 @@
         
         <article class="card" id="video-tJFjeMBKbIY">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Building AI products that survive real‑world scrutiny requires a shift from flashy demos to robust memos.</h2>
                 <span class="date">2026-07-29</span>
             </div>
             
@@ -1234,7 +1261,7 @@
         
         <article class="card" id="video-z0sh8HyTrDo">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Telegram Summary:</h2>
                 <span class="date">2026-07-29</span>
             </div>
             
@@ -1261,7 +1288,7 @@
         
         <article class="card" id="video-o6U_2vd967Y">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Integrating AI Agents into an Event‑Sourced Fraud Detection System</h2>
                 <span class="date">2026-07-29</span>
             </div>
             
@@ -1288,7 +1315,7 @@
         
         <article class="card" id="video-iKQ78wyJEXU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>How Nubank Vetted 2,000 AI Skills Before They Reached Developers — Key Takeaways</h2>
                 <span class="date">2026-07-29</span>
             </div>
             
@@ -1315,7 +1342,7 @@
         
         <article class="card" id="video-Tt2kX2sgQio">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Verifiable AI in Financial Services: The Kepler Approach</h2>
                 <span class="date">2026-07-29</span>
             </div>
             
@@ -1342,7 +1369,7 @@
         
         <article class="card" id="video-KMR_RBoCa4M">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Introduction</h2>
                 <span class="date">2026-07-29</span>
             </div>
             
@@ -1369,7 +1396,7 @@
         
         <article class="card" id="video-7jjudsEhBtM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Building Skill-Centric Agentic Products</h2>
                 <span class="date">2026-07-29</span>
             </div>
             
@@ -1396,7 +1423,7 @@
         
         <article class="card" id="video-kiqubc5b5Yo">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>AlphaLab: Morgan Stanley's AI Research Automation</h2>
                 <span class="date">2026-07-29</span>
             </div>
             
@@ -1423,7 +1450,7 @@
         
         <article class="card" id="video-BInpv7lGp1o">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Your Agent Didn't Fail. Your Harness Did.</h2>
                 <span class="date">2026-07-28</span>
             </div>
             
@@ -1450,7 +1477,7 @@
         
         <article class="card" id="video-wpOA-UXynoM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Forward Deployed Engineering at Scale</h2>
                 <span class="date">2026-07-28</span>
             </div>
             
@@ -1477,7 +1504,7 @@
         
         <article class="card" id="video-l0FLhNqBOic">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Forward‑Deployed Engineering (FDE) – The Next AI Bottleneck</h2>
                 <span class="date">2026-07-28</span>
             </div>
             
@@ -1504,7 +1531,7 @@
         
         <article class="card" id="video-RVxym6mmIns">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Forward‑Deployed Engineering at Cognition</h2>
                 <span class="date">2026-07-28</span>
             </div>
             
@@ -1531,7 +1558,7 @@
         
         <article class="card" id="video-ITMXwI6QL6A">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Forward Deployed Engineering (FDE) at Ramp: Two Core Principles</h2>
                 <span class="date">2026-07-28</span>
             </div>
             
@@ -1558,7 +1585,7 @@
         
         <article class="card" id="video-Byv311hdoHE">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Dirty Secret of Forward Deployed Engineering</h2>
                 <span class="date">2026-07-28</span>
             </div>
             
@@ -1585,7 +1612,7 @@
         
         <article class="card" id="video-7wu2hsRfvV0">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>High-Volume YouTube Transcript API Integration</h2>
                 <span class="date">2026-07-28</span>
             </div>
             
@@ -1612,7 +1639,7 @@
         
         <article class="card" id="video-1OMHGsUZiqA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Forward Deployed Engineering (FDE) as a Product Strategy</h2>
                 <span class="date">2026-07-28</span>
             </div>
             
@@ -1639,7 +1666,7 @@
         
         <article class="card" id="video-lyL5QhgIOxc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Hugging Face Hub Scaling: Handling 3 Million Models</h2>
                 <span class="date">2026-07-28</span>
             </div>
             
@@ -1666,7 +1693,7 @@
         
         <article class="card" id="video-KwhgfwOSToQ">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Forward Deployed Engineering (FDE) 101: A Deep Dive with Kevin Bai</h2>
                 <span class="date">2026-07-28</span>
             </div>
             
@@ -1693,7 +1720,7 @@
         
         <article class="card" id="video-CgsWxRUY5Eo">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>AI Agents for Performance Engineering: Netflix's Approach</h2>
                 <span class="date">2026-07-28</span>
             </div>
             
@@ -1720,7 +1747,7 @@
         
         <article class="card" id="video-Yk87oUPVaxU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>DeepSWE: Building a Contamination-Resistant Frontier Coding Benchmark</h2>
                 <span class="date">2026-07-26</span>
             </div>
             
@@ -1747,7 +1774,7 @@
         
         <article class="card" id="video-O72p-rBb2bA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Engineering Safety in Mental Health AI: Evals-Driven Development</h2>
                 <span class="date">2026-07-25</span>
             </div>
             
@@ -1774,7 +1801,7 @@
         
         <article class="card" id="video-ZyIoTOAbRfs">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>State of Data: The Hidden Supply Chain Powering AI Expertise</h2>
                 <span class="date">2026-07-25</span>
             </div>
             
@@ -1801,7 +1828,7 @@
         
         <article class="card" id="video-KhYifX22yhE">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Newsletter Summary</h2>
                 <span class="date">2026-07-25</span>
             </div>
             
@@ -1828,7 +1855,7 @@
         
         <article class="card" id="video-xIt_mTQp6mY">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Loop Engineering from First Principles – Summary</h2>
                 <span class="date">2026-07-25</span>
             </div>
             
@@ -1855,7 +1882,7 @@
         
         <article class="card" id="video-Ib5t2RLtxvM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Telegram Summary:</h2>
                 <span class="date">2026-07-25</span>
             </div>
             
@@ -1882,7 +1909,7 @@
         
         <article class="card" id="video-b_PmGocP4rc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Introduction</h2>
                 <span class="date">2026-07-25</span>
             </div>
             
@@ -1909,7 +1936,7 @@
         
         <article class="card" id="video-31GUkCBD-Uc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Building Closed-Loop Evals for Multimodal Agents at Scale</h2>
                 <span class="date">2026-07-24</span>
             </div>
             
@@ -1936,7 +1963,7 @@
         
         <article class="card" id="video-xyL2Ltkh-SA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Building Production‑Ready Agents: The Eval Playbook</h2>
                 <span class="date">2026-07-24</span>
             </div>
             
@@ -1963,7 +1990,7 @@
         
         <article class="card" id="video-9HbzAWnKbo4">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>From Signal to PR: Anatomy of a Self-Improving Agent — Jason Lopatecki, Arize</h2>
                 <span class="date">2026-07-24</span>
             </div>
             
@@ -1990,7 +2017,7 @@
         
         <article class="card" id="video-q2JrUKBMf0w">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Future of Evaluations in AI Agents</h2>
                 <span class="date">2026-07-24</span>
             </div>
             
@@ -2017,7 +2044,7 @@
         
         <article class="card" id="video-O-CBZ3JtRvo">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Training Frontier Models to Out-Think Hackers</h2>
                 <span class="date">2026-07-24</span>
             </div>
             
@@ -2044,7 +2071,7 @@
         
         <article class="card" id="video-6IxSbMhT7v4">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>AIE Miami Keynote & Talks — Technical Synthesis</h2>
                 <span class="date">2026-07-23</span>
             </div>
             
@@ -2071,7 +2098,7 @@
         
         <article class="card" id="video-kRkcNOsRyYg">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Key Concepts:</h2>
                 <span class="date">2026-07-23</span>
             </div>
             
@@ -2098,7 +2125,7 @@
         
         <article class="card" id="video-u6jJcIFDLE4">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Why We Killed Our Multi-Agent Pipeline: Lessons from ZS Associates</h2>
                 <span class="date">2026-07-23</span>
             </div>
             
@@ -2125,7 +2152,7 @@
         
         <article class="card" id="video-H7puB0RwJMM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Provenance for LLM‑Built Knowledge Graphs</h2>
                 <span class="date">2026-07-23</span>
             </div>
             
@@ -2152,7 +2179,7 @@
         
         <article class="card" id="video-418t26CVz-w">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Local agentic theory</h2>
                 <span class="date">2026-07-23</span>
             </div>
             
@@ -2179,7 +2206,7 @@
         
         <article class="card" id="video-mOf-PP4mVjA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Video Has No Memory: Building a Memory Layer for Video Intelligence</h2>
                 <span class="date">2026-07-23</span>
             </div>
             
@@ -2206,7 +2233,7 @@
         
         <article class="card" id="video-Sir59K8ZDPU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Frank Coyle</h2>
                 <span class="date">2026-07-23</span>
             </div>
             
@@ -2233,7 +2260,7 @@
         
         <article class="card" id="video-u1yaOeEX4e8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Core Idea</h2>
                 <span class="date">2026-07-23</span>
             </div>
             
@@ -2260,7 +2287,7 @@
         
         <article class="card" id="video-Btk8wDUVs74">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>monday.com's Shift to Systems of Context</h2>
                 <span class="date">2026-07-22</span>
             </div>
             
@@ -2287,7 +2314,7 @@
         
         <article class="card" id="video-jt1Pbr_n6oU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Your Moat Is Your Data Model: Building the Gates Foundation's Strategic Intelligence Platform</h2>
                 <span class="date">2026-07-22</span>
             </div>
             
@@ -2341,7 +2368,7 @@
         
         <article class="card" id="video-VGN22pPpb-8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>ontology-based semantic layer</h2>
                 <span class="date">2026-07-22</span>
             </div>
             
@@ -2368,7 +2395,7 @@
         
         <article class="card" id="video--I5W5QVAT8E">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Token Town: Building an AI\u2011Native Software Factory</h2>
                 <span class="date">2026-07-22</span>
             </div>
             
@@ -2395,7 +2422,7 @@
         
         <article class="card" id="video-hacEQHHhu2Q">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Why Large? Tiny LMs & Agents on Edge/Robotics — Cormac Brick, Google</h2>
                 <span class="date">2026-07-22</span>
             </div>
             
@@ -2422,7 +2449,7 @@
         
         <article class="card" id="video-JvKO40CFq-s">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Core Message</h2>
                 <span class="date">2026-07-21</span>
             </div>
             
@@ -2449,7 +2476,7 @@
         
         <article class="card" id="video-GgLQ02aO-hs">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Unreasonable Effectiveness of Separating Task from Model: DSPy Deep Dive</h2>
                 <span class="date">2026-07-21</span>
             </div>
             
@@ -2503,7 +2530,7 @@
         
         <article class="card" id="video-Cz4v1WHVyZc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>HTML Is All Agents Need: HeyGen's Hyperframes Revolution</h2>
                 <span class="date">2026-07-21</span>
             </div>
             
@@ -2530,7 +2557,7 @@
         
         <article class="card" id="video-khVX_BUnEwU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>ActiveGraph: An Event‑Sourced Graph Runtime for Auditable Agents</h2>
                 <span class="date">2026-07-21</span>
             </div>
             
@@ -2557,7 +2584,7 @@
         
         <article class="card" id="video-jRCpXUjz4CI">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Everything Is a Rollout – Harbor & Agentic Coding</h2>
                 <span class="date">2026-07-21</span>
             </div>
             
@@ -2584,7 +2611,7 @@
         
         <article class="card" id="video-cO8qC6HBuBg">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Long‑Horizon Agent Evaluation with Vending‑Bench</h2>
                 <span class="date">2026-07-21</span>
             </div>
             
@@ -2611,7 +2638,7 @@
         
         <article class="card" id="video-X1kp-ABIIxQ">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Your Agent Architecture Has a Half-Life of 6 Months</h2>
                 <span class="date">2026-07-21</span>
             </div>
             
@@ -2638,7 +2665,7 @@
         
         <article class="card" id="video-2JX6JYyQG4Y">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Video Analysis Unavailable</h2>
                 <span class="date">2026-07-21</span>
             </div>
             
@@ -2665,7 +2692,7 @@
         
         <article class="card" id="video-8qWIPUia2O8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Every Harness Will Become A Claw – A Technical Deep‑Dive</h2>
                 <span class="date">2026-07-21</span>
             </div>
             
@@ -2692,7 +2719,7 @@
         
         <article class="card" id="video-RGe6EjucbzI">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>2026 State of AI Engineering Survey Highlights</h2>
                 <span class="date">2026-07-21</span>
             </div>
             
@@ -2719,7 +2746,7 @@
         
         <article class="card" id="video-il1c1a2FufU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>In this session</h2>
                 <span class="date">2026-07-21</span>
             </div>
             
@@ -2746,7 +2773,7 @@
         
         <article class="card" id="video-XV2oYi7kojc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Desktop Frontier: Local LLMs Are Eating The Cloud's Lunch</h2>
                 <span class="date">2026-07-21</span>
             </div>
             
@@ -2773,7 +2800,7 @@
         
         <article class="card" id="video-1lgFGaHoGq8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>AI's Jurassic Park Period: Why Guardrails Matter More Than Ever</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -2800,7 +2827,7 @@
         
         <article class="card" id="video-I3znWC3MEXM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>AI Agent Security Risks and Solutions</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -2827,7 +2854,7 @@
         
         <article class="card" id="video-1EZdpEhwmNc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>AI Security: Trusting Autonomous Agents at Scale</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -2854,7 +2881,7 @@
         
         <article class="card" id="video-LqLoYksJ6do">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Automating CVE Remediation at Scale: The Patch Pilot Case Study</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -2881,7 +2908,7 @@
         
         <article class="card" id="video-yWS0udrIOc8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Agentic Security: Permissions, Provenance & the Agent Supply Chain</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -2908,7 +2935,7 @@
         
         <article class="card" id="video-XjI-AR4pt7Y">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>ML Security: The 2008 Database Revisited</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -2935,7 +2962,7 @@
         
         <article class="card" id="video-2xJoimgoqBg">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The State of AI Security: Navigating the Generative Frontier</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -2962,7 +2989,7 @@
         
         <article class="card" id="video-cgimkNGNjvU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Agentic Development Security</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -2989,7 +3016,7 @@
         
         <article class="card" id="video-IvE8n-ylFYY">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Privacy-Preserving AI Wearable: Architecture & Zero-Access Encryption</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -3016,7 +3043,7 @@
         
         <article class="card" id="video-wEc9aG7cRQc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>AI agents often contradict themselves, creating a trust gap for users and operators.</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -3043,7 +3070,7 @@
         
         <article class="card" id="video-m24UKZomm7k">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Don't Let the LLM Drive: Building Reliable AI Agents with Harness Engineering</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -3070,7 +3097,7 @@
         
         <article class="card" id="video-fnLBmfsI_Fg">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Building Ace: A Live AI Voice Tutor on Small Models</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -3097,7 +3124,7 @@
         
         <article class="card" id="video-B8l81jhvHbI">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Enterprise Agents: Tackling Structural Challenges</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -3124,7 +3151,7 @@
         
         <article class="card" id="video-bUJgirn4_yc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Revolutionizing Agent-Human Collaboration with Physical Data Harnesses</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -3151,7 +3178,7 @@
         
         <article class="card" id="video-LC3-P7v3yoI">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Skills are the New SDKs</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -3178,7 +3205,7 @@
         
         <article class="card" id="video-ltv-L5oMPIs">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Build the AI GTM Agent That Knows the Buyer</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -3205,7 +3232,7 @@
         
         <article class="card" id="video-Q9ycQHbDdJs">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Froglet Protocol: Enabling Autonomous Scientific Collaboration Through Verifiable Receipts</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -3232,7 +3259,7 @@
         
         <article class="card" id="video-maTp79FD9gI">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Generative UI</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -3259,7 +3286,7 @@
         
         <article class="card" id="video-hMlLw1LeIK8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Voice Agent Turn-Taking: Mastering Real-Time Conversation Flow</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -3286,7 +3313,7 @@
         
         <article class="card" id="video-0RNNfxpdbQk">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Medic for Apache Spark: Agentic Diagnostics for Failing Jobs</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -3313,7 +3340,7 @@
         
         <article class="card" id="video-_cVfz88_j7A">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Automating Oncology Prior Authorization Workflows with AI Agents</h2>
                 <span class="date">2026-07-20</span>
             </div>
             
@@ -3340,7 +3367,7 @@
         
         <article class="card" id="video-9QebvrrY3KY">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Building Reliable Async Agents for Long-Horizon Tasks</h2>
                 <span class="date">2026-07-17</span>
             </div>
             
@@ -3367,7 +3394,7 @@
         
         <article class="card" id="video-imFedndyXYQ">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Using LLMs to Secure Source Code: A Six-Step Security Pipeline</h2>
                 <span class="date">2026-07-17</span>
             </div>
             
@@ -3394,7 +3421,7 @@
         
         <article class="card" id="video-1P1hJ36rxM0">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>From Code Writing to AI‑Driven Software Engineering</h2>
                 <span class="date">2026-07-17</span>
             </div>
             
@@ -3421,7 +3448,7 @@
         
         <article class="card" id="video-lMCxVorb9wM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Architectural Shift: Designing Identity & Auth for Agents, Not Just Humans</h2>
                 <span class="date">2026-07-17</span>
             </div>
             
@@ -3448,7 +3475,7 @@
         
         <article class="card" id="video--561cZmir5Q">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Foundation Models for Single‑Cell Biology: From Tokens to Cells</h2>
                 <span class="date">2026-07-17</span>
             </div>
             
@@ -3475,7 +3502,7 @@
         
         <article class="card" id="video-JJGbw4ggaFs">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Continuous Agentic Performance Optimization</h2>
                 <span class="date">2026-07-17</span>
             </div>
             
@@ -3502,7 +3529,7 @@
         
         <article class="card" id="video-3z2uT5aDx_Y">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>offline evaluations</h2>
                 <span class="date">2026-07-17</span>
             </div>
             
@@ -3529,7 +3556,7 @@
         
         <article class="card" id="video-XLEYtv3cMlw">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Breaking the Plateau: Autonomous Agents for Scientific Discovery</h2>
                 <span class="date">2026-07-17</span>
             </div>
             
@@ -3556,7 +3583,7 @@
         
         <article class="card" id="video-Fu45geO3zX8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Froglet: The Receipt‑First Protocol for Agentic Automation</h2>
                 <span class="date">2026-07-17</span>
             </div>
             
@@ -3583,7 +3610,7 @@
         
         <article class="card" id="video-bZISsg7H7DA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Your Agents Need a Save Button: Checkpointing & Replay for Production AI</h2>
                 <span class="date">2026-07-16</span>
             </div>
             
@@ -3610,7 +3637,7 @@
         
         <article class="card" id="video-zU4EagB311U">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Agent Feature Flags: A New Paradigm for Complex Systems</h2>
                 <span class="date">2026-07-16</span>
             </div>
             
@@ -3637,7 +3664,7 @@
         
         <article class="card" id="video-3ySF0I5iE_0">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Graph‑Powered AI: Building Smarter, Cheaper, More Reliable Applications</h2>
                 <span class="date">2026-07-16</span>
             </div>
             
@@ -3664,7 +3691,7 @@
         
         <article class="card" id="video-L3RuP_q8Bwc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>AI UX: Building Trust, Clarity, and Control</h2>
                 <span class="date">2026-07-16</span>
             </div>
             
@@ -3691,7 +3718,7 @@
         
         <article class="card" id="video-eAXxdtNlK04">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Stop Burning Tokens: Domain Expertise &gt; Generic Loops</h2>
                 <span class="date">2026-07-16</span>
             </div>
             
@@ -3718,7 +3745,7 @@
         
         <article class="card" id="video-Bck7ABCZRZI">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Stop Renting Your Cognitive Infrastructure: The Economics of AI Inference Ownership</h2>
                 <span class="date">2026-07-16</span>
             </div>
             
@@ -3745,7 +3772,7 @@
         
         <article class="card" id="video-yv6xovSsB1U">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Content Is Code: The Shift Left to Structured Communication</h2>
                 <span class="date">2026-07-16</span>
             </div>
             
@@ -3772,7 +3799,7 @@
         
         <article class="card" id="video-eBUyTS7SzV4">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Garry Tan's YC Keynote: The AI-Native Company Revolution</h2>
                 <span class="date">2026-07-16</span>
             </div>
             
@@ -3799,7 +3826,7 @@
         
         <article class="card" id="video-Z2Erdirpudo">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Imagination Engineering: Turning Thought Streams into Interactive Knowledge</h2>
                 <span class="date">2026-07-16</span>
             </div>
             
@@ -3826,7 +3853,7 @@
         
         <article class="card" id="video-VrpEyglYgeU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>In the Land of AI Agents, the Verifiers Are King</h2>
                 <span class="date">2026-07-16</span>
             </div>
             
@@ -3853,7 +3880,7 @@
         
         <article class="card" id="video-iCj_ATyThvc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Autoresearch Agent Aiden Dominates Parameter Golf</h2>
                 <span class="date">2026-07-16</span>
             </div>
             
@@ -3880,7 +3907,7 @@
         
         <article class="card" id="video-ZSQb5fzRFPw">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Computer-Use 2.0: Multi-Cursor Agents & Infrastructure at Scale</h2>
                 <span class="date">2026-07-15</span>
             </div>
             
@@ -3907,7 +3934,7 @@
         
         <article class="card" id="video-q4Tr-DknG2M">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Recursive Model Improvement at Cursor</h2>
                 <span class="date">2026-07-15</span>
             </div>
             
@@ -3934,7 +3961,7 @@
         
         <article class="card" id="video-uU5Gv2h8-9g">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Anthropic’s recent push with Claude Code, Fable, and Claude Tag marks a paradigm shift in how software teams build, review, and ship features.</h2>
                 <span class="date">2026-07-15</span>
             </div>
             
@@ -3961,7 +3988,7 @@
         
         <article class="card" id="video-c35YoMdnI78">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Great Loops Debate: AI Coding Automation Under the Microscope</h2>
                 <span class="date">2026-07-14</span>
             </div>
             
@@ -3988,7 +4015,7 @@
         
         <article class="card" id="video-8G_1-3IO4ZQ">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Context Layer: Missing Infrastructure for Production Agents</h2>
                 <span class="date">2026-07-14</span>
             </div>
             
@@ -4015,7 +4042,7 @@
         
         <article class="card" id="video-0vphxNt4wyk">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Why Shipping Skills Without Evals Is a Recipe for Disaster</h2>
                 <span class="date">2026-07-14</span>
             </div>
             
@@ -4042,7 +4069,7 @@
         
         <article class="card" id="video-APqXGyCoGW4">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Forward Deployed Engineering (FDE) at Cursor: A Technical Primer</h2>
                 <span class="date">2026-07-14</span>
             </div>
             
@@ -4069,7 +4096,7 @@
         
         <article class="card" id="video-n97BCfyFIvw">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Keeping the Human in the Loop: Engineering for Accountability in an Agent‑Driven World</h2>
                 <span class="date">2026-07-14</span>
             </div>
             
@@ -4096,7 +4123,7 @@
         
         <article class="card" id="video--CnA2lGfymY">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>In Code They Act, In Proof We Trust — Erik Meijer</h2>
                 <span class="date">2026-07-13</span>
             </div>
             
@@ -4123,7 +4150,7 @@
         
         <article class="card" id="video-O3FEoMYvUf8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Stop Evaluating Models Like It's the 50s: Modern LLM Evaluation Strategies</h2>
                 <span class="date">2026-07-13</span>
             </div>
             
@@ -4150,7 +4177,7 @@
         
         <article class="card" id="video-V-EDrhIhHzQ">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Prime Intellect Stack – Post‑Training Foundations</h2>
                 <span class="date">2026-07-13</span>
             </div>
             
@@ -4177,7 +4204,7 @@
         
         <article class="card" id="video-7JgIS42mz7U">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The AI Bugpocalypse: Securing the Future of Software</h2>
                 <span class="date">2026-07-12</span>
             </div>
             
@@ -4204,7 +4231,7 @@
         
         <article class="card" id="video-EUsPvBeIx70">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Semantic Blindness: Scaling LLM Agents to 500K+ Sensors</h2>
                 <span class="date">2026-07-12</span>
             </div>
             
@@ -4231,7 +4258,7 @@
         
         <article class="card" id="video-UlFB6efYN5Q">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Roberto Stagi</h2>
                 <span class="date">2026-07-12</span>
             </div>
             
@@ -4258,7 +4285,7 @@
         
         <article class="card" id="video-TJPInBjhE4Q">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>ReviewDebt: Quantifying the Hidden Cost of AI-Generated Code</h2>
                 <span class="date">2026-07-12</span>
             </div>
             
@@ -4285,7 +4312,7 @@
         
         <article class="card" id="video-5192csoTkVo">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Remoby</h2>
                 <span class="date">2026-07-12</span>
             </div>
             
@@ -4312,7 +4339,7 @@
         
         <article class="card" id="video-RGSFUqzqErE">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>On AI and Knowledge – Pablo Castro (Microsoft)</h2>
                 <span class="date">2026-07-11</span>
             </div>
             
@@ -4339,7 +4366,7 @@
         
         <article class="card" id="video-8oyalrfwgjw">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Recursive Language Models (RLM) for Large Codebases</h2>
                 <span class="date">2026-07-11</span>
             </div>
             
@@ -4366,7 +4393,7 @@
         
         <article class="card" id="video-sum9DgexFRQ">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Agentic Web & Project Nanda: Building an Open Infrastructure for AI Agents</h2>
                 <span class="date">2026-07-11</span>
             </div>
             
@@ -4393,7 +4420,7 @@
         
         <article class="card" id="video-7P0elyLIxXo">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Understanding "Done" in Agentic Systems</h2>
                 <span class="date">2026-07-11</span>
             </div>
             
@@ -4420,7 +4447,7 @@
         
         <article class="card" id="video-EfcfUB2uprc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Evaluating LLMs with Modern Psychometrics</h2>
                 <span class="date">2026-07-11</span>
             </div>
             
@@ -4447,7 +4474,7 @@
         
         <article class="card" id="video-uIiA6DquRiE">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Special Topics in Kernels, RL, and Reward Hacking in Agents</h2>
                 <span class="date">2026-07-11</span>
             </div>
             
@@ -4474,7 +4501,7 @@
         
         <article class="card" id="video-vJukHCIv7Ck">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Stopping AI Agent Hallucinations: 5 Technical Techniques</h2>
                 <span class="date">2026-07-11</span>
             </div>
             
@@ -4501,7 +4528,7 @@
         
         <article class="card" id="video-jtzh-GBXBWc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Factory That Dreams: Building a Company Brain with 36 AI Agents</h2>
                 <span class="date">2026-07-11</span>
             </div>
             
@@ -4528,7 +4555,7 @@
         
         <article class="card" id="video-WLXxTaPagA8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Telegram Summary:</h2>
                 <span class="date">2026-07-11</span>
             </div>
             
@@ -4555,7 +4582,7 @@
         
         <article class="card" id="video-9arM9b7JgOo">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Open Claw Workshop: AI Agent Orchestration at Scale</h2>
                 <span class="date">2026-07-11</span>
             </div>
             
@@ -4582,7 +4609,7 @@
         
         <article class="card" id="video-YZQsWVeN3rE">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>AI Trust Design Patterns: Juries, Libraries & Agent Tiers</h2>
                 <span class="date">2026-07-11</span>
             </div>
             
@@ -4609,7 +4636,7 @@
         
         <article class="card" id="video-WkBPX-oDMnA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Understanding is the New Bottleneck: Staying in the Loop with AI Agents</h2>
                 <span class="date">2026-07-10</span>
             </div>
             
@@ -4636,7 +4663,7 @@
         
         <article class="card" id="video-KB41dTlX1Uc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Transcript Unavailable</h2>
                 <span class="date">2026-07-10</span>
             </div>
             
@@ -4663,7 +4690,7 @@
         
         <article class="card" id="video-ZpK5PWX2YRM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Should AI Engineers Still Read Code in 2026? The Z/L Continuum Explained</h2>
                 <span class="date">2026-07-10</span>
             </div>
             
@@ -4690,7 +4717,7 @@
         
         <article class="card" id="video-OqM67QG_Ikk">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Telegram Summary:</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -4717,7 +4744,7 @@
         
         <article class="card" id="video-RGiXcVxSD3s">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Chat & Citations Alone Aren’t Enough</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -4744,7 +4771,7 @@
         
         <article class="card" id="video-xUnRQ9vLXxo">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Era of AI Psychosis: Why You Must Build Bigger</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -4771,7 +4798,7 @@
         
         <article class="card" id="video-GdvKNwMcfd0">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Evolution of the Developer: From Writing Code to Designing Systems</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -4798,7 +4825,7 @@
         
         <article class="card" id="video-HEFSExa0xl0">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Teaching Coding Agents to Master Spreadsheets: A Technical Deep Dive</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -4825,7 +4852,7 @@
         
         <article class="card" id="video-xg1zNlzw7Jk">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>OpenClaw\u2019s Trusted Proxy Auth Mode \u2013 A Security & UX Win</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -4852,7 +4879,7 @@
         
         <article class="card" id="video-HsxQICTLF84">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Building an ACP‑Compatible Coding Agent Live</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -4879,7 +4906,7 @@
         
         <article class="card" id="video-iRcX54EO5g8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Blindfolded Agents & Giving Them Eyes</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -4906,7 +4933,7 @@
         
         <article class="card" id="video-grdoOC1BT1s">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Think You Can Build a Game with AI? Think Again!</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -4933,7 +4960,7 @@
         
         <article class="card" id="video-MpZzWMdmQCE">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>In this talk</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -4960,7 +4987,7 @@
         
         <article class="card" id="video-BqZrTdgBaPw">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Running a Chess YouTube Channel Entirely by AI — Technical Deep Dive</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -4987,7 +5014,7 @@
         
         <article class="card" id="video-qlHaO6laBlM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Shipping AI in the UK Justice System: A Technical Playbook</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -5014,7 +5041,7 @@
         
         <article class="card" id="video-4kYl2_mqmnQ">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Running a fleet of AI agents across three machines revealed a hidden bottleneck:</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -5041,7 +5068,7 @@
         
         <article class="card" id="video-IQkVMvXQKLY">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>sleeper agents</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -5068,7 +5095,7 @@
         
         <article class="card" id="video-pMggiOb18tc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Golden Age of AI Engineering: A Paradigm Shift in Software Development</h2>
                 <span class="date">2026-07-08</span>
             </div>
             
@@ -5095,7 +5122,7 @@
         
         <article class="card" id="video-G6IlDzj8OjA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>GTM Is You: The Power of Personal Branding for Developer Tools in 2026</h2>
                 <span class="date">2026-07-07</span>
             </div>
             
@@ -5122,7 +5149,7 @@
         
         <article class="card" id="video-1IdzkRVmWAA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Oracle gap</h2>
                 <span class="date">2026-07-07</span>
             </div>
             
@@ -5149,7 +5176,7 @@
         
         <article class="card" id="video-qdZzND79mcg">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Rajiv Chandegra</h2>
                 <span class="date">2026-07-07</span>
             </div>
             
@@ -5176,7 +5203,7 @@
         
         <article class="card" id="video-CDqzWpwkSls">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Build AI Systems for Discernment, Not Approval</h2>
                 <span class="date">2026-07-07</span>
             </div>
             
@@ -5203,7 +5230,7 @@
         
         <article class="card" id="video-2e9ANoOEn28">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>What if the Harness Matters More Than the Model?</h2>
                 <span class="date">2026-07-07</span>
             </div>
             
@@ -5230,7 +5257,7 @@
         
         <article class="card" id="video-CLttOU7n6sI">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Respect The Process: Building Safe Coding Agents for Sustainability Carbon Footprints</h2>
                 <span class="date">2026-07-07</span>
             </div>
             
@@ -5257,7 +5284,7 @@
         
         <article class="card" id="video-bRnoEpoK5m4">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Revolutionizing Software Distribution: The Death of the One-Way Pipeline</h2>
                 <span class="date">2026-07-07</span>
             </div>
             
@@ -5284,7 +5311,7 @@
         
         <article class="card" id="video-UcYoMg-8-L8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Radical Speed Month</h2>
                 <span class="date">2026-07-07</span>
             </div>
             
@@ -5338,7 +5365,7 @@
         
         <article class="card" id="video-9fubhllmsBU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Field Guide to Fable: Anthropic's Revolutionary AI Model</h2>
                 <span class="date">2026-07-05</span>
             </div>
             
@@ -5365,7 +5392,7 @@
         
         <article class="card" id="video-kZsf_Sfm7RU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Missing Layer After Launch: Closing the Loop for AI Agents</h2>
                 <span class="date">2026-07-05</span>
             </div>
             
@@ -5392,7 +5419,7 @@
         
         <article class="card" id="video-2IxD9OB3XuQ">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Continual Learning for AI Agents: From Failures to Durable Improvements</h2>
                 <span class="date">2026-07-05</span>
             </div>
             
@@ -5419,7 +5446,7 @@
         
         <article class="card" id="video-sAOBXCDiDOs">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>MCP Apps: The Evolution of AI-Driven Software</h2>
                 <span class="date">2026-07-05</span>
             </div>
             
@@ -5446,7 +5473,7 @@
         
         <article class="card" id="video-d_Ftrl3vfV0">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>wound</h2>
                 <span class="date">2026-07-05</span>
             </div>
             
@@ -5473,7 +5500,7 @@
         
         <article class="card" id="video-hVJOnuhFmTA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Prompt Is Still a Punch Card: Rethinking AI Interaction</h2>
                 <span class="date">2026-07-02</span>
             </div>
             
@@ -5500,7 +5527,7 @@
         
         <article class="card" id="video-UNzCG3lw6O0">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Building Great Agent Skills: The Missing Manual</h2>
                 <span class="date">2026-06-29</span>
             </div>
             
@@ -5527,7 +5554,7 @@
         
         <article class="card" id="video-fWXJM-J0ZB8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Rachel Lee Neighbors</h2>
                 <span class="date">2026-06-29</span>
             </div>
             
@@ -5554,7 +5581,7 @@
         
         <article class="card" id="video-spNAUEgq_A8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Domain‑Specific Agents: The Next Industrial Revolution for AI</h2>
                 <span class="date">2026-06-29</span>
             </div>
             
@@ -5581,7 +5608,7 @@
         
         <article class="card" id="video-6bmM45jkMDY">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>requirements elicitation</h2>
                 <span class="date">2026-06-29</span>
             </div>
             
@@ -5608,7 +5635,7 @@
         
         <article class="card" id="video-APh1Vx0oLmQ">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Deterministic Infra for Non-Deterministic AI Agents</h2>
                 <span class="date">2026-06-29</span>
             </div>
             
@@ -5635,7 +5662,7 @@
         
         <article class="card" id="video-pSto5YaNGUo">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Agentic AI Engineer – Automating the AI Development Loop</h2>
                 <span class="date">2026-06-29</span>
             </div>
             
@@ -5662,7 +5689,7 @@
         
         <article class="card" id="video-DqtmZE6Hl0g">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Prompt is the Platform: A New Paradigm for Agentic Engineering</h2>
                 <span class="date">2026-06-29</span>
             </div>
             
@@ -5689,7 +5716,7 @@
         
         <article class="card" id="video-LrGCT7G_rU8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>ETL Pipeline Failure Detection with RL Agents</h2>
                 <span class="date">2026-06-29</span>
             </div>
             
@@ -5716,7 +5743,7 @@
         
         <article class="card" id="video-Lc8zRh9muoY">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Stop Chasing Bitwise Determinism in AI Agents</h2>
                 <span class="date">2026-06-29</span>
             </div>
             
@@ -5743,7 +5770,7 @@
         
         <article class="card" id="video-65X0pQ6Lmbg">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Voice vs. Visual AI Interfaces: A Latency-Driven Revolution</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -5797,7 +5824,7 @@
         
         <article class="card" id="video-dRmWYHuIJxM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Stop Overpaying for AI Coding: The Power of Local Code Indexing</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -5824,7 +5851,7 @@
         
         <article class="card" id="video-uiP88SpCi1Q">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Save Tokens While Building LLM Agents – 5 Proven Strategies</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -5851,7 +5878,7 @@
         
         <article class="card" id="video-akk6KRlcwW4">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>OpenClaw in Your Hand: Building a Physical AI Terminal</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -5878,7 +5905,7 @@
         
         <article class="card" id="video-Akm1sqvWG4A">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -5905,7 +5932,7 @@
         
         <article class="card" id="video-T0HhO4YtTfE">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>AI System Design: From Idea to Production</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -5932,7 +5959,7 @@
         
         <article class="card" id="video-XovaGv4f39A">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>When All Context Matters: Extended Cache Augmented Generation</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -5959,7 +5986,7 @@
         
         <article class="card" id="video-OXMMN-XbxwA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Research‑to‑Production at Higharc: Turning Frontier ML into Real‑World Features</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -5986,7 +6013,7 @@
         
         <article class="card" id="video-whue9_YquGA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Building an Autonomous Engineering Org – Key Takeaways</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -6013,7 +6040,7 @@
         
         <article class="card" id="video-JRTAtZ5iBkU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Stop treating AI agents like human users.</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -6040,7 +6067,7 @@
         
         <article class="card" id="video-tB9RKTrU-Ig">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Turbo Quant: Cutting Agent Retrieval Memory 5× Without Losing Quality</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -6067,7 +6094,7 @@
         
         <article class="card" id="video-IddXPepIAS4">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Mastering Spec-Driven Development (SDD) for Production Workflows</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -6121,7 +6148,7 @@
         
         <article class="card" id="video--x5GEVnkuRw">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Structuring the Unstructured: Mastering Document Processing with Docling</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -6148,7 +6175,7 @@
         
         <article class="card" id="video-aHhB3sjGjkI">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>build reliable AI agents</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -6175,7 +6202,7 @@
         
         <article class="card" id="video-JnubYCYunk8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Browser Agents: Why 'Better Eyes' Beat 'Better Models'</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -6202,7 +6229,7 @@
         
         <article class="card" id="video-vh2VGuQ3zhY">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The 100-Tool Agent Trap: Scaling AI Agents Beyond the Demo</h2>
                 <span class="date">2026-06-28</span>
             </div>
             
@@ -6229,7 +6256,7 @@
         
         <article class="card" id="video-ij-AU9dpJjc">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Layered Prompt Architecture</h2>
                 <span class="date">2026-06-26</span>
             </div>
             
@@ -6256,7 +6283,7 @@
         
         <article class="card" id="video-4uFVSLgD2Q4">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Building Production-Grade AI Agents: The OpenGov Case Study</h2>
                 <span class="date">2026-06-26</span>
             </div>
             
@@ -6283,7 +6310,7 @@
         
         <article class="card" id="video-I2cbIws9j10">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>AI Engineer World's Fair 2026: The State of Agentic Workflows</h2>
                 <span class="date">2026-06-25</span>
             </div>
             
@@ -6310,7 +6337,7 @@
         
         <article class="card" id="video-4sX_He5c4sI">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>🚀 Deep Dive: The Frontier of Autoresearch & AGI Architectures</h2>
                 <span class="date">2026-06-25</span>
             </div>
             
@@ -6337,7 +6364,7 @@
         
         <article class="card" id="video-htM02KMNZnk">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>AI Engineer World's Fair 2026: The Rise of Software Factories</h2>
                 <span class="date">2026-06-25</span>
             </div>
             
@@ -6364,7 +6391,7 @@
         
         <article class="card" id="video-ZD9-4fW2HhM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Build Systems, Not Code: The Engineering of Agentic AI</h2>
                 <span class="date">2026-06-24</span>
             </div>
             
@@ -6391,7 +6418,7 @@
         
         <article class="card" id="video-ZRM_TfEZcIo">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Building a Personal AI Research OS: From Second Brain to Living Memory</h2>
                 <span class="date">2026-06-24</span>
             </div>
             
@@ -6418,7 +6445,7 @@
         
         <article class="card" id="video-IJXjTLPzvAU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Miranda Hypothesis: Solving the 'Persona Poisoning' Problem in LLMs</h2>
                 <span class="date">2026-06-24</span>
             </div>
             
@@ -6445,7 +6472,7 @@
         
         <article class="card" id="video-jVjt-2g8NMY">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The 'Genius with Amnesia' Problem in AI Agents</h2>
                 <span class="date">2026-06-24</span>
             </div>
             
@@ -6472,7 +6499,7 @@
         
         <article class="card" id="video-vljxQZfJ9wY">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Production Evals for Agentic AI Systems: Shifting from Benchmarks to Infrastructure</h2>
                 <span class="date">2026-06-24</span>
             </div>
             
@@ -6499,7 +6526,7 @@
         
         <article class="card" id="video-UPwGaM2MKHY">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Log Is The Agent: Redefining AI Agent Architecture</h2>
                 <span class="date">2026-06-24</span>
             </div>
             
@@ -6526,7 +6553,7 @@
         
         <article class="card" id="video-3hXJI2q0Jz8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Recursive Coding Agents: Moving Beyond the 'Mismanaged Genius'</h2>
                 <span class="date">2026-06-24</span>
             </div>
             
@@ -6553,7 +6580,7 @@
         
         <article class="card" id="video-C_GG5g38vLU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Mastering AI Harnesses: Moving Beyond Prompt Engineering</h2>
                 <span class="date">2026-06-21</span>
             </div>
             
@@ -6580,7 +6607,7 @@
         
         <article class="card" id="video-v4F1gFy-hqg">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Software Fundamentals Matter More Than Ever</h2>
                 <span class="date">2026-06-21</span>
             </div>
             
@@ -6607,7 +6634,7 @@
         
         <article class="card" id="video-0S8xe9ftGTM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Architecting the Future: A Deep Dive into AIE World's Fair 2026</h2>
                 <span class="date">2026-06-21</span>
             </div>
             
@@ -6634,7 +6661,7 @@
         
         <article class="card" id="video-ObTPqBGsEbA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Deploying AI Agents at Enterprise Scale: The Production Playbook</h2>
                 <span class="date">2026-06-17</span>
             </div>
             
@@ -6661,7 +6688,7 @@
         
         <article class="card" id="video-btxGmN8RvNU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Your Agent's Biggest Lie: "I Searched the Web"</h2>
                 <span class="date">2026-06-17</span>
             </div>
             
@@ -6688,7 +6715,7 @@
         
         <article class="card" id="video-gHs5ZiY80PM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Optimizing Diffusion Models for Real-Time Generation</h2>
                 <span class="date">2026-06-16</span>
             </div>
             
@@ -6715,7 +6742,7 @@
         
         <article class="card" id="video-c-2eEv2ou7Y">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>double iFrame</h2>
                 <span class="date">2026-06-15</span>
             </div>
             
@@ -6742,7 +6769,7 @@
         
         <article class="card" id="video-iUWwcG-C8OU">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Solving the 'Business Question' Bottleneck with AI Agents</h2>
                 <span class="date">2026-06-11</span>
             </div>
             
@@ -6769,7 +6796,7 @@
         
         <article class="card" id="video-ghJmWQCIHRM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The Agent-Ready Web: Simplifying User Actions with WebMCP</h2>
                 <span class="date">2026-06-11</span>
             </div>
             
@@ -6796,7 +6823,7 @@
         
         <article class="card" id="video-so9l_MwS2yg">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>How to Maintain Developer Balance in the Age of AI Agents</h2>
                 <span class="date">2026-06-11</span>
             </div>
             
@@ -6823,7 +6850,7 @@
         
         <article class="card" id="video-TNwJ1LMiENk">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Stop Making Models Bigger, Make Them Behave: A Case Study in Tool Use Efficiency</h2>
                 <span class="date">2026-06-10</span>
             </div>
             
@@ -6850,7 +6877,7 @@
         
         <article class="card" id="video-zMiSRliEzv4">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Turning Observability into Action: The PostHog 'Self-Driving Product' Pipeline</h2>
                 <span class="date">2026-06-10</span>
             </div>
             
@@ -6877,7 +6904,7 @@
         
         <article class="card" id="video-SS-A8sE7hkw">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Sovereign AI: Unlocking Ownership with Gemma 4</h2>
                 <span class="date">2026-06-10</span>
             </div>
             
@@ -6931,7 +6958,7 @@
         
         <article class="card" id="video-zDGHt0LB-dA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Accelerating AI Deployment with RunPod Flash</h2>
                 <span class="date">2026-06-09</span>
             </div>
             
@@ -6958,7 +6985,7 @@
         
         <article class="card" id="video-UM6sFg_jdlE">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Is RAG Dead? Moving Toward Agentic Retrieval</h2>
                 <span class="date">2026-06-09</span>
             </div>
             
@@ -6985,7 +7012,7 @@
         
         <article class="card" id="video-gUMwt4-5kn0">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>The 2026 AI Engineer Vibe: A Vision of the Future Stack</h2>
                 <span class="date">2026-06-09</span>
             </div>
             
@@ -7012,7 +7039,7 @@
         
         <article class="card" id="video-EcqMYoIV57A">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Why More Context Makes Your Agent Dumber: Mastering Context Optimization</h2>
                 <span class="date">2026-06-08</span>
             </div>
             
@@ -7039,7 +7066,7 @@
         
         <article class="card" id="video-SKDJo2CopRs">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Cloudflare's AI Agents Revolution</h2>
                 <span class="date">2026-06-08</span>
             </div>
             
@@ -7066,7 +7093,7 @@
         
         <article class="card" id="video-TUnPNY4E2fw">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Breaking the 5M Token Barrier: Advanced Context Parallelism</h2>
                 <span class="date">2026-06-08</span>
             </div>
             
@@ -7093,7 +7120,7 @@
         
         <article class="card" id="video-xzXdLRUyjUg">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>LLM + Memory + Planning + Tools</h2>
                 <span class="date">2026-06-08</span>
             </div>
             
@@ -7120,7 +7147,7 @@
         
         <article class="card" id="video-ILdE7FaAjVA">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Deploying LLM Endpoints in Under 5 Minutes with RunPod</h2>
                 <span class="date">2026-06-07</span>
             </div>
             
@@ -7147,7 +7174,7 @@
         
         <article class="card" id="video-zTZ0qunQXnM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>From MCP to Scale: Building Self-Healing Data Pipelines</h2>
                 <span class="date">2026-06-07</span>
             </div>
             
@@ -7174,7 +7201,7 @@
         
         <article class="card" id="video-JsCCrBF7F1g">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Mastering LLM Observability & Evaluation</h2>
                 <span class="date">2026-06-07</span>
             </div>
             
@@ -7201,7 +7228,7 @@
         
         <article class="card" id="video-Xfl50508LZM">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Mastering AI Agent Evaluation with Arize Phoenix</h2>
                 <span class="date">2026-06-07</span>
             </div>
             
@@ -7228,7 +7255,7 @@
         
         <article class="card" id="video-_xIwFcnHqp4">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Building Interactive UIs in VS Code with MCP Apps</h2>
                 <span class="date">2026-06-06</span>
             </div>
             
@@ -7255,7 +7282,7 @@
         
         <article class="card" id="video-QuuIywMG4s8">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Eval‑Driven Agent Tuning: The Practical Blueprint</h2>
                 <span class="date">2026-06-06</span>
             </div>
             
@@ -7282,7 +7309,7 @@
         
         <article class="card" id="video-KLSuFPj2ld0">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Building Safe Payment Infrastructure for the Autonomous Economy</h2>
                 <span class="date">2026-06-06</span>
             </div>
             
@@ -8470,7 +8497,7 @@
         
         <article class="card" id="video-mFLlVpnGpds">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Beyond Transcription: Building Voice AI That Understands Conversations</h2>
                 <span class="date">2026-06-05</span>
             </div>
             
@@ -8497,7 +8524,7 @@
         
         <article class="card" id="video-pmoDeA3RBZY">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Dark Factory: Scaling Development Velocity with OpenClaw</h2>
                 <span class="date">2026-06-05</span>
             </div>
             
@@ -8524,7 +8551,7 @@
         
         <article class="card" id="video-4VhbYlfC7Gs">
             <div class="card-header">
-                <h2>YouTube video feed</h2>
+                <h2>Malleable Evals: Moving from Static Benchmarks to Adaptive Systems</h2>
                 <span class="date">2026-06-05</span>
             </div>
             
