@@ -2,11 +2,20 @@ import sys
 import os
 import logging
 import time
+from datetime import datetime, timedelta
 from ingestor import get_recent_videos
-from transcript_fetcher import fetch_transcript
+from transcript_fetcher import fetch_transcript, VideoUpcomingException
 from llm_analyzer import analyze_transcript
 from telegram_bot import send_telegram_message, send_admin_alert
-from db import add_video, get_pending_videos, update_video_status, reset_stuck_videos, get_db_client, reset_failed_videos_for_daily_retry
+from db import (
+    add_video,
+    add_videos_batch,
+    get_pending_videos,
+    update_video_status,
+    reset_stuck_videos,
+    get_db_client,
+    reset_failed_videos_for_daily_retry
+)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -18,6 +27,16 @@ def format_date(date_str):
         return "Unknown Date"
     # Format YYYYMMDD to YYYY-MM-DD
     return f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
+
+def is_within_days_back(raw_upload_date: str, days_back: int = DAYS_BACK) -> bool:
+    if not raw_upload_date or len(raw_upload_date) != 8:
+        return True # If unknown, allow through for safety
+    try:
+        upload_dt = datetime.strptime(raw_upload_date, "%Y%m%d")
+        cutoff = datetime.now() - timedelta(days=days_back)
+        return upload_dt >= cutoff
+    except Exception:
+        return True
 
 def fetch_youtube_metadata_fallback(video_id: str) -> dict:
     import urllib.request
@@ -72,8 +91,8 @@ def run_pipeline(target_video_id=None):
         add_video(target_video_id, "Triggered Video")
     else:
         recent_videos = get_recent_videos(CHANNEL_URL, DAYS_BACK)
-        for vid in recent_videos:
-            add_video(vid['id'], vid['title'])
+        if recent_videos:
+            add_videos_batch(recent_videos)
         
     pending_videos = get_pending_videos()
     
@@ -82,8 +101,6 @@ def run_pipeline(target_video_id=None):
         
     logging.info(f"Found {len(pending_videos)} pending videos in database.")
     
-    # Process at most 3 videos per run to prevent IP blocks / rate limits
-    # pending_videos = pending_videos[:3]
     if pending_videos:
         logging.info(f"Processing batch of {len(pending_videos)} videos in this run.")
     
@@ -92,7 +109,7 @@ def run_pipeline(target_video_id=None):
     
     for idx, p_vid in enumerate(pending_videos):
         video_id = p_vid['video_id']
-        title = p_vid['title']
+        title = p_vid.get('title', 'Triggered Video')
         description = ""
         raw_upload_date = None
         
@@ -112,30 +129,51 @@ def run_pipeline(target_video_id=None):
                 info = ydl.extract_info(f"https://www.youtube.com/watch?v={video_id}", download=False)
                 raw_upload_date = info.get("upload_date")
                 description = info.get("description", "")
-                if title == "Triggered Video":
+                
+                # Check live/premiere status
+                live_status = info.get("live_status")
+                if live_status in ["is_upcoming", "is_live"]:
+                    logging.info(f"Video {video_id} is upcoming ({live_status}). Postponing.")
+                    update_video_status(video_id, "upcoming", title=info.get("title", title))
+                    continue
+
+                if title in ["Triggered Video", "YouTube video feed"] or not title:
                     fetched_title = info.get("title")
                     if fetched_title:
                         title = fetched_title
-                        supabase = get_db_client()
-                        supabase.table("videos").update({"title": fetched_title}).eq("video_id", video_id).execute()
+                        update_video_status(video_id, "pending", title=fetched_title)
         except Exception as e:
             logging.warning(f"Failed to fetch metadata for {video_id} via yt-dlp: {e}. Trying fallback HTML scraping...")
             fallback_meta = fetch_youtube_metadata_fallback(video_id)
             if fallback_meta:
                 raw_upload_date = fallback_meta.get("upload_date")
                 description = fallback_meta.get("description", "")
-                if title == "Triggered Video" and fallback_meta.get("title") and fallback_meta["title"] != "Triggered Video":
+                if (title in ["Triggered Video", "YouTube video feed"] or not title) and fallback_meta.get("title"):
                     title = fallback_meta["title"]
-                    supabase = get_db_client()
-                    supabase.table("videos").update({"title": title}).eq("video_id", video_id).execute()
+                    update_video_status(video_id, "pending", title=title)
                 
+        # Verify date cutoff: ignore videos older than DAYS_BACK (unless target_video_id explicitly requested)
+        if not target_video_id and raw_upload_date and not is_within_days_back(raw_upload_date, DAYS_BACK):
+            logging.info(f"Skipping old video {video_id} uploaded on {raw_upload_date} (older than {DAYS_BACK} days).")
+            update_video_status(video_id, "skipped_old", title=title)
+            continue
+
         upload_date = format_date(raw_upload_date)
         
         logging.info(f"Processing video: {title} ({video_id})")
         update_video_status(video_id, "processing")
         
-        transcript = fetch_transcript(video_id)
-        if not transcript:
+        try:
+            transcript = fetch_transcript(video_id)
+        except VideoUpcomingException as ue:
+            logging.info(f"Postponing upcoming video {video_id}: {ue}")
+            update_video_status(video_id, "upcoming", title=title)
+            continue
+        except Exception as e:
+            logging.error(f"Error fetching transcript for {video_id}: {e}")
+            transcript = ""
+
+        if not transcript or not transcript.strip():
             logging.error(f"Could not fetch transcript for {video_id}. Marking as failed.")
             update_video_status(video_id, "failed")
             failed_count += 1
@@ -153,7 +191,7 @@ def run_pipeline(target_video_id=None):
                 next_model_val = "retry_3"
                 next_status = "pending"
             elif current_model_val == "retry_3":
-                next_model_val = None
+                next_model_val = "failed_permanently"
                 next_status = "failed"
             else:
                 next_model_val = "retry_1"
@@ -163,8 +201,8 @@ def run_pipeline(target_video_id=None):
                 logging.error(f"LLM analysis failed for {video_id}. Reverting status to pending (attempt {next_model_val}) for retry.")
                 update_video_status(video_id, "pending", model=next_model_val)
             else:
-                logging.error(f"LLM analysis failed 4 times for {video_id}. Marking as failed for next-day retry.")
-                update_video_status(video_id, "failed", model=None)
+                logging.error(f"LLM analysis failed max retries for {video_id}. Marking as failed.")
+                update_video_status(video_id, "failed", model="failed_permanently")
                 
             failed_count += 1
             continue
@@ -172,21 +210,33 @@ def run_pipeline(target_video_id=None):
         site_url = os.environ.get("SITE_URL", "https://briannoelkesuma.github.io/ai_engineer_newsletter/public")
         insights.telegram_summary_text = f"{insights.telegram_summary_text}\n\n📖 <a href=\"{site_url}/#video-{video_id}\">Read detailed timestamp breakdown</a>\n\n🔗 https://youtube.com/watch?v={video_id}"
 
+        # 1. Update DB to 'processed' FIRST to guarantee idempotency and prevent duplicate re-sends
+        update_video_status(
+            video_id, 
+            "processed", 
+            model=model_name, 
+            telegram_summary_text=insights.telegram_summary_text, 
+            webpage_detailed_info_text=insights.webpage_detailed_info_text,
+            title=title
+        )
+        processed_count += 1
+
+        # 2. Dispatch to Telegram
         logging.info(f"Publishing to Telegram...")
         send_telegram_message(insights.telegram_summary_text)
         
-        update_video_status(video_id, "processed", model=model_name, telegram_summary_text=insights.telegram_summary_text, webpage_detailed_info_text=insights.webpage_detailed_info_text)
-        processed_count += 1
-        
-        # Throttling to respect OpenRouter API limits (only sleep if there are more videos in the batch)
+        # Throttling to respect OpenRouter API limits
         if idx < len(pending_videos) - 1:
-            logging.info("Sleeping for 65 seconds to respect API rate limits...")
-            time.sleep(65)
+            logging.info("Sleeping for 10 seconds between items...")
+            time.sleep(10)
         
     logging.info("Pipeline run complete.")
     if processed_count > 0:
-        from generate_static_site import build_site
-        build_site()
+        try:
+            from generate_static_site import build_site
+            build_site()
+        except Exception as site_err:
+            logging.error(f"Error rebuilding static site: {site_err}")
 
 if __name__ == "__main__":
     target_vid = sys.argv[1] if len(sys.argv) > 1 else None

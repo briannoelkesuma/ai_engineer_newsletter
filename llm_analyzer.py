@@ -1,18 +1,27 @@
 import os
 import json
 import logging
+import re
 import time
-import requests
 from openai import OpenAI
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
-from openai import NotFoundError
+from openai import NotFoundError, RateLimitError
 from tenacity import retry, wait_exponential, stop_after_attempt, retry_if_exception
 import tiktoken
 
 load_dotenv()
 
 OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
+
+DEFAULT_FALLBACK_MODELS = [
+    "google/gemma-4-26b-a4b-it:free",
+    "google/gemma-4-31b-it:free",
+    "nvidia/nemotron-3-super-120b-a12b:free",
+    "nvidia/nemotron-3-nano-30b-a3b:free",
+    "openai/gpt-oss-20b:free",
+    "openrouter/free"
+]
 
 client = OpenAI(
   base_url="https://openrouter.ai/api/v1",
@@ -30,24 +39,37 @@ class ChunkSummary(BaseModel):
 def is_retryable_exception(exception: Exception) -> bool:
     if isinstance(exception, NotFoundError):
         return False
-    # Check for HTTP status codes that shouldn't be retried
     if hasattr(exception, "status_code") and exception.status_code in (400, 401, 402, 403, 404):
         return False
     return True
 
+def extract_json_object(text: str) -> str:
+    """
+    Extracts the outermost JSON object {...} from text, ignoring any chain-of-thought or markdown wrappers.
+    """
+    text = text.strip()
+    # Strip markdown wrappers if present
+    if text.startswith("```json"):
+        text = text[7:]
+    elif text.startswith("```"):
+        text = text[3:]
+    if text.endswith("```"):
+        text = text[:-3]
+    text = text.strip()
+
+    # Find first '{' and last '}'
+    first_brace = text.find('{')
+    last_brace = text.rfind('}')
+    if first_brace != -1 and last_brace != -1 and last_brace > first_brace:
+        return text[first_brace:last_brace + 1]
+    return text
+
 def clean_json_math_escapes(content: str) -> str:
-    import re
-    # Set of LaTeX commands starting with n, t, r, b, f
     latex_ntrbf = {
-        # t commands
         'text', 'textbf', 'textit', 'texttt', 'textsf', 'times', 'theta', 'tau', 'tan', 'tilde', 'triangle', 'to', 'top',
-        # n commands
         'newline', 'nabla', 'nearrow', 'neg', 'neq', 'num', 'nsub', 'nsup', 'nexists',
-        # r commands
         'rightarrow', 'rho', 'rangle', 'rbrace', 'real', 'right', 'rharpoonup', 'rightharpoonup',
-        # b commands
         'beta', 'bar', 'begin', 'box', 'bmatrix', 'bmod', 'bot', 'buildrel',
-        # f commands
         'frac', 'forall', 'frown', 'flat'
     }
     
@@ -76,19 +98,18 @@ def clean_json_math_escapes(content: str) -> str:
     pattern = r'\\([a-zA-Z])([a-zA-Z]*)'
     return re.sub(pattern, replace_match, content)
 
-# Retry logic for 429 Too Many Requests (Rate Limits)
 @retry(
-    wait=wait_exponential(multiplier=1.5, min=5, max=30), 
+    wait=wait_exponential(multiplier=1.5, min=3, max=20), 
     stop=stop_after_attempt(3),
     retry=retry_if_exception(is_retryable_exception),
     before_sleep=lambda retry_state: logging.warning(f"Rate limited or API error. Retrying in {retry_state.next_action.sleep} seconds...")
 )
-def ask_llm(prompt: str, schema: type[BaseModel], model: str = "meta-llama/llama-3.3-70b-instruct:free") -> BaseModel:
+def ask_llm(prompt: str, schema: type[BaseModel], model: str = "google/gemma-4-26b-a4b-it:free") -> BaseModel:
     logging.info(f"Attempting LLM call with model: {model}")
     
     if schema == VideoInsights:
         system_content = """You are an expert AI Engineer and technical tutor. You must output a JSON object with the following exact keys:
-- "telegram_summary_text": A highly detailed technical, narrative-style newsletter summary (approx 200-400 words) for Telegram. Act as an elite technical tutor who explains the core concepts, problems, business rules, and technical solutions. You MUST include a dedicated bulleted list of Key Learnings (focusing on framework configurations, design patterns, and constraints). Use strict Telegram HTML parse mode format: only use <b>, <i>, <code>, <pre>, and <a> tags. Do NOT use block HTML tags or Markdown here. Do NOT include timestamps or video link. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
+- "telegram_summary_text": A highly detailed technical, narrative-style newsletter summary (approx 200-400 words) for Telegram. Act as an elite technical tutor who explains the core concepts, problems, business rules, and technical solutions. You MUST include a dedicated bulleted list of Key Learnings (focusing on framework configurations, design patterns, and constraints). Use strict Telegram HTML parse mode format: only use <b>, <i>, <code>, <pre>, and <a> tags. Do NOT use markdown or generic HTML tags. Do NOT include timestamps or video link. Use double newlines (\\n\\n) for paragraph breaks and simple dashes (-) for bullet points.
 - "webpage_detailed_info_text": An extremely comprehensive, tutorial-grade, highly granular technical deep-dive of the video. Act as an elite principal software engineer and technical educator. Detail every concept, architecture pattern, code logic block, framework configuration, system design decision, database setup, and step-by-step implementation. Organize it sequentially using timestamps/sections. Use standard Markdown format (headings, lists, bold, italics, tables, and code blocks) so it can be rendered as Markdown on the website.
 
 You must output ONLY a valid JSON object matching this structure:
@@ -111,34 +132,30 @@ You must output ONLY a valid JSON object matching this structure:
             {"role": "user", "content": prompt}
         ],
         temperature=0.3,
-        max_tokens=8192
+        max_tokens=8192,
+        response_format={"type": "json_object"}
     )
-    content = completion.choices[0].message.content or ""
+    raw_content = completion.choices[0].message.content or ""
     
-    # Strip potential markdown code block wrappers
-    content = content.strip()
-    if content.startswith("```json"):
-        content = content[7:]
-    elif content.startswith("```"):
-        content = content[3:]
-    if content.endswith("```"):
-        content = content[:-3]
-    content = content.strip()
+    json_str = extract_json_object(raw_content)
+    json_str = clean_json_math_escapes(json_str)
     
     try:
-        content = clean_json_math_escapes(content)
-        return schema.model_validate_json(content)
+        return schema.model_validate_json(json_str)
     except Exception as e:
-        logging.error(f"JSON validation failed: {e}\nContent was:\n{content}")
-        raise
-
+        # Fallback manual json parse
+        try:
+            parsed = json.loads(json_str)
+            return schema.model_validate(parsed)
+        except Exception:
+            logging.error(f"JSON validation failed: {e}\nRaw content was:\n{raw_content[:500]}")
+            raise
 
 def count_tokens(text: str) -> int:
     try:
         encoding = tiktoken.get_encoding("cl100k_base")
         return len(encoding.encode(text))
     except Exception:
-        # Fallback estimation
         return len(text) // 4
 
 def chunk_transcript(transcript: str, chunk_size_tokens: int = 20000) -> list[str]:
@@ -146,7 +163,6 @@ def chunk_transcript(transcript: str, chunk_size_tokens: int = 20000) -> list[st
         encoding = tiktoken.get_encoding("cl100k_base")
         tokens = encoding.encode(transcript)
     except Exception:
-        # Fallback character-based chunking if tiktoken fails
         chunk_size_chars = chunk_size_tokens * 4
         return [transcript[i:i + chunk_size_chars] for i in range(0, len(transcript), chunk_size_chars)]
         
@@ -157,31 +173,21 @@ def chunk_transcript(transcript: str, chunk_size_tokens: int = 20000) -> list[st
     return chunks
 
 def get_model_limits(model_name: str) -> tuple[int, int]:
-    """
-    Returns (map_reduce_threshold, chunk_size_tokens) for a given model.
-    """
     model_lower = model_name.lower()
-    
-    # Native Gemini API or Gemini model on OpenRouter
     if "gemini" in model_lower:
-        # Gemini context window is 1M+, so we can safely do single-pass up to 500k tokens
         return 500000, 100000
-    # Smaller models or local models on OpenRouter (typically 8k context)
-    elif any(x in model_lower for x in ["llama-3-8b", "llama3-8b", "gemma-2", "gemma2", "mistral-7b"]):
+    elif any(x in model_lower for x in ["llama-3-8b", "gemma-2", "mistral-7b"]):
         return 6000, 4000
-    # Large context models (Llama 3.1 / 3.2 / 3.3, Gemma 4, Hermes 3, Nemotron typically have 128k)
-    elif any(x in model_lower for x in ["llama-3.1", "llama-3.2", "llama-3.3", "gemma-4", "gemma4", "hermes-3", "nemotron"]):
+    elif any(x in model_lower for x in ["llama-3.1", "llama-3.2", "llama-3.3", "gemma-4", "nemotron"]):
         return 80000, 30000
-    # openrouter/free (safer default for routing)
-    elif "openrouter/free" in model_lower or "gpt-oss" in model_lower:
-        return 30000, 20000
-    
-    # Safe fallback
     return 30000, 20000
 
 def analyze_transcript(title: str, description: str, upload_date: str, transcript: str, model: str = None) -> tuple[VideoInsights | None, str]:
     if not model:
-        model = os.environ.get("DEFAULT_MODEL", "meta-llama/llama-3.3-70b-instruct:free")
+        model = os.environ.get("DEFAULT_MODEL", "google/gemma-4-26b-a4b-it:free")
+    
+    candidate_models = [model] + [m for m in DEFAULT_FALLBACK_MODELS if m != model]
+    
     token_count = count_tokens(transcript)
     logging.info(f"Transcript estimated token count: {token_count}")
     
@@ -203,30 +209,23 @@ Do NOT include the video date or link in the texts.
 Transcript:
 {transcript}
 """
-
         if not OPENROUTER_API_KEY:
             logging.error("OpenRouter API key missing.")
             return None, model
-            
-        logging.info(f"Using OpenRouter single-pass analysis (model: {model}).")
-        try:
-            return ask_llm(prompt, VideoInsights, model=model), model
-        except Exception as e:
-            logging.error(f"OpenRouter model {model} failed: {e}")
-            fallback_models = ["google/gemma-4-31b-it:free", "openrouter/free"]
-            for fallback_model in fallback_models:
-                if model != fallback_model:
-                    try:
-                        logging.info(f"Falling back to {fallback_model}...")
-                        return ask_llm(prompt, VideoInsights, model=fallback_model), fallback_model
-                    except Exception as fallback_err:
-                        logging.error(f"Fallback to {fallback_model} failed: {fallback_err}")
-            return None, model
+
+        for current_model in candidate_models:
+            try:
+                logging.info(f"Attempting analysis with model {current_model}...")
+                insights = ask_llm(prompt, VideoInsights, model=current_model)
+                return insights, current_model
+            except Exception as e:
+                logging.warning(f"Model {current_model} failed: {e}. Trying next fallback...")
+                
+        return None, model
 
     else:
         logging.info(f"Transcript ({token_count} tokens) exceeds single-pass threshold ({map_reduce_threshold}). Initiating Map-Reduce...")
         
-        # 1. Map phase: Chunk and summarize
         chunks = chunk_transcript(transcript, chunk_size_tokens=chunk_size)
         logging.info(f"Split transcript into {len(chunks)} chunks using chunk size {chunk_size} tokens.")
         
@@ -241,30 +240,21 @@ Transcript Segment:
 {chunk}
 """
             chunk_summary = None
-            if OPENROUTER_API_KEY:
+            for current_model in candidate_models:
                 try:
-                    chunk_summary = ask_llm(chunk_prompt, ChunkSummary, model=model)
+                    chunk_summary = ask_llm(chunk_prompt, ChunkSummary, model=current_model)
+                    if chunk_summary:
+                        break
                 except Exception as e:
-                    logging.warning(f"Primary model {model} failed on chunk {i+1}: {e}.")
-                    fallback_models = ["google/gemma-4-31b-it:free", "openrouter/free"]
-                    for fallback_model in fallback_models:
-                        if model != fallback_model:
-                            try:
-                                logging.info(f"Falling back to {fallback_model} on chunk {i+1}...")
-                                chunk_summary = ask_llm(chunk_prompt, ChunkSummary, model=fallback_model)
-                                break
-                            except Exception as fallback_err:
-                                logging.error(f"Fallback to {fallback_model} failed on chunk {i+1}: {fallback_err}")
-                        
+                    logging.warning(f"Model {current_model} failed on chunk {i+1}: {e}")
+                    
             if not chunk_summary:
                 logging.error(f"Could not map chunk {i+1}. Aborting Map-Reduce.")
                 return None, model
                 
             summaries.append(chunk_summary.summary)
-            # Short sleep to prevent hitting prompt rate limits
-            time.sleep(5)
+            time.sleep(2)
             
-        # 2. Reduce phase: Combine and format the final newsletter
         logging.info("Entering Reduce phase...")
         combined_summaries = "\n\n--- NEXT SECTION SUMMARY ---\n\n".join(summaries)
         
@@ -282,21 +272,11 @@ Do NOT include the video date or link in the texts.
 Summaries:
 {combined_summaries}
 """
-        reduced = None
-        if OPENROUTER_API_KEY:
+        for current_model in candidate_models:
             try:
-                reduced = ask_llm(reduce_prompt, VideoInsights, model=model)
-                return reduced, model
+                reduced = ask_llm(reduce_prompt, VideoInsights, model=current_model)
+                return reduced, current_model
             except Exception as e:
-                logging.warning(f"Primary model failed on reduce phase: {e}.")
-                fallback_models = ["google/gemma-4-31b-it:free", "openrouter/free"]
-                for fallback_model in fallback_models:
-                    if model != fallback_model:
-                        try:
-                            logging.info(f"Falling back to {fallback_model} on reduce phase...")
-                            reduced = ask_llm(reduce_prompt, VideoInsights, model=fallback_model)
-                            return reduced, fallback_model
-                        except Exception as fallback_err:
-                            logging.error(f"Fallback to {fallback_model} failed on reduce phase: {fallback_err}")
-                            
+                logging.warning(f"Reduce phase failed with model {current_model}: {e}")
+                
         return None, model

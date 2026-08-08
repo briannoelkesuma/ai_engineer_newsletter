@@ -68,10 +68,13 @@ export default {
         console.log('Signature verified successfully.');
       }
 
-      // Parse XML payload using regex (safe & fast in Workers)
-      const videoIdMatch = bodyText.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
-      const titleMatch = bodyText.match(/<title>([^<]+)<\/title>/);
-      const channelIdMatch = bodyText.match(/<yt:channelId>([^<]+)<\/yt:channelId>/);
+      // Parse XML payload inside <entry> (safe & fast in Workers)
+      const entryMatch = bodyText.match(/<entry>[\s\S]*?<\/entry>/);
+      const entryXml = entryMatch ? entryMatch[0] : bodyText;
+
+      const videoIdMatch = entryXml.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+      const titleMatch = entryXml.match(/<title>([^<]+)<\/title>/);
+      const channelIdMatch = entryXml.match(/<yt:channelId>([^<]+)<\/yt:channelId>/);
 
       if (!videoIdMatch) {
         console.warn('No video ID found in payload. Ignoring.');
@@ -79,7 +82,7 @@ export default {
       }
 
       const videoId = videoIdMatch[1];
-      const title = titleMatch ? decodeXmlEntities(titleMatch[1]) : 'Unknown Title';
+      const title = titleMatch ? decodeXmlEntities(titleMatch[1]) : 'Triggered Video';
       const channelId = channelIdMatch ? channelIdMatch[1] : '';
 
       console.log(`Extracted video: ${title} (${videoId}) for channel: ${channelId}`);
