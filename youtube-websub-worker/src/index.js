@@ -35,10 +35,11 @@ export default {
         
         const text = message.text || '';
         const chatId = message.chat?.id || '';
+        const threadId = message.message_thread_id || '';
         
         if (text.startsWith('/')) {
           // Trigger GitHub Action to process Telegram commands
-          await triggerTelegramAction(env, text, chatId);
+          await triggerTelegramAction(env, text, chatId, threadId);
         }
         
         return new Response('OK', { status: 200 });
@@ -311,7 +312,7 @@ function decodeXmlEntities(str) {
 /**
  * Triggers GitHub Actions workflow for Telegram commands
  */
-async function triggerTelegramAction(env, commandText, chatId) {
+async function triggerTelegramAction(env, commandText, chatId, threadId) {
   const owner = env.GITHUB_OWNER;
   const repo = env.GITHUB_REPO;
   const token = env.GITHUB_TOKEN;
@@ -325,7 +326,8 @@ async function triggerTelegramAction(env, commandText, chatId) {
     event_type: 'telegram_command',
     client_payload: {
       command: commandText,
-      chat_id: String(chatId)
+      chat_id: String(chatId),
+      thread_id: String(threadId)
     }
   };
 
