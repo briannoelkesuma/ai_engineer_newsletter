@@ -38,4 +38,5 @@ jobs:
           TG_COMMAND: ${{ github.event.client_payload.command }}
           TG_CHAT_ID: ${{ github.event.client_payload.chat_id }}
           TG_THREAD_ID: ${{ github.event.client_payload.thread_id }}
+          TG_MESSAGE_ID: ${{ github.event.client_payload.message_id }}
         run: python telegram_bot.py handle "$TG_COMMAND" "$TG_CHAT_ID" "$TG_THREAD_ID"
