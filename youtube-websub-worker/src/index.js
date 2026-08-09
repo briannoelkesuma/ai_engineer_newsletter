@@ -26,8 +26,21 @@ export default {
     if (url.pathname === '/telegram-webhook' && request.method === 'POST') {
       console.log('Received Telegram webhook POST request.');
       try {
-        // Trigger GitHub Action to process Telegram commands
-        await triggerTelegramAction(env);
+        const payload = await request.json();
+        
+        let message = payload.message || payload.channel_post;
+        if (!message) {
+          return new Response('Ignored', { status: 200 });
+        }
+        
+        const text = message.text || '';
+        const chatId = message.chat?.id || '';
+        
+        if (text.startsWith('/')) {
+          // Trigger GitHub Action to process Telegram commands
+          await triggerTelegramAction(env, text, chatId);
+        }
+        
         return new Response('OK', { status: 200 });
       } catch (err) {
         console.error(`Telegram webhook failed: ${err.message}`);
@@ -298,7 +311,7 @@ function decodeXmlEntities(str) {
 /**
  * Triggers GitHub Actions workflow for Telegram commands
  */
-async function triggerTelegramAction(env) {
+async function triggerTelegramAction(env, commandText, chatId) {
   const owner = env.GITHUB_OWNER;
   const repo = env.GITHUB_REPO;
   const token = env.GITHUB_TOKEN;
@@ -309,7 +322,11 @@ async function triggerTelegramAction(env) {
 
   const url = `https://api.github.com/repos/${owner}/${repo}/dispatches`;
   const body = {
-    event_type: 'telegram_command'
+    event_type: 'telegram_command',
+    client_payload: {
+      command: commandText,
+      chat_id: String(chatId)
+    }
   };
 
   const response = await fetch(url, {

@@ -330,6 +330,8 @@ if __name__ == "__main__":
         print("Send successful:" if success else "Send failed.")
     elif len(sys.argv) > 1 and sys.argv[1] == "poll":
         poll_updates_once()
+    elif len(sys.argv) > 3 and sys.argv[1] == "handle":
+        handle_telegram_command(sys.argv[2], sys.argv[3])
     elif len(sys.argv) > 2 and sys.argv[1] == "webhook":
         set_webhook(sys.argv[2])
     else:
