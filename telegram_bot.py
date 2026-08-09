@@ -302,6 +302,25 @@ def detect_topics_and_save():
         print(f"Error detecting topics: {e}")
         return None
 
+def set_webhook(url: str):
+    """
+    Registers a webhook URL with Telegram to receive updates automatically.
+    """
+    token, _, _, _, _ = get_credentials()
+    if not token:
+        print("ERROR: TELEGRAM_BOT_TOKEN missing.")
+        return
+    
+    api_url = f"https://api.telegram.org/bot{token}/setWebhook"
+    try:
+        res = requests.post(api_url, json={"url": url}, timeout=10).json()
+        if res.get("ok"):
+            print(f"Successfully set webhook to: {url}")
+        else:
+            print(f"Failed to set webhook: {res}")
+    except Exception as e:
+        print(f"Error setting webhook: {e}")
+
 if __name__ == "__main__":
     import sys
     if len(sys.argv) > 1 and sys.argv[1] == "detect":
@@ -311,6 +330,8 @@ if __name__ == "__main__":
         print("Send successful:" if success else "Send failed.")
     elif len(sys.argv) > 1 and sys.argv[1] == "poll":
         poll_updates_once()
+    elif len(sys.argv) > 2 and sys.argv[1] == "webhook":
+        set_webhook(sys.argv[2])
     else:
         detect_topics_and_save()
 

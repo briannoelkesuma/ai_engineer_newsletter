@@ -22,6 +22,19 @@ export default {
       }
     }
 
+    // 2. Telegram Webhook Endpoint (POST /telegram-webhook)
+    if (url.pathname === '/telegram-webhook' && request.method === 'POST') {
+      console.log('Received Telegram webhook POST request.');
+      try {
+        // Trigger GitHub Action to process Telegram commands
+        await triggerTelegramAction(env);
+        return new Response('OK', { status: 200 });
+      } catch (err) {
+        console.error(`Telegram webhook failed: ${err.message}`);
+        return new Response('Error triggering action', { status: 500 });
+      }
+    }
+
     // 2. WebSub Challenge Verification (GET /)
     if (request.method === 'GET') {
       const hubMode = url.searchParams.get('hub.mode');
@@ -280,4 +293,38 @@ function decodeXmlEntities(str) {
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
     .replace(/&apos;/g, "'");
+}
+
+/**
+ * Triggers GitHub Actions workflow for Telegram commands
+ */
+async function triggerTelegramAction(env) {
+  const owner = env.GITHUB_OWNER;
+  const repo = env.GITHUB_REPO;
+  const token = env.GITHUB_TOKEN;
+
+  if (!token) {
+    throw new Error('GITHUB_TOKEN missing. Cannot trigger GitHub Action workflow.');
+  }
+
+  const url = `https://api.github.com/repos/${owner}/${repo}/dispatches`;
+  const body = {
+    event_type: 'telegram_command'
+  };
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': `token ${token}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'User-Agent': 'CF-Worker-YouTube-WebSub',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`GitHub dispatch failed: ${response.status} ${errText}`);
+  }
 }
