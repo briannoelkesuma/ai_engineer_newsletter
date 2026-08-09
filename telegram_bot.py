@@ -86,21 +86,24 @@ def send_admin_alert(msg: str) -> bool:
     logging.info(f"Admin Alert: {msg}")
     return send_telegram_message(f"⚙️ <b>Admin Alert</b>\n{msg}", silent=True)
 
-def handle_telegram_command(command: str, from_chat_id: str):
+def handle_telegram_command(command: str, from_chat_id: str, from_thread_id: str = None):
     """
     Handles commands like /digest, /unread, /markread, /help sent to the bot.
     """
     from catchup_digest import get_unopened_videos, generate_catchup_digest, mark_all_as_read
     cmd = command.strip().lower()
     
+    # Send replies back to the exact topic where the command was typed
+    thread = from_thread_id if from_thread_id else None
+    
     if cmd in ["/digest", "/catchup"]:
-        send_telegram_message("⚡ <i>Synthesizing your unopened video summaries into an executive digest...</i>", target_chat_id=from_chat_id)
+        send_telegram_message("⚡ <i>Synthesizing your unopened video summaries into an executive digest...</i>", target_chat_id=from_chat_id, thread_id=thread)
         digest = generate_catchup_digest()
         if digest and not digest.startswith("🎉"):
             # Digest already sent within generate_catchup_digest()
             pass
         elif digest:
-            send_telegram_message(digest, target_chat_id=from_chat_id)
+            send_telegram_message(digest, target_chat_id=from_chat_id, thread_id=thread)
             
     elif cmd in ["/unread", "/status"]:
         unopened = get_unopened_videos()
@@ -109,11 +112,11 @@ def handle_telegram_command(command: str, from_chat_id: str):
             msg = "🎉 <b>You're all caught up!</b>\n0 unopened video summaries."
         else:
             msg = f"📬 <b>Unopened Updates:</b> {count} video summaries waiting for you.\n\nSend /digest to get an AI synthesized brief of all {count} unopened updates!"
-        send_telegram_message(msg, target_chat_id=from_chat_id)
+        send_telegram_message(msg, target_chat_id=from_chat_id, thread_id=thread)
         
     elif cmd in ["/markread", "/clear"]:
         total = mark_all_as_read()
-        send_telegram_message(f"✅ Marked {total} video summaries as read. Your unopened backlog is cleared!", target_chat_id=from_chat_id)
+        send_telegram_message(f"✅ Marked {total} video summaries as read. Your unopened backlog is cleared!", target_chat_id=from_chat_id, thread_id=thread)
         
     elif cmd in ["/help", "/start"]:
         msg = (
@@ -124,7 +127,7 @@ def handle_telegram_command(command: str, from_chat_id: str):
             "• <code>/markread</code> - Mark all existing videos as read/opened\n"
             "• <code>/help</code> - Show this menu"
         )
-        send_telegram_message(msg, target_chat_id=from_chat_id)
+        send_telegram_message(msg, target_chat_id=from_chat_id, thread_id=thread)
 
 def poll_updates_once():
     """
@@ -330,8 +333,9 @@ if __name__ == "__main__":
         print("Send successful:" if success else "Send failed.")
     elif len(sys.argv) > 1 and sys.argv[1] == "poll":
         poll_updates_once()
-    elif len(sys.argv) > 3 and sys.argv[1] == "handle":
-        handle_telegram_command(sys.argv[2], sys.argv[3])
+    elif len(sys.argv) >= 4 and sys.argv[1] == "handle":
+        thread_id = sys.argv[4] if len(sys.argv) > 4 else None
+        handle_telegram_command(sys.argv[2], sys.argv[3], thread_id)
     elif len(sys.argv) > 2 and sys.argv[1] == "webhook":
         set_webhook(sys.argv[2])
     else:
