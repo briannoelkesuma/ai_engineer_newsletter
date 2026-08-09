@@ -14,6 +14,7 @@ The system is a 100% serverless, zero-maintenance pipeline that monitors the **A
 flowchart TD
     subgraph 1. Ingestion [Google / Cloudflare Edge]
         YT[YouTube Video Upload] -->|WebSub Push| CF[Cloudflare Worker]
+        TG[Telegram User Command] -->|Webhook Push| CF
         CF -->|1. Deduplicate & Insert 'pending'| DB[(Supabase 'videos')]
         CF -->|2. Dispatch Event| GHA[GitHub Actions Runner]
     end
@@ -26,10 +27,10 @@ flowchart TD
     end
 
     subgraph 3. Distribution & Presentation
-        LLM -->|7. Post Single Summary| TG_SUM[Telegram Topic: Video Updates]
+        LLM -->|7. Post Single Summary| TG_SUM[Telegram: General Chat]
         GHA -->|8. Recompile Static HTML| PAGES[GitHub Pages: public/index.html]
-        USER[User on Telegram] -->|/digest Command| DIGEST[catchup_digest.py]
-        DIGEST -->|9. Post Synthesized Executive Brief| TG_DIG[Telegram Topic: Catch-up Digests]
+        GHA -->|9. Process /digest Command| DIGEST[catchup_digest.py]
+        DIGEST -->|10. Post Synthesized Executive Brief| TG_DIG[Telegram Topic: Catch-up Digests]
     end
 ```
 
@@ -62,7 +63,7 @@ flowchart TD
 | `OPENROUTER_API_KEY` | GHA, Local | OpenRouter API Key for LLM inference (e.g. `Llama 3.3 70B`, `Gemma 4 26B`). |
 | `TELEGRAM_BOT_TOKEN` | GHA, Local | Telegram Bot Token from `@BotFather`. |
 | `TELEGRAM_CHAT_ID` | GHA, Local | Target Supergroup / Channel ID (e.g., `-1004311421904`). |
-| `TELEGRAM_SUMMARY_THREAD_ID` | GHA, Local | Forum Topic ID for individual video updates (e.g., `3`). |
+| `TELEGRAM_SUMMARY_THREAD_ID` | GHA, Local | Forum Topic ID for individual video updates (Leave empty for General Chat). |
 | `TELEGRAM_DIGEST_THREAD_ID` | GHA, Local | Forum Topic ID for executive catch-up digests (e.g., `2`). |
 | `GITHUB_TOKEN` | Worker | GitHub Personal Access Token (`repo` / `actions` permissions) for triggering workflow dispatch. |
 | `WEBHOOK_SECRET` | Worker | Shared HMAC-SHA1 secret used for WebSub push verification. |
@@ -75,8 +76,14 @@ flowchart TD
 
 The bot uses Telegram Forum Supergroups to organize communication cleanly:
 * **Chat Type**: Supergroup with `is_forum = True`.
-* **Summary Topic (`TELEGRAM_SUMMARY_THREAD_ID`)**: Single-video detailed breakdowns containing timestamped takeaways, architecture notes, and code snippets.
+* **General Chat (`TELEGRAM_SUMMARY_THREAD_ID` left empty)**: Single-video detailed breakdowns containing timestamped takeaways, architecture notes, and code snippets.
 * **Digest Topic (`TELEGRAM_DIGEST_THREAD_ID`)**: High-level executive briefings synthesizing 10–50 unopened videos into thematic patterns and recommendations.
+
+### Serverless Telegram Command Handling
+Commands (like `/digest`) are processed entirely serverlessly:
+1. **Webhook**: Telegram sends a POST request to `/telegram-webhook` on the Cloudflare Worker.
+2. **GitHub Action Dispatch**: The Worker instantly fires a `telegram_command` repository dispatch.
+3. **Execution**: The `.github/workflows/telegram_commands.yml` workflow boots up, polls the pending commands via `telegram_bot.py poll`, and executes them.
 
 ### Telegram Command Handlers
 Commands are processed via `telegram_bot.py`:
