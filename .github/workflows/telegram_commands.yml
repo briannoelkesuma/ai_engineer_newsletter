@@ -26,7 +26,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Telegram Poller
+      - name: Run Telegram Command
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
@@ -35,4 +35,6 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_SUMMARY_THREAD_ID: ${{ secrets.TELEGRAM_SUMMARY_THREAD_ID }}
           TELEGRAM_DIGEST_THREAD_ID: ${{ secrets.TELEGRAM_DIGEST_THREAD_ID }}
-        run: python telegram_bot.py poll
+          TG_COMMAND: ${{ github.event.client_payload.command }}
+          TG_CHAT_ID: ${{ github.event.client_payload.chat_id }}
+        run: python telegram_bot.py handle "$TG_COMMAND" "$TG_CHAT_ID"
