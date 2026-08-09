@@ -29,6 +29,17 @@ export default {
         const payload = await request.json();
         
         let message = payload.message || payload.channel_post;
+        let isCallback = false;
+        let callbackData = '';
+        let messageId = '';
+        
+        if (payload.callback_query) {
+          isCallback = true;
+          message = payload.callback_query.message;
+          callbackData = payload.callback_query.data;
+          messageId = payload.callback_query.message?.message_id || '';
+        }
+        
         if (!message) {
           return new Response('Ignored', { status: 200 });
         }
@@ -37,9 +48,11 @@ export default {
         const chatId = message.chat?.id || '';
         const threadId = message.message_thread_id || '';
         
-        if (text.startsWith('/')) {
+        if (isCallback) {
+          await triggerTelegramAction(env, `CALLBACK:${callbackData}`, chatId, threadId, messageId);
+        } else if (text.startsWith('/')) {
           // Trigger GitHub Action to process Telegram commands
-          await triggerTelegramAction(env, text, chatId, threadId);
+          await triggerTelegramAction(env, text, chatId, threadId, '');
         }
         
         return new Response('OK', { status: 200 });
@@ -312,7 +325,7 @@ function decodeXmlEntities(str) {
 /**
  * Triggers GitHub Actions workflow for Telegram commands
  */
-async function triggerTelegramAction(env, commandText, chatId, threadId) {
+async function triggerTelegramAction(env, commandText, chatId, threadId, messageId) {
   const owner = env.GITHUB_OWNER;
   const repo = env.GITHUB_REPO;
   const token = env.GITHUB_TOKEN;
@@ -327,7 +340,8 @@ async function triggerTelegramAction(env, commandText, chatId, threadId) {
     client_payload: {
       command: commandText,
       chat_id: String(chatId),
-      thread_id: String(threadId)
+      thread_id: String(threadId),
+      message_id: String(messageId)
     }
   };
 

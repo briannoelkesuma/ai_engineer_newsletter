@@ -15,9 +15,10 @@ def get_credentials():
     digest_thread_id = os.environ.get("TELEGRAM_DIGEST_THREAD_ID", "").strip()
     return token, chat_id, summary_thread_id, digest_chat_id, digest_thread_id
 
-def send_telegram_message(text: str, silent: bool = False, target_chat_id: str = None, thread_id: str | int = None) -> bool:
+def send_telegram_message(text: str, silent: bool = False, target_chat_id: str = None, thread_id: str | int = None, video_id: str = None) -> bool:
     """
     Sends a message to the Telegram chat or a specific Topic / Sub-channel (message_thread_id).
+    If video_id is provided, attaches an inline 'Mark as Read' button.
     Returns True if successful, False otherwise.
     """
     token, default_chat_id, default_thread_id, _, _ = get_credentials()
@@ -54,6 +55,14 @@ def send_telegram_message(text: str, silent: bool = False, target_chat_id: str =
         }
         if active_thread_id:
             payload["message_thread_id"] = int(active_thread_id)
+            
+        # Only attach the button to the last chunk of the message if video_id is present
+        if video_id and chunk == chunks[-1]:
+            payload["reply_markup"] = {
+                "inline_keyboard": [[
+                    {"text": "📬 Mark as Read", "callback_data": f"markread_{video_id}"}
+                ]]
+            }
         
         try:
             response = requests.post(url, json=payload, timeout=15)
@@ -86,15 +95,24 @@ def send_admin_alert(msg: str) -> bool:
     logging.info(f"Admin Alert: {msg}")
     return send_telegram_message(f"⚙️ <b>Admin Alert</b>\n{msg}", silent=True)
 
-def handle_telegram_command(command: str, from_chat_id: str, from_thread_id: str = None):
+def handle_telegram_command(command: str, from_chat_id: str, from_thread_id: str = None, message_id: str = None):
     """
-    Handles commands like /digest, /unread, /markread, /help sent to the bot.
+    Handles commands like /digest, /unread, /markread, /help and callbacks sent to the bot.
     """
     from catchup_digest import get_unopened_videos, generate_catchup_digest, mark_all_as_read
     cmd = command.strip().lower()
     
+    # Check if this is a callback query
+    if cmd == "callback:already_read":
+        return
+    elif cmd.startswith("callback:markread_"):
+        video_id = cmd.replace("callback:markread_", "")
+        handle_callback(video_id, from_chat_id, message_id)
+        return
+
     # Send replies back to the exact topic where the command was typed
     thread = from_thread_id if from_thread_id else None
+
     
     if cmd in ["/digest", "/catchup"]:
         send_telegram_message("⚡ <i>Synthesizing your unopened video summaries into an executive digest...</i>", target_chat_id=from_chat_id, thread_id=thread)
@@ -128,6 +146,38 @@ def handle_telegram_command(command: str, from_chat_id: str, from_thread_id: str
             "• <code>/help</code> - Show this menu"
         )
         send_telegram_message(msg, target_chat_id=from_chat_id, thread_id=thread)
+
+def handle_callback(video_id: str, chat_id: str, message_id: str):
+    """
+    Handles inline button clicks. Updates user state and modifies the button.
+    """
+    from catchup_digest import load_user_state, save_user_state
+    import json
+    
+    # 1. Update user state
+    state = load_user_state()
+    read_ids = set(state.get("read_video_ids", []))
+    read_ids.add(video_id)
+    state["read_video_ids"] = list(read_ids)
+    save_user_state(state)
+    logging.info(f"Marked video {video_id} as read via inline button.")
+    
+    # 2. Edit the Telegram message to change the button to ✅ Read
+    token, _, _, _, _ = get_credentials()
+    if not token or not message_id:
+        return
+        
+    url = f"https://api.telegram.org/bot{token}/editMessageReplyMarkup"
+    payload = {
+        "chat_id": chat_id,
+        "message_id": int(message_id),
+        "reply_markup": {
+            "inline_keyboard": [[
+                {"text": "✅ Read", "callback_data": "already_read"}
+            ]]
+        }
+    }
+    requests.post(url, json=payload, timeout=10)
 
 def poll_updates_once():
     """
@@ -335,7 +385,8 @@ if __name__ == "__main__":
         poll_updates_once()
     elif len(sys.argv) >= 4 and sys.argv[1] == "handle":
         thread_id = sys.argv[4] if len(sys.argv) > 4 else None
-        handle_telegram_command(sys.argv[2], sys.argv[3], thread_id)
+        message_id = sys.argv[5] if len(sys.argv) > 5 else None
+        handle_telegram_command(sys.argv[2], sys.argv[3], thread_id, message_id)
     elif len(sys.argv) > 2 and sys.argv[1] == "webhook":
         set_webhook(sys.argv[2])
     else:
