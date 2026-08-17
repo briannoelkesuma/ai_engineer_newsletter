@@ -223,10 +223,9 @@ def run_pipeline(target_video_id=None):
 
         # 2. Dispatch to Telegram
         logging.info(f"Publishing to Telegram...")
-        success = send_telegram_message(insights.telegram_summary_text, video_id=vid)
+        success = send_telegram_message(insights.telegram_summary_text, video_id=video_id)
         if success:
-            logging.info(f"Successfully posted video {vid} to Telegram.")
-            update_video_status(vid, "processed", active_model, insights.telegram_summary_text, html_content)
+            logging.info(f"Successfully posted video {video_id} to Telegram.")
         
         # Throttling to respect OpenRouter API limits
         if idx < len(pending_videos) - 1:
