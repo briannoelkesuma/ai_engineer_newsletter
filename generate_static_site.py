@@ -8,8 +8,8 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 def fetch_data():
     supabase = get_db_client()
     
-    # Fetch processed videos
-    videos_res = supabase.table("videos").select("*").eq("status", "processed").execute()
+    # Fetch processed and read videos
+    videos_res = supabase.table("videos").select("*").in_("status", ["processed", "read"]).execute()
     data = videos_res.data or []
     
     # Sort by created_at descending (newest processed first)

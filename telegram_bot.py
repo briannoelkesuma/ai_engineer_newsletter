@@ -151,15 +151,10 @@ def handle_callback(video_id: str, chat_id: str, message_id: str):
     """
     Handles inline button clicks. Updates user state and modifies the button.
     """
-    from catchup_digest import load_user_state, save_user_state
-    import json
+    from db import update_video_status
     
-    # 1. Update user state
-    state = load_user_state()
-    read_ids = set(state.get("read_video_ids", []))
-    read_ids.add(video_id)
-    state["read_video_ids"] = list(read_ids)
-    save_user_state(state)
+    # 1. Update video status to read
+    update_video_status(video_id, "read")
     logging.info(f"Marked video {video_id} as read via inline button.")
     
     # 2. Edit the Telegram message to change the button to ✅ Read

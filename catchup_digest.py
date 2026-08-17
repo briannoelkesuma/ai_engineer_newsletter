@@ -1,5 +1,3 @@
-import os
-import json
 import logging
 from datetime import datetime, timezone
 from dotenv import load_dotenv
@@ -9,8 +7,6 @@ from telegram_bot import send_telegram_message, send_digest_message
 from pydantic import BaseModel, Field
 
 load_dotenv()
-
-STATE_FILE = os.path.join(os.path.dirname(__file__), "user_state.json")
 
 class DigestInsights(BaseModel):
     summary: str = Field(
@@ -26,42 +22,12 @@ class DigestInsights(BaseModel):
     def digest_text(self) -> str:
         return self.summary or self.executive_summary_html
 
-def load_user_state() -> dict:
-    if os.path.exists(STATE_FILE):
-        try:
-            with open(STATE_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            logging.warning(f"Failed to read {STATE_FILE}: {e}")
-    return {"last_read_timestamp": None, "read_video_ids": []}
 
-def save_user_state(state: dict):
-    try:
-        with open(STATE_FILE, "w", encoding="utf-8") as f:
-            json.dump(state, f, indent=2, ensure_ascii=False)
-    except Exception as e:
-        logging.error(f"Failed to save {STATE_FILE}: {e}")
 
 def get_unopened_videos(limit: int = 50) -> list[dict]:
-    state = load_user_state()
-    read_ids = set(state.get("read_video_ids", []))
-    last_read_ts = state.get("last_read_timestamp")
-    
-    all_processed = get_processed_videos(limit=limit)
-    unopened = []
-    
-    for vid in all_processed:
-        vid_id = vid.get("video_id")
-        created_at = vid.get("created_at")
-        
-        if vid_id in read_ids:
-            continue
-        if last_read_ts and created_at and created_at <= last_read_ts:
-            continue
-            
-        unopened.append(vid)
-        
-    return unopened
+    # Since get_processed_videos only fetches status='processed' and NOT 'read',
+    # all returned videos are unopened.
+    return get_processed_videos(limit=limit)
 
 def generate_catchup_digest(max_videos: int = 30) -> str | None:
     """
@@ -131,31 +97,24 @@ Here are the unopened video summaries:
     # Send to Telegram (routes to digest topic if configured)
     send_digest_message(digest_message)
     
-    # Update local state: mark all these videos as read
-    state = load_user_state()
-    read_ids = set(state.get("read_video_ids", []))
+    # Mark videos as read in database
+    from db import update_video_status
     for v in unopened:
         if v.get("video_id"):
-            read_ids.add(v.get("video_id"))
-            
-    state["read_video_ids"] = list(read_ids)
-    state["last_digest_at"] = datetime.now(timezone.utc).isoformat()
-    save_user_state(state)
+            update_video_status(v.get("video_id"), "read")
     
     logging.info(f"Successfully sent catch-up digest for {len(unopened)} videos and updated state.")
     return digest_message
 
 def mark_all_as_read():
     all_processed = get_processed_videos(limit=200)
-    state = load_user_state()
-    read_ids = set(state.get("read_video_ids", []))
+    from db import update_video_status
+    count = 0
     for v in all_processed:
         if v.get("video_id"):
-            read_ids.add(v.get("video_id"))
-    state["read_video_ids"] = list(read_ids)
-    state["last_read_timestamp"] = datetime.now(timezone.utc).isoformat()
-    save_user_state(state)
-    return len(read_ids)
+            update_video_status(v.get("video_id"), "read")
+            count += 1
+    return count
 
 if __name__ == "__main__":
     generate_catchup_digest()
