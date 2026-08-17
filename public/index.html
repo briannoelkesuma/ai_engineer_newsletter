@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-YgEv7IQzGdM">
+            <div class="card-header">
+                <h2>How to Kill the Code Review — Ankit Jain, Aviator</h2>
+                <span class="date">2026-08-17</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-YgEv7IQzGdM"></div>
+            <script>
+                (function() {
+                    const md = "# How to Kill the Code Review: From Line-by-Line to Intent-Based Verification\n\n## Introduction: The Crisis in Modern Code Review\n\nAs software complexity grows, the traditional code review process is becoming a critical bottleneck in the SDLC (Software Development Life Cycle). We are currently facing several systemic issues:\n\n* **Code Churn Explosion:** The volume of code being produced is increasing exponentially.\n* **The Review Bottleneck:** The median time spent waiting for reviews is increasing, with engineers spending up to 4x more time waiting for feedback than they did previously.\n* **The AI Paradox:** As AI agents generate more code, humans are increasingly just \"skimming\" AI-generated reviews in a UI, leading to a loss of true oversight and a rise in unverified code merges.\n\n## The Dual Nature of Code Review\n\nAnkit Jain posits that code review is not a single monolithic task but is composed of two distinct, equally important pillars:\n\n| Pillar | Focus | Solution Strategy |\n| :--- | :--- | :--- |\n| **Semantic Accuracy** | Is the code technically correct? (Bugs, syntax, security, conventions) | Better automated tooling and LLM-based verification |\n| **Alignment** | Is the code doing what the business actually needs? (Architecture, intent, requirements) | Human-in-the-loop collaboration and mentorship |\n\n### The Problem with \"Spectrum Development\"\nWhile methodologies like \"Specification-driven development\" (writing a spec, generating code via agent, then verifying) look good on paper, they often fail in practice because they lack a **feedback loop**. LLMs are non-deterministic; they make decisions during implementation that aren't captured in the original specification. Without capturing these mid-process decisions, the specification becomes obsolete the moment coding begins.\n\n## The New Framework: Intent-Based Verification\n\nTo \"kill\" the manual, line-by-line review, we must shift the review surface from the <code>git diff</code> to the <b>Intent</b>. \n\n### 1. Capturing the Session\nInstead of reviewing the final code, we should capture the entire development session\u2014the dialogue between the engineer and the AI agent. This dialogue contains the real architectural decisions, the edge cases discussed, and the clarifications made.\n\n### 2. Extracting Acceptance Criteria\nFrom these sessions, we can use LLMs to extract:\n* **Acceptance Criteria:** The definitive list of what the feature must do.\n* **Test Plans:** A set of deterministic and non-deterministic tests derived from the intent.\n\n### 3. The AI Slop Registry\nOne of the most significant inefficiencies in engineering is repeating the same review comments (e.g., \"don't use this library,\" \"follow this pattern\"). \n\n**The Concept:** An **AI Slop Registry** codifies recurring human feedback into automated guardrails. When a human identifies a repeatable error, it is added to the registry. Future code changes are then checked against this registry, preventing the same \"slop\" from ever reaching a human reviewer again.\n\n## The Verification Workflow\n\nThe goal is to move toward a system where the human reviews the **evidence**, not the code. \n\n1. **The Session:** Engineer + AI Agent collaborate.\n2. **The Extraction:** LLM converts the session into a **Test Plan** (Requirements + Invariants).\n3. **The Execution:** A verification system spins up a preview environment and executes the test plan.\n4. **The Evidence:** The system collects **deterministic evidence** (unit tests, DB snapshots) and **non-deterministic evidence** (AI agents browsing the UI, taking screenshots, verifying visual changes).\n5. **The Review:** The human engineer reviews the **evidence of intent**. Did the feature behave as discussed? Did the screenshots match the requirements?\n\n## Conclusion: The Human Role in the Loop\n\nThe role of the software engineer is evolving. We are moving away from being \"syntax checkers\" and toward being **governance providers**. The value of a senior engineer lies in their ability to define intent, make architectural decisions, and verify that the implemented behavior matches the business goal. \n\n**Homework for Engineers:**\nMine your last 1,000 review comments. Identify the repeatable patterns. If you can codify those patterns into a registry, you have taken the first step toward killing the manual code review.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-YgEv7IQzGdM");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=YgEv7IQzGdM" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-WP3hjUXd918">
             <div class="card-header">
                 <h2>Context Engineering in 2026 — Louis-François Bouchard, Omar Solano & Samridhi Vaid, Towards AI</h2>
