@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-E_Txocq-Lrw">
+            <div class="card-header">
+                <h2>While my guitar gently speaks — Todd Fisher, Philo Ventures</h2>
+                <span class="date">2026-08-18</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-E_Txocq-Lrw"></div>
+            <script>
+                (function() {
+                    const md = "# Technical Deep-Dive: Making a Guitar Speak with AI and DSP\n\nThis tutorial-grade breakdown explores the technical implementation of a system designed to transform a musical instrument (guitar) into a vocal synthesizer capable of speech and singing through the integration of AI, Digital Signal Processing (DSP), and real-time audio processing.\n\n## 1. The Evolution of Musical Technology\nThe presenter frames the project within the historical context of musical innovation:\n* **Electrification:** The introduction of pickups to convert string vibration into electrical signals.\n* **Effects Pedals:** The rise of hardware stompboxes for sound manipulation.\n* **Software Emulation:** The transition to Digital Audio Workstations (DAWs) like Pro Tools, Logic Pro, and Fruity Loops, where physical hardware is replaced by software plugins.\n\n## 2. Phase 1: Basic Text-to-Speech (TTS) Integration\nThe initial goal was to trigger pre-recorded or synthesized speech based on guitar notes.\n\n### Architecture & Workflow\n1. **Input:** Audio signal from the guitar.\n2. **Processing:** A custom-built plugin (developed using the **JUCE** framework) monitors the audio input.\n3. **Triggering:** When a note is detected, the plugin triggers an audio clip of text converted to speech via **Piper** or Apple's built-in TTS engines.\n4. **Output:** The speech is routed back into the DAW (Logic Pro) as an additional audio track.\n\n## 3. Phase 2: Granular Word Slicing & Segmentation\nTo make the speech sound more rhythmic and synchronized with the music, the system needed to slice audio into individual words rather than playing long sentences.\n\n### The Challenge of Segmentation\nAutomatically slicing audio into words is difficult due to the lack of silence between words in natural speech. Two primary methods were explored:\n* **Energy Gap Segmentation:** Identifying silences by detecting when decibel levels drop near zero. This is often unreliable as speech is often continuous.\n* **Sonority Peak Syllabification:** A more advanced method that identifies the \"sonority peaks\" (vowel sounds) within a waveform to identify syllable boundaries.\n\n**Current Implementation:** A hybrid approach where automated segmentation is used, supplemented by manual editing within the DAW for precision.\n\n## 4. Phase 3: Pitch-Mapped Vocal Synthesis (The \"Singing\" Guitar)\nThe most advanced stage involves making the guitar \"sing\" by mapping its pitch to vocal samples.\n\n### Technical Implementation Steps\n\n#### A. Pitch Detection\nTo make the voice follow the guitar, the system must identify the fundamental frequency ($f_0$) of the played note. The **Yin Pitch Algorithm** is utilized for its accuracy in detecting pitch in complex waveforms.\n\n#### B. Synthesizing the Note\nThe detected pitch is used to drive a synthesized note (using **ADSR** envelopes: Attack, Decay, Sustain, Release) which acts as the carrier signal.\n\n#### C. Vocal Mapping (The Vocoder Effect)\nInstead of a simple sine wave, the system uses a **Vocoder** approach:\n1. **Source Material:** Using the **World** project/samples, which provides high-quality vocal recordings of various vowels.\n2. **Pitch Shifting:** The vocal samples are pitch-shifted in real-time to match the detected guitar frequency.\n3. **Mapping:** Each fret/note on the guitar is mapped to a specific pre-baked vocal sample, allowing the guitar to \"sing\" the vowels of the samples.\n\n## 5. Phase 4: Real-Time Conversational AI\nThe final frontier is a bidirectional loop: **Speech $\\\rightarrow$ Text $\\\rightarrow$ LLM $\\\rightarrow$ Speech $\\\rightarrow$ Guitar**.\n\n### The Conversational Pipeline\n1. **Microphone Input:** User speaks into a microphone.\n2. **Transcription:** **OpenAI Whisper** converts the audio to raw text.\n3. **Intelligence:** A **Local LLM** (Large Language Model) processes the text and generates a conversational response.\n4. **Synthesis:** The response is converted to speech and routed through the pitch-mapping system to be played via the guitar.\n\n## Summary Table of Technologies\n| Component | Technology/Framework |\n| :--- | :--- |\n| **Audio Framework** | JUCE |\n| **DAW** | Logic Pro |\n| **Transcription** | OpenAI Whisper |\n| **Pitch Detection** | Yin Algorithm |\n| **Vocal Samples** | World Samples |\n| **LLM** | Local Conversational Model |\n| **DSP Concepts** | ADSR, Vocoding, Pitch Shifting |";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-E_Txocq-Lrw");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=E_Txocq-Lrw" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-VBCDhRrvlYo">
             <div class="card-header">
                 <h2>The Next Game Engine Won't Have a Manual — Arturo Nunez, Nereu</h2>
