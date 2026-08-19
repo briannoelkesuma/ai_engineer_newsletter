@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-WJRdLNhrsLQ">
+            <div class="card-header">
+                <h2>How to build an AI-Native Health Company — Dan Feng, Maven Clinic</h2>
+                <span class="date">2026-08-19</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-WJRdLNhrsLQ"></div>
+            <script>
+                (function() {
+                    const md = "# Building an AI-Native Health Company: A Technical Deep-Dive\n\nThis technical breakdown explores the transition of Maven Clinic from a traditional digital health platform to an AI-native organization. The discussion focuses on architectural decisions, engineering culture shifts, and reliability strategies for Generative AI.\n\n## 1. The Concept of AI-Nativity\nBeing AI-native is not a predefined playbook but a three-pronged strategic approach:\n\n| Pillar | Focus Area | Objective |\n| :--- | :--- | :--- |\n| **Internal Tools** | Employee Productivity | Automating daily tasks (Jira, meeting summaries, sales workflows) to reduce manual overhead. |\n| **External Product** | User Experience & Cost | Building AI into the core product to provide 24/7 availability and reduce operational costs (e.g., AI chatbots). |\n| **Culture & Process** | Organizational DNA | Changing hiring, rewarding, and execution models to maximize AI's impact. |\n\n## 2. Architectural Foundation: The Orchestration Layer\nTo prevent fragmented AI implementation, Maven Clinic developed <b>Maven Intelligence</b>. This serves as an **orchestration layer** that sits across all products. \n\n**Technical Purpose:**\n- Standardizes how AI capabilities are consumed by different product teams.\n- Provides a unified interface for internal and external AI features.\n- Enables consistent governance and intelligence across the entire ecosystem.\n\n## 3. Re-engineering Software Development Life Cycle (SDLC)\nAI fundamentally changes the speed and nature of engineering work.\n\n### A. The Shift in Engineering Roles\n- **From Delegation to Execution:** Traditionally, senior engineers designed and delegated implementation. In an AI-native world, \"NASA-level\" engineers use AI to implement their own designs instantly, eliminating the overhead of delegation.\n- **Blurring Boundaries:** The line between Product Managers (PM) and Engineers is blurring. Engineers with deep product understanding and AI proficiency are becoming more valuable than traditional software-only engineers.\n\n### B. Rapid Iteration & Sprint Cycles\n- **The Death of Long-term Planning:** Because AI can implement features in minutes/hours rather than weeks, 3-6 month roadmaps are often obsolete due to the rapid evolution of LLM capabilities.\n- **The 2-4 Week Sprint:** Focus shifts to highly granular, deliverable increments. If a direction is wrong, the cost of pivoting is significantly lower due to AI-accelerated implementation.\n- **Documentation:** Move away from massive PRDs (Product Requirement Documents) toward short, 1-2 page communication documents that facilitate rapid iteration.\n\n### C. AI-Augmented Coding & Code Review\nAI coding tools (like Cursor or Claude) allow engineers to write thousands of lines of code daily. This creates a bottleneck in traditional code review.\n\n**New Code Review Protocols:**\n- **Self-Identification:** Engineers can self-identify if a PR is simple enough to merge without a formal review, though they remain accountable.\n- **PR Size Constraints:** To prevent \"rubber stamping\" (blindly approving massive changes), Maven enforces a limit of **500 lines per PR**.\n- **Stacked PRs:** For large features, engineers are encouraged to use stacked Pull Requests to maintain reviewability.\n\n## 4. Reliability and Hallucination Management\nUnlike deterministic traditional software, GenAI is probabilistic. Managing this requires a holistic reliability framework.\n\n### A. Tiered Risk Management\nNot all failures are equal. Systems must distinguish between:\n1. **Low-Stakes Failures:** (e.g., a scheduling error) where a user can simply retry. These require minimal extra guardrails.\n2. **High-Stakes Failures:** (e.g., financial reimbursement) where errors cause immediate escalation. \n\n**Solution for High-Stakes Tasks:** \n- **Multi-Model Consensus:** Use different LLMs to review the same input (e.g., a receipt). Only proceed if all models agree. If they disagree, escalate to a human agent.\n\n### B. Advanced Testing Paradigms\n- **Probabilistic Integration Testing:** Because LLMs are non-deterministic, a single \"Pass\" is insufficient. Tests must be run multiple times, requiring a high pass rate (e.g., >90%) to be considered successful.\n- **Auto-Evolve Evaluation:** A continuous loop where conversations are evaluated against predefined rubrics. \n- **Human-in-the-loop (HITL):** Dedicated teams perform spot checks on a percentage of conversations (e.g., 20% for new features) to refine rubrics and system prompts.\n\n## 5. Summary of the AI-Native Engineering Mindset\n| Traditional Engineering | AI-Native Engineering |\n| :--- | :--- |\n| Long-term planning (Quarterly/Bi-annual) | Rapid, iterative sprints (2-4 weeks) |\n| Heavy documentation (Long PRDs/TDDs) | Lightweight communication docs |\n| Delegation-heavy workflows | Individual execution via AI augmentation |\n| Deterministic testing (Pass/Fail) | Probabilistic testing (Pass rates/Consensus) |";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-WJRdLNhrsLQ");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=WJRdLNhrsLQ" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-Yphdry8ttAQ">
             <div class="card-header">
                 <h2>Trading Desks to Clinical Trials: Parallels in Applied Vertical AI — Ayush Bhardwaj, Allos AI</h2>
