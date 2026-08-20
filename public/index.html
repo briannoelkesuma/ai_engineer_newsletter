@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-q-WOjZhOMCA">
+            <div class="card-header">
+                <h2>IT Admin for the AI Workforce — Sarthak Aggarwal, Decawork</h2>
+                <span class="date">2026-08-20</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-q-WOjZhOMCA"></div>
+            <script>
+                (function() {
+                    const md = "# IT Admin for the AI Workforce: Managing Autonomous Agents\n\n## Introduction: The Shift from Software to Agents\nIn the modern enterprise, we are witnessing the emergence of a second workforce: **digital employees**. Unlike traditional software, which follows deterministic logic, AI agents possess goals, tools, context, and delegated authority. This shift changes the fundamental question from \"Can this agent perform this task?\" to \"Who owns this agent, what can it touch, and how do we stop it?\"\n\n## The Problem: Capability vs. Employment Readiness\nA working demo proves capability, but it does not prove **employment readiness**. An agent that can change the state of a system (e.g., deleting a database or sending an email) is no longer a simple model call; it is an **actor**. \n\n### The Risks of Autonomous Actors\nWhen an agent is granted authority, it introduces new attack vectors:\n* **The Confused Deputy Problem:** An attacker can use untrusted input (like a malicious email) to trick a trusted agent into performing unauthorized actions (like disabling MFA).\n* **The Lethal Trifecta:** The most dangerous combination in agentic systems is the intersection of **Private Data**, **Untrusted Input**, and **External Action/Communication**.\n* **State Mutation:** Because agents can change the state of an enterprise, a single error or malicious instruction can have massive downstream consequences.\n\n## Architectural Solution: The Managed Worker Framework\nTo make agents safe, we must apply the same principles used for human employees: registration, provisioning, authorization, monitoring, and revocation. \n\n### 1. Identity and Delegation\nAgents require a formal identity card that defines:\n* **The Actor:** The identity of the agent itself.\n* **The Subject:** The human or service account the agent is acting on behalf of.\n* **The Delegation Context:** The specific scope and duration of the authority granted.\n\n### 2. The Dual-LLM Pattern (Privilege Separation)\nTo prevent prompt injection from hijacking an agent's authority, architecture must separate the **Control Plane** from the **Data Plane**. This is often implemented via a dual-LLM pattern:\n\n| Component | Responsibility | Trust Level |\n| :--- | :--- | :--- |\n| **The Planner** | Interprets trusted intent and creates a typed, logged plan. | **High (Trusted)** |\n| **The Executor** | Processes untrusted evidence and executes the plan. | **Low (Untrusted)** |\n\n**Implementation Logic:**\n1. The **Planner** receives a normalized, authenticated request (e.g., \"Reset User X's password\").\n2. The Planner generates a **typed plan** (e.g., `Action: MFA_Reset, Target: User_X`).\n3. The **Executor** receives the plan and the untrusted context (the email/ticket). It can fill in parameters but **cannot create new actions** or change the plan.\n4. A **Policy Gate** (a deterministic `if/else` layer) validates the plan against security policies before any tool is called.\n\n### 3. Deterministic Guardrails vs. Model Guardrails\nFilters and LLM-based guardrails are insufficient for high-consequence actions. Security boundaries must be **deterministic** and exist **outside the model's influence**. If an agent's reasoning is compromised, the underlying infrastructure must still prevent the action through hard-coded policy gates.\n\n## Summary of Best Practices for AI Administration\n* **No Standing Credentials:** Agents should use short-lived, scoped capability tokens.\n* **Audit as an Operational Necessity:** Auditing is not just for compliance; it is the only way to make an autonomous agent operable and accountable.\n* **Revocation Capability:** There must be a mechanism to instantly revoke an agent's authority when an anomaly is detected.\n* **Separation of Concerns:** Use protocols like MCP (Model Context Protocol) for communication, but rely on robust identity layers for authorization.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-q-WOjZhOMCA");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=q-WOjZhOMCA" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-bdHaOXZOhcM">
             <div class="card-header">
                 <h2>Prototyping as Leadership: How a CTO Ships with AI Agents — Hursh Agrawal, The Browser Company</h2>
