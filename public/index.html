@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-FvxY8oPoI8o">
+            <div class="card-header">
+                <h2>Preferences Over Benchmarks: Model Routing — Archana Kamath & Tyler Gillam, DigitalOcean</h2>
+                <span class="date">2026-08-22</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-FvxY8oPoI8o"></div>
+            <script>
+                (function() {
+                    const md = "# Preferences Over Benchmarks: Model Routing \u2013 Deep Dive\n\n## 0:00 \u2013 Introduction\n- Speakers: **Archana Kamath** (VP of Engineering, Inference Engine & AI Infrastructure) and **Tyler Gillam** (built parts of the router).\n- Context: DigitalOcean\u2019s AI\u2011native cloud stack (infrastructure \u2192 droplets, databases, app platform \u2192 inference engine \u2192 managed agents).\n\n## 0:45 \u2013 Why the \u201cone model\u201d habit is breaking\n### Cost\n- Inference spend is exploding; companies like Walmart, Uber, Microsoft actively cap usage to control bills.\n### Fit\n- Using a frontier model for every task is likely an overkill; we pay premium rates for work a much smaller model can handle well.\n### Risk\n- Dependency on a single model creates fragility; if the model degrades or goes down, there is no failover.\n\n## 2:48 \u2013 Preferences Over Benchmarks\n- No single best model exists; the right model depends on:\n  - **Task** (classification, code completion, bug fixing, security review)\n  - **Latency requirement** (some tasks need sub\u2011second response)\n  - **Cost tolerance** (budget constraints)\n  - **End\u2011user preference** (what the user actually values)\n- Illustrations:\n  - Classification \u2192 small open model (cost\u2011optimized)\n  - Inline code completion \u2192 fast larger model (low latency)\n  - Bug fixing \u2192 mid\u2011weight open model (balance)\n  - Code review / security \u2192 frontier model (high accuracy)\n\n## 4:52 \u2013 Architecture of the Inference Light Router\n![Architecture diagram placeholder]\n- **Open Proxy Plan** \u2013 thin, open\u2011source layer that receives every inference request.\n- **Purpose\u2011Built Routing Model** \u2013 custom Mixture\u2011of\u2011Experts (MoE) trained solely to predict the optimal model given request context.\n  - Latency <\u202f200\u202fms.\n  - Zero extra cost to customers.\n  - Open source, no vendor lock\u2011in (released via Plano).\n- **Model Pool** \u2013 user\u2011defined set of candidate models (e.g., GLM\u202f5.2, GPT\u202f5.2, Claude\u202f5\u202fSonnet).\n- **Decision Engine** \u2013 applies user preferences, hard rules, and learned policies to pick a model per request.\n\n## 5:54 \u2013 Configuration & Customization\n- **UI\u2011Driven Presets** \u2013 software engineering, general writing, knowledge bases, document intelligence.\n- **Per\u2011Task Settings** \u2013 each task can have:\n  - Selection policy (fastest, cheapest, highest quality).\n  - Model ranking / fallback order.\n  - Hard rules (e.g., \"always use GLM\u202f5.2 unless down\").\n- **Code\u2011Level Override** \u2013 a single line of JSON/YAML can change any preset.\n- **Open Source** \u2013 users can inspect/modify the routing model and proxy.\n\n## 6:29 \u2013 Live Demo Walkthrough\n1. **Router Configuration UI** \u2013 show presets, edit software\u2011engineering preset.\n2. **Playground** \u2013 side\u2011by\u2011side comparison:\n   - Left: raw Opus call.\n   - Right: request routed via software\u2011engineering router.\n   - Observes dynamic model switches (code snippets \u2192 long\u2011before Maverick, optimization \u2192 GBT\u202f5.2, test writing \u2192 Claude\u202f5\u202fSonnet).\n3. **Real Workflow with Open Code** \u2013 two terminals:\n   - Left: Open Code configured with quad\u2011Opus (single model).\n   - Right: Open Code pointed at the router.\n   - Live panel shows token usage, selected model, task mapping, accumulating cost.\n   - Results: router session cost 14\u202f\u00a2 vs. Opus 44\u202f\u00a2 (~3\u00d7 savings), latency per step optimized, correctness within judge\u2019s margin.\n\n## 10:34 \u2013 Evaluation Loop & Continuous Improvement\n- **User\u2011Run Evaluations** \u2013 compare router vs. baseline on custom datasets.\n- **Caching** \u2013 store answers to avoid paying twice for identical queries.\n- **Personalization** \u2013 router learns which models work best for a team over time.\n- **Feedback** \u2013 evaluation results fed back to adjust decision\u2011tree rules or model rankings.\n\n## 14:08 \u2013 Key Takeaways\n- **No single best model**; benchmarks only tell part of the story.\n- **Preferences drive routing**; the system honors cost, latency, quality, and user\u2011specified rules.\n- **Zero\u2011code integration** \u2013 transparent proxy, open source, no vendor lock\u2011in.\n- **Observability & eval\u2011driven loop** enable measurable improvements over time.\n- **Scalable savings** \u2013 demonstrated 3\u00d7 cost reduction with comparable quality.\n\n## References (mentioned in talk)\n- Plano repository for the open\u2011source routing model.\n- DigitalOcean AI\u2011native cloud layers (infrastructure, droplets, databases, app platform, inference engine, managed agents).\n- Open Code (open\u2011source coding agent) used in demo.\n";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-FvxY8oPoI8o");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=FvxY8oPoI8o" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-0I6aoPSRzVc">
             <div class="card-header">
                 <h2>What If Your Chip Design Team Moved Like a Single Body? — Abduallah Mohamed, AIDAChip</h2>
