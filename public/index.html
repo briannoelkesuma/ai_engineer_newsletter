@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-5Cxe5dv2Xlw">
+            <div class="card-header">
+                <h2>Why AI Agents Need Million-Token Context — Thomas Wolf & Olive Song, MiniMax</h2>
+                <span class="date">2026-09-04</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-5Cxe5dv2Xlw"></div>
+            <script>
+                (function() {
+                    const md = "# MiniMax M3: Million\u2011Token Context for AI Agents\n\n## Overview\n- Model name: M3\n- Parameters: ~400\u202fB total, 20\u202fB activated (Mixture\u2011of\u2011Experts)\n- Modality: text, image, video (native multimodal)\n- Context length: 1\u202fM tokens\n- Release: June 2024 (as discussed)\n\n## Architecture: MiniMax Sparse Attention (MSA)\n### Two\u2011branch design\n1. **Index Branch** \u2013 selects relevant context blocks.\n   - Operates on a coarse representation (e.g., downsampled keys/values).\n   - Produces a binary mask or top\u2011k selection over fixed\u2011size chunks.\n2. **Sparse Attention Branch** \u2013 computes full attention only on selected blocks.\n   - Reduces quadratic complexity to roughly O(N\u202f\u00b7\u202fk) where k \u226a N.\n   - Implemented with standard matrix multiplications on the masked set.\n\n### Scaling properties\n- Linear growth in memory and compute with sequence length.\n- Enables future scaling to larger model sizes and longer contexts without redesign.\n\n## Training Procedure\n### Data interleaving\n- Raw multimodal corpus (text, images, video frames) is shuffled and interleaved at the token level.\n- Images/video are tokenized via a Vision Transformer (ViT) patch embeddings; no masking of modalities.\n- Light cleaning and deduplication applied; reward modeling scores are used to filter high\u2011quality samples.\n\n### Native multimodality from step\u202f0\n- No separate vision\u2011adapter stage; the model learns joint representations from the beginning.\n- Prevents the \u201ctext\u2011performance drop\u201d observed when adapters are added post\u2011pretraining.\n- Empirically shows stable loss curves for both language and vision tasks.\n\n### Reward modeling\n- A lightweight reward model predicts human preference scores on multimodal samples.\n- Samples with higher reward are up\u2011weighted during training, sharpening alignment without heavy RLHF.\n\n## Evaluation Highlights\n- Coding benchmarks (HumanEval, MBPP) \u2013 competitive with larger specialized models.\n- Vision understanding (ImageNet zero\u2011shot, video captioning) \u2013 strong performance despite modest activated parameters.\n- Long\u2011context retrieval (needle\u2011in\u2011a\u2011haystack with 1M tokens) \u2013 >90% accuracy.\n- Agentic tool use (multi\u2011step API chains) \u2013 enables complex workflows that shorter\u2011context models fail on.\n\n## Open\u2011Source Culture & Intern Contributions\n- The MSA concept originated from an intern project; MiniMax encourages anyone to propose experiments.\n- Internal harness automates workflows: data preprocessing, ablation studies, evaluation suites.\n- Model releases are posted on Hugging Face; community PRs and feedback directly influence next\u2011generation checkpoints.\n- Evaluation is treated as a first\u2011class citizen; extensive benchmark suites are run before each release.\n\n## Scaling Roadmap\n- Path to trillion\u2011parameter models via sparsity and expert routing.\n- Continued research into ultra\u2011long contexts (beyond 1\u202fM) using hierarchical sparse attention.\n- Exploration of mixture\u2011of\u2011modalities experts to further improve efficiency.\n\n## Applications for AI Agents\n- **Video\u2011based coding assistants**: ingest hour\u2011long tutorials, generate code edits.\n- **Document\u2011analysis agents**: read entire legal contracts, extract clauses, suggest revisions.\n- **Multi\u2011agent routing**: a dispatcher model selects specialist sub\u2011models based on context length and modality.\n- **Real\u2011time tool chains**: agents call APIs, observe outputs, and continue reasoning over accumulated logs.\n\n## Conclusion\nMiniMax M3 demonstrates that a well\u2011designed sparse attention mechanism can deliver million\u2011token context without sacrificing model quality, especially when paired with native multimodal training from the outset. The work highlights the power of open research culture, intern\u2011driven innovation, and rigorous evaluation in pushing the frontier of agentic AI.\n";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-5Cxe5dv2Xlw");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=5Cxe5dv2Xlw" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-0uC6u0lJJl4">
             <div class="card-header">
                 <h2>Your company brain will leak secrets: how we stopped it for big banks — Tanmai Gopal, PromptQL</h2>
