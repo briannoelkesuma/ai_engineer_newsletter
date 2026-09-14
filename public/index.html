@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-YZHPEkfy2kc">
+            <div class="card-header">
+                <h2>$1 AI Guardrails: The Unreasonable Effectiveness of Finetuned ModernBERTs – Diego Carpentero</h2>
+                <span class="date">2026-09-14</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-YZHPEkfy2kc"></div>
+            <script>
+                (function() {
+                    const md = "# $1 AI Guardrails: The Unreasonable Effectiveness of Finetuned ModernBERTs\n\n## [0:02] Introduction\n- Need to protect LLM\u2011based systems.\n- Attack landscape evolved from exploratory prompt injection to sophisticated, identity\u2011workflow\u2011amplified threats.\n- Goal: build a low\u2011latency, self\u2011hosted defensive layer for under $1.\n\n## [0:34] Why ModernBERT?\n- Encoder models provide bidirectional context in a single forward pass.\n- CLS token aggregates sequence representation for classification.\n- ModernBERT adds hardware\u2011aware efficiencies: alternating attention, flash attention, rotary positional encoding, unpadding & sequence packing, deep\u2011narrow design, bfloat16.\n\n## [1:06] Attack Vectors Overview\n1. **Prompt (Direct) Injection** \u2013 crafted user input overriding system controls (e.g., Stanford Sydney case).\n2. **Indirect / Context Injection** \u2013 malicious instructions hidden in retrieved content (e.g., poisoned Wikipedia edit).\n3. **Model\u2011Internal (Gibberish Suffix)** \u2013 adversarial tokens breaking alignment via greedy coordinate gradient.\n4. **Poisoned RAG** \u2013 tiny fraction (<0.1%) of corrupted chunks can steer generation.\n5. **MCP Tool\u2011Description Hijacking** \u2013 hidden instructions in tool descriptions exploited after user approval.\n6. **Agentic Supply\u2011Chain** \u2013 hidden Unicode / prompt injection leading to remote code execution via autonomous agents.\n\n## [17:39] Implementation Options Discussed\n- Rule filtering, canary tokens, discriminators, constrained decoding, LLM\u2011as\u2011judge (higher latency).\n- Chosen path: encoder\u2011based discriminator (ModernBERT) for low latency.\n\n## [18:10] Encoder Advantages for Safety Checks\n- Bidirectional attention sees full context \u2192 better understanding of malicious patterns.\n- CLS token after transformer layers provides rich semantic summary.\n- Single forward pass \u2192 low latency (baseline 35\u202fms).\n\n## [20:41] ModernBERT Architectural Improvements\n### Alternating Attention\n- Two local attention layers (window\u202f=\u202f64 tokens each side) + every third layer global (8192 tokens).\n- Reduces self\u2011attention complexity from O(n\u00b2) to roughly O(n\u00b7local + n\u00b7global/3).\n- Memory savings \u224870% for fine\u2011tuning.\n\n### Unpadding & Sequence Packing\n- Remove padding tokens before embedding.\n- Concatenate semantic tokens of multiple sequences up to context size (8192).\n- Padding added only at end if needed.\n- Eliminates up to 50% wasted compute on meaningless tokens.\n\n### Rotary Positional Encoding (RoPE)\n- Rotates query/key vectors by angle dependent on token position.\n- Encodes relative distance directly in attention scores.\n- No positional index vector \u2192 context limited only by geometry, not training length.\n- Local vs. global rotation speeds prevent aliasing.\n\n### Flash Attention\n- Splits attention computation into blocks fitting GPU on\u2011chip memory.\n- Computes partial attention scores on\u2011chip, accumulates results.\n- Avoids materializing full attention matrix \u2192 reduces memory bandwidth.\n- Main contributor to achieving 35\u202fms latency.\n\n### Deep\u2011Narrow Architecture & bfloat16\n- Base: 22 layers, 768 hidden; Large: 28 layers, 1024 hidden.\n- Grid\u2011search showed optimal trade\u2011off between depth and speed.\n- Hidden dimensions multiples of 64 for efficient tensor ops.\n- Gate activation & disabled bias (except final decoder) increase useful parameter capacity.\n- bfloat16 (Google) cuts training memory \u224840% \u2192 enables batch size 64.\n\n## [35:00] Fine\u2011Tuning Pipeline\n- Dataset: **Inject Guard** (75k labeled examples from 20 opens).\n- Tokenization: HuggingFace `map` with `batch=True`, byte\u2011pair\u2011encoding variant.\n- Special tokens: `[CLS]` (prepended) and `[SEP]` (appended).\n- Dynamic padding handles variable\u2011length batches.\n- Model: ModernBERT base/large + feed\u2011forward classification head.\n- Optimizer: AdamW with bfloat16.\n- Loss: binary cross\u2011entropy; backprop updates encoder + head.\n\n## [39:09] Inference & Performance\n- Latency: ~35\u202fms per classification (baseline).\n- With flash attention and alternating attention, memory footprint low enough for batch\u202f=\u202f64.\n- Accuracy on unseen benchmarks: ~85%.\n- Memory savings from alternating attention + unpadding + bfloat16 enable modest hardware (e.g., single GPU).\n\n## [41:12] Evaluation & Demo\n- Tested on specialized benchmarks (prompt injection, context poisoning, gibberish suffix, MCP hijack, agentic exploits).\n- All test cases classified as unsafe by the fine\u2011tuned model.\n- Demonstrates feasibility of a sub\u2011dollar, self\u2011hosted guardrail.\n\n## [43:45] Conclusion\n- AI safety is a shared responsibility; commodity hardware suffices.\n- Encourages experimentation and community\u2011driven improvement of defensive layers.\n\n---\n*No video date or link included as per instructions.*";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-YZHPEkfy2kc");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=YZHPEkfy2kc" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-4lXks428C9o">
             <div class="card-header">
                 <h2>We let an AI agent execute Bash and lived to talk about it — Sarah Sanders, PostHog</h2>
