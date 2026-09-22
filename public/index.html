@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-SQMCtZX3trg">
+            <div class="card-header">
+                <h2>The Dark Arts of Skill Engineering — Paul Bakaus, Renaissance Geek (Impeccable)</h2>
+                <span class="date">2026-09-22</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-SQMCtZX3trg"></div>
+            <script>
+                (function() {
+                    const md = "## 0:00 \u2013 Introduction\nPaul Bakaus opens by likening skill acquisition to operating a high\u2011volume service. He argues that deliberate practice is analogous to ingesting requests through an API, where latency, throughput, and reliability matter.\n\n## 5:12 \u2013 The Skill as a Service Model\n- **Bounded Contexts**: Each micro\u2011skill (e.g., typing speed, algorithmic reasoning) is a bounded context with a well\u2011defined contract.\n- **API Contracts**: Inputs are practice stimuli; outputs are performance metrics.\n- **Versioning**: Skills evolve; semantic versioning ensures backward compatibility of foundational abilities.\n\n## 12:45 \u2013 Cognitive Load & Rate Limiting\nHuman working memory behaves like a token bucket. When the bucket empties, further input leads to errors or fatigue.\n- **Rate Limiter Analogy**: Insert deliberate breaks to replenish tokens.\n- **Circuit Breaker**: After a threshold of failed attempts, temporarily halt practice to avoid reinforcing bad patterns.\n\n## 20:30 \u2013 Feedback Loops & Observability\n- **Metrics**: Accuracy, latency, error rate.\n- **Logging**: Every attempt is logged as an event.\n- **Tracing**: Correlate practice sessions with external factors (sleep, caffeine).\n- **Alerting**: Set SLOs (e.g., 95% of attempts under 200ms).\n\n## 28:10 \u2013 Design Patterns\n| Pattern | Analogy in Skill Engineering | Implementation Tip |\n|---------|-----------------------------|--------------------|\n| Observer | Metrics \u2192 Practice Adjustment | Subscribe to metric streams; trigger drill changes. |\n| Strategy | Learning Algorithm Selection | Encapsulate spaced repetition, interleaving, retrieval practice as interchangeable strategies. |\n| Circuit Breaker | Burnout Protection | Open state after N consecutive failures; half\u2011open after cooldown. |\n| Event Sourcing | Practice Log | Store each attempt as an immutable event; rebuild skill state by replaying. |\n| Plugin | Meta\u2011Learning Strategies | Load/unload learning tactics at runtime via a plugin manager. |\n\n## 35:55 \u2013 Event Sourcing for Practice Logs\n- **Event Schema**: `{timestamp, skillId, attemptId, input, output, latency, correctness}`\n- **Snapshots**: Periodic skill proficiency snapshots to reduce replay time.\n- **Replay**: To diagnose a plateau, replay events and inject alternative strategies.\n\n## 42:20 \u2013 Plugin Architecture for Meta\u2011Learning\n- **Core Engine**: Executes the current learning strategy.\n- **Plugin Interface**: `initialize(context)`, `executeAttempt(input)`, `onResult(result)`.\n- **Discovery**: Plugins are loaded from a manifest; hot\u2011swap without stopping the engine.\n\n## 48:00 \u2013 Reference Implementation (Pseudocode)\n```javascript\nclass SkillEngine {\n  constructor(strategyPlugin) {\n    this.strategy = strategyPlugin;\n    this.eventStore = new EventStore();\n    this.metrics = new MetricsCollector();\n    this.circuitBreaker = new CircuitBreaker({threshold:5, timeout:30000});\n  }\n\n  async practice(input) {\n    if (this.circuitBreaker.isOpen()) throw new Error('Circuit open');\n    const attempt = this.strategy.executeAttempt(input);\n    const result = await this.performAttempt(attempt);\n    this.eventStore.add({...attempt, ...result, timestamp: Date.now()});\n    this.metrics.record(result);\n    if (!result.success) this.circuitBreaker.recordFailure();\n    else this.circuitBreaker.recordSuccess();\n    return result;\n  }\n}\n```\n\n## 55:10 \u2013 Q&A & Takeaways\n- Treat learning as a service you can monitor, scale, and tune.\n- Apply proven system design patterns to overcome plateaus.\n- Build observable practice pipelines to make improvement data\u2011driven.\n\n---";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-SQMCtZX3trg");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=SQMCtZX3trg" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-btxG75rNJC4">
             <div class="card-header">
                 <h2>Two Bugs That Hid in Plain Sight: A vLLM Debugging Detective Story — Asaf Gardin & Yuval Belfer</h2>
