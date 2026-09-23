@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-dKcTBQzR7jI">
+            <div class="card-header">
+                <h2>Skill issue: stop deploying vision language models, use them with Skills — Merve Noyan, Hugging Face</h2>
+                <span class="date">2026-09-23</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-dKcTBQzR7jI"></div>
+            <script>
+                (function() {
+                    const md = "# Skill Issue: Stop Deploying Vision Language Models, Use Them with Skills\n\n## Introduction\nIn this presentation, Merve Noyan (Hugging Face) argues against the direct deployment of Vision Language Models (VLMs) for specialized computer vision tasks. While VLMs are powerful, they are often too slow for real-time applications and less robust than specialized architectures. The proposed solution is to treat VLMs as **orchestrators** or **skills** within an agentic workflow to automate the creation of high-performance, task-specific models.\n\n## The Problem with Direct VLM Deployment\nDevelopers often attempt to use VLMs for tasks like object detection or segmentation, but encounter three major roadblocks:\n1. **Latency & Throughput:** VLMs cannot achieve the 30-40 FPS required for real-time edge applications (e.g., on a toaster or a drone).\n2. **Robustness Gap:** Specialized models like <code>RT-DETR</code> consistently outperform VLMs in accuracy and reliability for specific vision tasks.\n3. **Licensing Risks:** Many popular vision models use restrictive licenses (like AGPL 3.0). For commercial deployment, developers should prioritize <b>Apache 2.0</b> or <b>MIT</b> licensed models.\n\n## The Proposed Solution: The VLM-as-a-Skill Pipeline\nThe core concept is to use VLMs to build a high-scale automated labeling and training pipeline. This allows for the creation of small, fast, and specialized models using massive amounts of pseudo-labeled data.\n\n### 1. The Automated Labeling Pipeline\nInstead of manual annotation, the pipeline follows these steps:\n- **Labeling:** A VLM (e.g., <code>Qwen 2.5-VL</code>) acts as a labeler to generate initial bounding boxes or segmentations.\n- **Judging (The Ensemble Method):** To ensure quality, the labels are passed to an ensemble of smaller VLMs acting as judges. \n    - *Technical Note:* The presenter recommends using an ensemble of smaller models (e.g., <code>Gemma 4 4B</code> and <code>LFM 2.5VL 2B</code>) rather than one massive model. \n    - *Decision Logic:* Use **Agreement** rather than **Consensus**. If you only accept labels where all judges agree, you lose too much data (low recall). By accepting labels where at least one judge agrees, you maintain a larger, more diverse dataset.\n- **Visual Grounding Improvement:** A critical implementation detail is to **overlay the predicted bounding boxes onto the image** before passing it to the judge. This provides the judge with explicit visual cues to verify the label.\n\n### 2. Training the Specialized Model\nOnce the high-quality pseudo-labels are verified, they are used to train a lightweight backbone, such as <code>RT-DETR</code> (Real-Time DEtection TRansformer). This results in a model that has the \"intelligence\" of the VLM's reasoning but the speed of a dedicated vision architecture.\n\n## Technical Implementation & Infrastructure\nThe workflow is designed to be scalable using modern cloud and serverless infrastructure:\n| Component | Implementation Strategy |\n| :--- | :--- |\n| **Coding Agent** | Uses models like <code>Claude 3.5 Sonnet</code> or <code>GLM</code> to manage long-horizon tasks (labeling $\\\rightarrow$ judging $\\\rightarrow$ training). |\n| **Inference** | Uses serverless providers (e.g., <code>DeepInfra</code>) for batch processing to keep costs low. |\n| **Judging Jobs** | Utilizes <code>Hugging Face Jobs</code> for scalable, asynchronous verification. |\n| **Training** | Uses GPU instances (e.g., <code>L4</code>) for training the final small-scale models. |\n\n## Key Findings & Challenges\n- **Judge Imbalance:** Different VLMs have different biases (e.g., LFM tends to be more \"rejecting\"). This reinforces the need for the agreement-based logic.\n- **Agentic \"Common Sense\" Failures:** Coding agents can make mistakes in data augmentation logic. For example, an agent might suggest a <i>horizontal flip</i> for traffic signs, which is physically incorrect and would corrupt the dataset. Human oversight is required during the prompt/augmentation generation phase.\n- **Generalization:** The presenter demonstrated that a model trained via this pipeline (on road signs) could generalize to novel tasks like document parsing (detecting signatures), often outperforming the original VLM's own annotations.\n\n## Summary of Recommended Tools\n- **Segmentation:** <code>Falcon Perception</code> (600M params, Apache 2.0) for zero-shot segmentation.\n- **Detection/Grounding:** <code>Moondream</code> or <code>Grounding DINO</code>.\n- **OCR:** Various models from the OCR benchmark.\n- **Depth Estimation:** Models with Apache 2.0 licenses to ensure commercial viability.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-dKcTBQzR7jI");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=dKcTBQzR7jI" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-SQMCtZX3trg">
             <div class="card-header">
                 <h2>The Dark Arts of Skill Engineering — Paul Bakaus, Renaissance Geek (Impeccable)</h2>
