@@ -476,6 +476,33 @@
             </a>
         </article>
         
+        <article class="card" id="video-0I07YAuF8xA">
+            <div class="card-header">
+                <h2>From Ingestion to Agents: How AI Teams Build on Document Intelligence — Adit Abraham, Reducto</h2>
+                <span class="date">2026-09-23</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-0I07YAuF8xA"></div>
+            <script>
+                (function() {
+                    const md = "# From Ingestion to Agents: How AI Teams Build on Document Intelligence\n\n## [0:16] Introduction and Context\n- Speaker: Adit Abraham, co\u2011founder & CEO of Reducto.\n- Focus: practical, less\u2011sexy aspect of building agents that work in the real world \u2013 data.\n- Reducto is an agentic document processing platform serving AI teams, enterprises, etc.\n\n## [0:47] Why PDFs Remain a Hard Problem\n- PDFs designed for print fidelity, not machine readability.\n- Benchmarks like GDP\u2011PDF show frontier models ~30% accuracy.\n- Challenges: mixed modalities, handwriting, messy tables, line charts, merge cells.\n\n## [2:17] Framing the Problem: From RAG to Agents\n- Early era: RAG / information synthesis.\n- Shift to agents that generate/modify documents, requiring multi\u2011step pipelines.\n- Risk of bad inputs compounds; need high\u2011confidence data.\n\n## [3:50] Data Characteristics in Enterprises\n- Unstructured, scattered, multimodal.\n- Unknown corpus content; need robust parsing, extraction, and context retrieval.\n\n## [5:22] Parsing Challenges: Extraction Accuracy\n- Traditional OCR fails on long\u2011tail; VLMs handle semantics but can hallucinate.\n- Example: model correcting a \u201ctotal\u201d by summing column values.\n\n## [6:24] Semantics vs Faithfulness\n- Need representation that balances human visual context and machine reasoning.\n- Goal: markdown\u2011like representation that agents can reason on.\n\n## [7:26] Step Change with VLMs\n- VLMs enable horizontal understanding of documents.\n- Yet deterministic, efficient processing still benefits from traditional CV.\n- Sub\u2011million\u2011parameter CV models detect layout, object detection, table grids on CPU.\n\n## [8:27] Hybrid CV + VLM Approach\n- Use CV for layout detection (object detection, line detection).\n- Feed cropped regions to VLM for semantic interpretation (handwriting, merge cells).\n- Introduce agentic OCR: verification layer that applies token\u2011level edits only when they match source.\n\n## [9:57] Agentic OCR Details\n- Analogous to human review loop: first pass (CV+VLM) \u2192 verification correction layer.\n- Prevents net\u2011new loss cases where VLMs \u201ccorrect\u201d incorrectly.\n- Focus on token\u2011level fidelity (period vs comma, zero vs O).\n\n## [11:01] Formatting for Downstream Consumers\n- Simple tables \u2192 markdown (compact, low token cost).\n- Complex tables with merge cells \u2192 HTML (preserves semantics).\n- For embedding models: convert tables to natural\u2011language descriptions (e.g., \u201cRevenue grew from $10M in Q1 to $12M in Q2\u201d).\n- This yields best of both worlds: reasoning HTML, retrieval\u2011friendly NL.\n\n## [12:02] Retrieval Considerations\n- Raw HTML snippets dominated by tags hurt embedding correlation.\n- Natural\u2011language table representation improves snippet relevance.\n- Classification/split step ensures only relevant snippets are passed to embeddings.\n\n## [13:33] Evaluation\u2011Driven Development\n- Evaluate each stage: parsing, classification, retrieval, formatting, end\u2011to\u2011end agent performance.\n- Use off\u2011the\u2011shelf benchmarks (GDP\u2011PDF) and real\u2011time production monitoring.\n- Granular eval per pipeline step reveals drift and guides improvements.\n\n## [16:34] Agent Harnesses for Complex Tasks\n- Example: line\u2011chart extraction \u2192 agent with code interpreter, visualizer, iterative refinement.\n- Agent generates markdown table, validates against chart, loops until convergence.\n- Structured extraction with validation criteria for sub\u2011agents (e.g., CBP forms).\n\n## [18:38] Precision\u2011Recall Trade\u2011off and Agent Harness\n- Frontier models: high precision, low recall.\n- Dedicated document services: high recall, lower precision.\n- Agent harness combines both, achieving local maximum of precision and recall.\n\n## [19:09] Importance of Evaluation\n- Eval not just macro\u2011level; must be granular per step.\n- Monitor production data vs. contrived test sets.\n- Continuous feedback loop improves end\u2011agent performance.\n\n## [20:10] Future Directions\n- As agents improve, move from deterministic pipelines to agent\u2011driven file\u2011system navigation.\n- CLI where agent decides which tools to invoke (read, split, classify, edit).\n- Emerging work on document generation and dynamic tool selection.\n\n## [21:42] Recap and Action Items\n1. Decompose parsing: right tool for right task (CV vs VLM).\n2. Apply agentic verification for high\u2011confidence OCR.\n3. Format data for its consumer (markdown, HTML, NL).\n4. Classify and split early to route documents.\n5. Evaluate every stage and monitor production drift.\n6. Explore agent harnesses for next\u2011frontier tasks (charts, forms).\n";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-0I07YAuF8xA");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=0I07YAuF8xA" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-jNE8No-wvok">
             <div class="card-header">
                 <h2>Modality Misalignment and Originality Attribution in Short-Form Video — Aditya Gautam, Meta</h2>
