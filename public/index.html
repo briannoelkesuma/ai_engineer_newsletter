@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-7taOQBfjDyE">
+            <div class="card-header">
+                <h2>The Loop Is the Product — Roland Gavrilescu, Introspection</h2>
+                <span class="date">2026-09-26</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-7taOQBfjDyE"></div>
+            <script>
+                (function() {
+                    const md = "# The Loop Is the Product: Engineering Self-Improving Agentic Systems\n\nThis technical deep-dive explores the transition from model-centric AI to loop-centric agentic systems. As LLMs become commodities, the value proposition shifts toward the orchestration, verification, and continuous improvement cycles\u2014the \"loops\"\u2014that surround the model.\n\n## 1. The Paradigm Shift: From Models to Harnesses\n\nIn the early stages of the LLM revolution, the focus was on **Reinforcement Learning (RL)** to improve raw model reasoning. However, we have entered a new era where:\n- **Models are Commodities:** The underlying intelligence is increasingly accessible and standardized.\n- **The Harness is the Moat:** The competitive advantage lies in the environment, the tools, and the feedback loops (the harness) in which the model operates.\n- **The Loop is the Product:** A successful AI product is not a single prompt/response, but a continuous cycle of action and observation.\n\n## 2. The Architecture of an Agentic Loop\n\nDrawing inspiration from the **OODA Loop** (Observe, Orient, Decide, Act) used in high-stakes environments like fighter jet combat, an effective agentic system follows a recursive structure.\n\n### The Two-Loop Framework\n1. **The Inner Loop (The Worker):** The agent interacts with the environment, calls tools, and generates artifacts (e.g., code, research, or communications).\n2. **The Outer Loop (The Verifier/Distiller):** This loop analyzes the artifacts from the inner loop. It identifies patterns, detects failures, and generates high-quality signals to improve the next iteration.\n\n### Key Components of the Loop\n| Component | Function |\n| :--- | :--- |\n| **Signal** | The quality of data/observations entering the loop. |\n| **Verifier** | A mechanism (often another agent) that calibrates whether a task was successful. |\n| **Artifacts** | The tangible outputs (traces, logs, files) used to inform the next loop. |\n| **Taste** | The human-defined qualitative standard that guides the system's direction. |\n\n## 3. Agent Recipes: Codifying \"Taste\"\n\nOne of the most significant challenges in agentic AI is capturing the nuance of human expertise\u2014what the speaker calls **\"Taste.\"** To solve this, we move toward **Agent Recipes**.\n\n### What is an Agent Recipe?\nAn Agent Recipe is a version-controlled, provider-agnostic configuration that includes:\n- **Evals:** Automated tests that reflect specific quality standards.\n- **Harness Profiles:** Configurations optimized for specific models or tools.\n- **Skills & Prompts:** Codified successful behaviors.\n- **Memory & Extensions:** Contextual data that prevents repeated errors.\n\n### The Distillation Process\nInstead of manually writing prompts, engineers should use the loop to **distill** expertise:\n1. **Pattern Recognition:** Agents analyze execution traces to find clusters of behavior (e.g., \"The agent keeps contacting Big Tech employees instead of niche experts\").\n2. **Judge Generation:** Agents propose new evaluation criteria based on these patterns.\n3. **Human Calibration:** A human provides a single signal: *\"Yes, this judgment is correct.\"*\n4. **Codification:** The judgment is turned into a permanent part of the recipe (an automated judge or a new prompt constraint).\n\n## 4. Economic Optimization: Valued Work per Watt\n\nAs we move toward **Frontier AI**, the goal is to reach the highest level of capability while maintaining economic viability. The metric for success is **Valued Work per Watt**.\n\n### The Optimization Hierarchy\n1. **Measure Value:** Define what constitutes a successful outcome in a specific vertical (e.g., Legal, Recruiting, Coding).\n2. **Reach the Frontier:** Use high-compute loops to discover the best possible performance.\n3. **Optimize Economics:** Once the \"frontier\" behavior is understood, use the distilled recipes to achieve that same performance using smaller, cheaper models or more efficient loops.\n\n## 5. Practical Implementation Example: Talent Sourcing Agent\n\nTo illustrate, consider a recruiting agent:\n- **Baseline Behavior:** The agent finds high-profile candidates (e.g., John Carmack) but misses \"hidden gems.\"\n- **Signal Discovery:** The system identifies a pattern: the agent over-indexes on \"Big Tech\" keywords.\n- **Automated Eval:** An agent is tasked with creating an eval that penalizes \"Big Tech only\" searches and rewards \"GitHub/Open Source\" discovery.\n- **Human-in-the-loop:** The recruiter confirms the new eval matches their \"taste.\"\n- **Result:** The agent's behavior is updated via the recipe, and the new behavior is validated in production via A/B testing.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-7taOQBfjDyE");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=7taOQBfjDyE" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-LlgiOCmFG_w">
             <div class="card-header">
                 <h2>Fixing the PR Bottleneck — Matt Pocock, AIHero</h2>
