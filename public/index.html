@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-TN3mj92oZ8I">
+            <div class="card-header">
+                <h2>How Software Factories Improve Themselves — Suraj Gupta, Warp</h2>
+                <span class="date">2026-09-27</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-TN3mj92oZ8I"></div>
+            <script>
+                (function() {
+                    const md = "# How Software Factories Improve Themselves \u2013 Deep Dive\n\n## [0:14] Introduction\n- Suraj Gupta, Harness lead at Warp.\n- Warp builds agentic development environment \u2192 cloud agent platform for software factories.\n- Goal: self\u2011improving software factories.\n\n## [0:44] Self\u2011Improvement Overview\n- Self\u2011improvement = agents improving over time, reducing human in the loop.\n- Software factories shift from individual coding agents to end\u2011to\u2011end automations.\n\n## [1:45] Three Concrete Improvement Paths\n1. Skills (procedural memory).\n2. Persistent memory (fact store).\n3. Model routing.\n\n## [2:15] Skills \u2013 Inner/Outer Loop\n- **Inner loop agent**: applies a skill (e.g., triage skill that reproduces issues).\n- **Outer loop agent**: observes inner loop runs, collects feedback (thumbs up/down, comments, human review).\n- **Feedback synthesis**: updates the skill.\n- **Implementation**: update submitted as a pull request \u2192 full Git observability, human\u2011in\u2011the\u2011loop safety.\n- Example: Warp\u2019s open\u2011sourced triage skill repo.\n\n## [3:46] Triage Skill Workflow\n- Trigger: new GitHub issue.\n- Workflow runs inner\u2011loop triage agent.\n- Outer loop agent reviews run, updates skill via PR.\n\n## [5:48] Persistent Memory\n- Concept: fact store scoped to an agent.\n- Outer loop extracts facts, learnings, outcomes from inner loop runs.\n- Memory versioning: humans can create/delete/edit; traceable.\n- Reuse: future runs lean on stored facts to avoid re\u2011gathering context, saving tokens.\n- Example: Sentry agent storing root\u2011cause analyses; later runs use those memories.\n- Platform support: works across all harnesses in Oz (Warp Zone, proprietary harness, plot, Kodak).\n\n## [6:48] Memory Management UI\n- View memory source runs.\n- Option to exclude low\u2011value memories (local maxima).\n\n## [8:21] Model Routing Motivation\n- Running simple tasks on large models (Opus) is expensive.\n- Need to choose cheaper, fit\u2011for\u2011purpose models.\n\n## [8:51] Model Routing in Warp\n- Auto models: out\u2011of\u2011the\u2011box routers that pick models based on rules.\n- Rule\u2011based routing: config file defines which model for DB migrations (GLM), runbooks/API docs (Quen), etc.\n- Eval sidecar: runs a best\u2011at\u2011k experiment across models for each task class, measures performance/cost, selects optimal.\n- Process: on prompt, spawn agents across model set, evaluate, route to best.\n- Future: embed eval\u2011driven routing into product for customer workflows.\n\n## [10:25] Example Routing Configuration\n```yaml\nrules:\n  - if: task.type == 'database_migration'\n    then: model = 'GLM'\n  - if: task.type in ['runbook', 'api_documentation']\n    then: model = 'Quen'\n  - else: model = 'auto'  # uses eval sidecar\n```\n\n## [10:56] Customer\u2011Facing Evals\n- Define metrics that matter (latency, success rate, cost).\n- Turn knobs on routing configs.\n- Observe results, iterate.\n\n## [11:35] Summary\n- Skills \u2192 outer\u2011loop PR\u2011based skill evolution.\n- Persistent memory \u2192 fact store with versioning.\n- Model routing \u2192 rule + eval\u2011driven auto models.\n- Together they give observable, safe, cost\u2011effective self\u2011improving software factories.\n\n---\n*End of deep dive.*\n";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-TN3mj92oZ8I");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=TN3mj92oZ8I" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-oVsEddfhdxc">
             <div class="card-header">
                 <h2>We Let Claude Code and Codex Race Human Researchers — Elie Bakouch, Prime Intellect</h2>
