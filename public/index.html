@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-YiFqcu9YA38">
+            <div class="card-header">
+                <h2>Dashboards Are Dead — Sarah Simionescu, Composio</h2>
+                <span class="date">2026-10-04</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-YiFqcu9YA38"></div>
+            <script>
+                (function() {
+                    const md = "# Dashboards Are Dead \u2014 Sarah Simionescu, Composio\n\n## 0:00 \u2013 Introduction & Confession\n- Sarah introduces herself, daily use of DataDog, anecdote about being logged out and a coworker asking to look at an alert.\n- Realizes she never actually looked at the dashboard despite using the tool every day.\n\n## 0:45 \u2013 The Dashboard Problem\n- Dashboards act as translation layers between humans and machines via obscure query languages.\n- Humans never wanted the dashboard; they wanted the answer.\n- The \u201csparkle button\u201d (LLM\u2011generated query) appeared in 2023 but limited to \u22642 joins.\n\n## 2:17 \u2013 Enter MCP (Model Context Protocol)\n- November 2024: Anthropic releases MCP as an open standard for connecting AI systems to data sources.\n- MCP is merely a channel; the developer decides how the agent communicates with each service.\n\n## 3:17 \u2013 Three Fundamental Flaws of Raw MCP\n1. **Zero\u2011shot memory** \u2013 every conversation starts from scratch; no recall of past formatting or link fixes.\n2. **Context\u2011window overload** \u2013 adding more tools, skills, or servers inflates the context, causing the LLM to lose focus, pick wrong tools, or fail to resolve dependencies.\n3. **Server isolation** \u2013 each MCP server knows only about its own app; cross\u2011app tasks force developers to manually stitch together results.\n\n## 4:19 \u2013 Concrete Example of the Mess\n- GitHub\u2011like toolkit with >200 tools dumps thousands of definitions into the context window, leading to wrong tool selection and dependency resolution failures.\n\n## 4:49 \u2013 Composio\u2019s Agent\u2011Native Interface\n- Builds on top of MCP CLI and native tools to provide a unified, excellent experience for agents.\n- Translates messy, sparsely documented, ever\u2011changing APIs from all apps into something agents love to use.\n\n## 5:19 \u2013 How Composio Solves the Flaws (Demo)\n1. **Task initiation** \u2013 user copies a Slack message link and asks Claude to \u201cuse century DataDog find the root cause, draft PR, make no mistakes.\u201d\n2. **Composio search** \u2013 returns the exact tools needed and a step\u2011by\u2011step plan for each service (e.g., obtain Slack channel ID before querying messages).\n3. **Parallel data pull** \u2013 agent fetches Slack messages, DataDog logs, Sentry issues, and scans the codebase simultaneously.\n4. **Root cause identification & PR generation** \u2013 agent creates a fix and opens a PR in under five minutes, without any custom skill or workflow authoring.\n5. **No context bloat** \u2013 because Composio supplies only the necessary tools and the plan, the LLM\u2019s context stays lean.\n\n## 6:22 \u2013 Impact & Early Results\n- Internal, unreleased benchmarks compare Composio\u2011powered agents against each app\u2019s native MCP (as listed in the Claude marketplace).\n- Same model, same tasks; Composio shows a clear performance advantage.\n- Agents become \u201cmuscle memory\u201d for the developer; opening Cloud feels like second nature.\n\n## 7:22 \u2013 Everyday Use\u2011Case: User Onboarding Analytics\n- Agent asked to see distribution of verticals selected during onboarding.\n- Uses Composio search \u2192 runs a query in PostHog \u2192 returns results.\n- To go deeper (e\u2011commerce toolkit usage), agent:\n  1. Retrieves user IDs who selected e\u2011commerce from PostHog (without loading full results).\n  2. Queries Metabase for schema and sample data to understand structure.\n  3. Uses Composio Remote Workbench to dynamically generate an SQL query with a regex that searches for those user IDs, again avoiding loading the full dataset into context.\n  4. Returns the most popular toolkits among that user segment in minutes.\n\n## 8:53 \u2013 Live Demo Invitation\n- Encourages audience to visit the Composio booth to try the live version.\n\n## 9:24 \u2013 From Developer\u2011Centric to Agent\u2011Centric Products\n- Composio started as a tool to help developers turn popular apps into agent\u2011usable tools.\n- Humans are tired of dashboards; agents are tired of poorly designed MCP servers.\n- Startups now request ways for their services to be consumed by agents.\n- The lesson: every product now serves a new species of user\u2014agents without eyes, driven by goals and tool sets.\n- Success hinges on whether the agent can get the job done with a single tool call.\n\n## 9:54 \u2013 Closing Thought\n- Sarah\u2019s frozen moment in front of the DataDog dashboard becomes a preview of the future: products must be easy for agents to use, not just for humans.\n- Thanks the audience.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-YiFqcu9YA38");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=YiFqcu9YA38" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-qflLT3SoVbw">
             <div class="card-header">
                 <h2>Stop Fine-Tuning to Fix Retrieval Problems — Anant Srivastava</h2>
