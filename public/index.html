@@ -692,6 +692,60 @@
             </a>
         </article>
         
+        <article class="card" id="video-s0hFne6EeOI">
+            <div class="card-header">
+                <h2>Build the Right Thing: Product Engineering (Part 2) — Kent C. Dodds, EpicProduct.engineer</h2>
+                <span class="date">2026-10-05</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-s0hFne6EeOI"></div>
+            <script>
+                (function() {
+                    const md = "# 0:00 - Introduction\nKent C. Dodds opens by stressing that as AI agents level the implementation playing field, the true differentiator becomes the ability to pick the right problem to solve. He frames the talk around two complementary tools: Jobs To Be Done (JTBD) for discovering the user\u2019s progress goal, and the Kano model for prioritizing feature work.\n\n## 0:52 - Workshop Context\nHe references the \"Just Get In\" workshop app used throughout the day. A participant requests facial recognition to know how long the queue is. Kent uses this request to illustrate how engineers must dig past the surface feature to uncover the underlying job.\n\n## 1:25 - Request Gathering\nThe audience shouts out ideas: queue length, CO2 levels, facial recognition, social\u2011media photo posting. Kent emphasizes that each request is a symptom, not the job itself.\n\n## 2:57 - Problem Identification\nHe introduces the \"problem tree\" technique: repeatedly asking \"why\" to expose root causes. For facial recognition, the chain leads to \"people missing the first 20 minutes of a workshop\" \u2192 \"slow check\u2011in\" \u2192 \"need to get into the workshop quickly\".\n\n## 5:17 - Problem Tree Summary\nKent defines the problem tree as a visual of a core problem with branches of side\u2011effects (e.g., facial recognition, social posts). Solving the leaf without addressing the root creates wasted effort.\n\n## 6:18 - Jobs To Be Done Theory\nHe credits Clayton Christensen: people \"hire\" products to make progress in a specific situation. The job statement captures the progress sought, independent of any specific solution.\n\n## 8:52 - Deriving the Job Statement\nUsing the workshop example, Kent crafts: \"When there\u2019s a workshop starting at 10:10, help me get into the workshop quickly so I can learn about product engineering without missing the first 20 minutes.\" He notes this statement contains no mention of facial recognition.\n\n## 11:27 - Job Dimensions\nThe job is split into three lenses:\n- **Functional**: Does it actually get the user into the workshop on time?\n- **Social**: Who is involved (attendee, door staff, speaker) and how do they interact?\n- **Emotional**: How does the user feel (relieved, anxious, creeped out) when using the solution?\n\nEach dimension maps to technical concerns: functional \u2192 latency and reliability; social \u2192 concurrency and privacy; emotional \u2192 trust and comfort.\n\n## 15:00 - Feedback Channels\nKent advises establishing a dedicated Slack channel or similar mechanism to collect user feedback continuously. For large\u2011scale products, a select group of high\u2011value customers can provide signal; for early ideas, the Mom Test (talking to potential users) validates the problem.\n\n## 17:32 - Applying JTBD to the Facial Recognition Request\nHe shows that facial recognition is a *solution* to the job of fast check\u2011in, but not the only one. Alternatives like NFC badges or parallel queues could satisfy the same job with different trade\u2011offs.\n\n## 20:37 - From Job to Technical Decision\nUsing the dimensions, Kent outlines a decision matrix:\n- Functional \u2192 prioritize low\u2011latency check\u2011in, reliable database of attendee IDs.\n- Social \u2192 design for single attendant, avoid crowding, optional speaker notification.\n- Emotional \u2192 offer opt\u2011out, clear privacy notices, avoid storing raw face images.\n\n## 23:44 - Mom Test for Early Validation\nBefore building anything, Kent suggests prototyping a paper\u2011based queue check or a simple SMS\u2011based code and observing whether users would try it. If they won\u2019t, the problem may not be compelling enough.\n\n## 25:17 - Tips for Transitioning from Product Role to Product Engineering\n1. Talk to engineers about system constraints and architecture.\n2. Spend time understanding infrastructure limits.\n3. Avoid silos; join engineering lunches.\n4. Ask open\u2011ended questions to uncover real pain points.\n\n## 27:52 - Incident Response & System Knowledge\nKent argues that deep system knowledge is crucial when incidents impact revenue (e.g., PayPal cross\u2011border trades). For low\u2011traffic personal sites, relying on AI agents to mitigate issues is acceptable, but for high\u2011stakes systems, engineers must be able to diagnose and guide agents.\n\n## 29:52 - AI and Security\nHe observes that AI does not fundamentally change security; it makes existing flaws easier to exploit. Engineers must still harden systems, as AI\u2011generated code can inherit vulnerabilities.\n\n## 31:55 - Prioritizing Software Changes\nHaving crossed the early\u2011adopter chasm, the product now serves the majority. Kent introduces the Kano model to decide what to build next.\n\n## 32:55 - Kano Model Overview\nTwo axes: **Implemented** (how much of the feature is built) vs **Satisfied** (user happiness). Five categories:\n- **Basic Needs** (must\u2011have): dissatisfaction if absent, no extra satisfaction when fully implemented.\n- **Performance Needs** (more is better): linear satisfaction increase with implementation.\n- **Delighters** (unexpected joy): excitement even with minimal implementation.\n- **Indifference**: users don\u2019t care whether it exists.\n- **Reverse**: users dislike it when present.\n\nHe illustrates with a food\u2011delivery app: email confirmation (Basic), GPS tracking (Performance/Basic), ETA accuracy (Performance), surprise discount (Delighter), shared cart (Delighter moving toward Performance).\n\n## 44:08 - Product Engineer\u2019s Role\nWhile product managers identify value via JTBD and Kano, engineers translate that into technical requirements: reliability, reversibility, performance constraints, and effort allocation. They decide how much to invest in each category based on the model.\n\n## 48:14 - Avoiding Indifference and Reverse Features\nKent warns against building features that fall into Indifference (wasted maintenance) or Reverse (actively harmful, like auto\u2011posting to social media). Engineers must push back on such ideas and advocate for removal.\n\n## 49:46 - Wrap Up\nHe concludes that once AI agents handle implementation, the remaining human skill is judging which problems are worth solving. Mastery of JTBD, Kano, and continuous feedback makes engineers the most valuable members of their teams.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-s0hFne6EeOI");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=s0hFne6EeOI" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
+        <article class="card" id="video-_fHTqOs5wQA">
+            <div class="card-header">
+                <h2>Build the Right Thing: Product Engineering (Part 1) — Kent C. Dodds, EpicProduct.engineer</h2>
+                <span class="date">2026-10-05</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-_fHTqOs5wQA"></div>
+            <script>
+                (function() {
+                    const md = "...";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-_fHTqOs5wQA");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=_fHTqOs5wQA" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-fz6-NS7qpZc">
             <div class="card-header">
                 <h2>How I Learned to Stop Worrying and Love the Sandbox — Matt Brockman, E2B</h2>
@@ -739,6 +793,33 @@
             </script>
             
             <a href="https://youtube.com/watch?v=NdrSPm6NCdk" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
+        <article class="card" id="video-J17o5r5PKmw">
+            <div class="card-header">
+                <h2>Your AI Agent Is Confidently Wrong About Production — Willem Pienaar, Cleric</h2>
+                <span class="date">2026-10-05</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-J17o5r5PKmw"></div>
+            <script>
+                (function() {
+                    const md = "# Deep Dive: Making AI Agents Reliable in Production\n\n## 0:15 \u2013 Introduction & Motivation\nWillem Pienaar (Co\u2011founder & CTO, Cleric) opens by stating that writing code is not the same as running it in production. Agents are increasingly used to diagnose alerts, but they often return confident answers that are wrong, forcing engineers into a frustrating back\u2011and\u2011forth loop.\n\n## 0:45 \u2013 Why Production Is Hard for LLMs\n- **No verification signal**: In dev/CI, tests, linting, and compile errors give immediate, focused feedback. Production offers only scattered logs, metrics, and noise.\n- **Diffuse signal**: Logs are spread across services; there is no single source of truth.\n- **Moving state**: Deployments, configuration changes, and traffic patterns constantly shift the system.\n- **Transient failures**: Many issues appear only at a specific moment and cannot be reproduced in a sandbox.\n\n## 2:18 \u2013 Lack of Verification in Production\nThe speaker contrasts the tight feedback loop of code (change \u2192 compile/test \u2192 result) with the production loop where the agent\u2019s hypothesis must be validated against noisy, delayed observability data.\n\n## 2:49 \u2013 Need for a Signal Coming Back to the Agent\nTo enable autonomous debugging, the agent needs a reliable signal that reflects the correctness of its actions, similar to the compile/test signal in coding.\n\n## 3:19 \u2013 Production Environment Characteristics\n- **Amorphous boundaries**: Unlike a single repo, production spans multiple teams, clusters, and accounts.\n- **Unclear scope for the agent**: It is unknown how wide or narrow the investigation should be.\n- **Constantly changing state**: The system is never static.\n- **Transient nature**: Failures may be fleeting, making reproduction impossible.\n\n## 3:50 \u2013 Model Training Bias\nLarge language models are trained to be decisive and confident, the opposite of what a good production debugger needs (which requires doubt, uncertainty, and theory elimination). RLHF further pushes models toward human\u2011preferred confident answers, increasing overconfidence.\n\n## 4:22 \u2013 RLHF Confidence Shift\nOpenAI\u2019s system cards show that confidence and accuracy diverge during the RLHF process, confirming that the model\u2019s confidence is not a reliable indicator of correctness.\n\n## 4:54 \u2013 Observed Failure Classes in Production Debugging\nThe speaker enumerates four recurring failure patterns observed when agents debug production systems:\n\n1. **Mistaking Cause for Symptom** \u2013 The agent stops at the first error log (the smoke) and declares it the root cause without tracing upstream.\n2. **Lacking a Production Baseline** \u2013 Without a notion of \u201cnormal,\u201d any anomaly is treated as novel, preventing the agent from filtering out expected noise.\n3. **Abstraction Problem** \u2013 Sub\u2011agents process raw data but only surface summaries; the main agent receives partial information and becomes overconfident.\n4. **Anchoring on Past Context** \u2013 The agent reuses historical incidents as evidence, even when the current failure is unrelated.\n\n## 5:25 \u2013 Technique: Generate Many Diverse Theories\nTo combat overconfidence, the agent creates multiple, competing hypotheses simultaneously. This provides breadth and enables relative ranking (the model is good at comparing theories but poor at absolute scoring).\n\n## 5:58 \u2013 Technique: Baseline Computation\n- Collect recent logs/metrics.\n- Cluster them to identify recurring patterns.\n- Present statistics (e.g., \u201cthis error occurs every 5\u202fmin\u201d) alongside raw entries.\n- This suppresses noise and helps the agent distinguish true anomalies from expected chatter.\n\n## 6:30 \u2013 Technique: Dependency Graph / Topology\n- Build a graph of service dependencies (e.g., via service mesh, tracing, or static configuration).\n- When the agent claims a causal link between two services, verify that an edge exists in the graph.\n- If not, invoke a critic agent to challenge the claim, injecting doubt.\n\n## 7:02 \u2013 Technique: Temporal Assessment\n- Enforce that a cause must precede its symptom in time.\n- Score findings by proximity to the alert timestamp: closer in time \u2192 higher relevance.\n- This leverages the expectation that causes and effects are temporally localized.\n\n## 7:34 \u2013 Technique: Evidence Propagation (Sub\u2011Agent Case Building)\n- Instead of asking sub\u2011agents for a single answer, require them to return a structured case: evidence items, timestamps, and confidence.\n- The main agent then evaluates the full case before deciding, mirroring how an SRE would document an investigation.\n\n## 8:06 \u2013 Technique: Confidence Score Derivation\n- Combine the spread of theories (entropy), baseline deviation, graph validation, temporal proximity, and evidence quality into a composite confidence metric.\n- This score is calibrated against observed outcomes (see evaluation loop).\n\n## 8:48 \u2013 Evaluation Loop: Detection \u2192 Diagnosis \u2192 Fix \u2192 Verification \u2192 Outcome\n1. **Detection**: Alert triggers the agent.\n2. **Diagnosis**: Agent proposes a root cause and a fix.\n3. **Fix**: Engineer applies the suggested change (or the agent does so autonomously).\n4. **Verification**: System monitors multiple signals (metrics, logs, traces, resource usage) to see if the service returns to its baseline.\n5. **Outcome**: If the service normalizes, the diagnosis is considered correct; otherwise, the loop repeats with updated confidence.\n\n## 9:30 \u2013 Verification via Return\u2011to\u2011Normal\nThe speaker shows a plot where the x\u2011axis is the agent\u2019s reported confidence and the y\u2011axis is the observed accuracy (fraction of times the fix restored normality). Without grounding, points lie far above the diagonal (overconfident). With grounding, points approach the 45\u00b0 line, indicating well\u2011calibrated confidence.\n\n## 10:02 \u2013 Cost Trade\u2011off\nGenerating multiple theories and maintaining a baseline increases token usage compared to a single\u2011shot Claude Code run. However, the investment reduces human\u2011in\u2011the\u2011loop time and prevents costly rollbacks.\n\n## 10:33 \u2013 Simulation Results: Localized vs Distributed Incidents\n- **Localized incidents** (cause and symptom in the same service): Grounded agents perform almost as well as Claude Code in code.\n- **Distributed incidents** (cause and symptom across services): Accuracy lags, highlighting the remaining challenge of correlating cross\u2011service signals.\n\n## 11:00 \u2013 Future Work: Bringing Production Signal to the Developer Environment\nThe ultimate goal is to export the production-derived baseline model, dependency graph, and ontology into the CI/dev pipeline. This enables the agent to predict failures *before* deployment, shifting reliability left and allowing developers to fix issues in the safety of their local environment.\n\n---\n*End of deep\u2011dive.*";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-J17o5r5PKmw");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=J17o5r5PKmw" target="_blank" class="youtube-link">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
                 </svg>
