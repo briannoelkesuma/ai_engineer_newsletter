@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-YNT7Plf9KIg">
+            <div class="card-header">
+                <h2>Your AI Agent Has No Nervous System — Matt Gibiec, Dynatrace</h2>
+                <span class="date">2026-10-08</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-YNT7Plf9KIg"></div>
+            <script>
+                (function() {
+                    const md = "# Your AI Agent Has No Nervous System \u2014 Deep Dive\n\n## [0:20] Introduction and Session Setup\n- Matt Gibiec, Director of Solutions Engineering for AI Native at Dynatrace.\n- Quick poll of audience roles (developers, team leads, heads of engineering).\n\n## [0:51] The Core Problem: Agents Lack a Nervous System\n- Observation: AI agents are fast but operate without sight.\n- Without contextual data (dependencies, permissions, recent changes) agents hallucinate.\n- Example: Claude repeatedly loops, consuming tokens without useful output.\n\n## [1:22] Why Context Matters\n- Human analogy: when research results are unsatisfactory, we change approach.\n- Agents need enough input to understand what to do, not just automate broken processes.\n- The missing piece is **context**, which acts as the nervous system.\n\n## [2:25] Common Symptoms of Context\u2011Starved Agents\n- Stuck in loops, repetitive actions, token waste.\n- Operational issues surface only after deployment.\n- Security concerns arise from over\u2011privileged or mis\u2011informed agents.\n\n## [3:57] Measuring Value: Moving Beyond Token Count\n- Need to define success metrics tied to business outcomes.\n- Without context, engineering effort is wasted on agents that break downstream services.\n\n## [4:27] Quote from CTO Burnt: \u201cAgents operate at speed but without sight.\u201d\n- Highlights the speed\u2011vs\u2011visibility trade\u2011off.\n\n## [4:57] Context is King\n- Definition: real\u2011time dependency mapping, historical load, recent code changes, user\u2011behavior.\n- Provides the connective tissue that drives reliable automation.\n\n## [5:28] Introducing Bluebox by Dynatrace\n- Agent\u2011side middleware that plugs into any LLM workflow.\n- Builds a live service\u2011dependency graph.\n- Ingests historical metrics, traces, and logs.\n- Exposes what\u2011changed data (code commits, merges, config drifts).\n\n## [7:01] Use Case 1: Local Testing with Production Context\n- Scenario: feature works locally, breaks after merge.\n- Bluebox brings production dependency data into the IDE.\n- Enables developers to see impact before committing.\n\n## [8:33] Use Case 2: Early Issue Detection\n- Bluebox correlates agent actions with anomalies in traces.\n- Alerts appear in IDE when a service deviates from normal behavior.\n- Enables proactive remediation before user impact.\n\n## [9:33] Use Case 3: SDLC Integration for Remediation\n- On detecting an issue, Bluebox identifies the offending commit, author, and changed files.\n- Suggests fix steps that consider downstream dependencies.\n- Integrates with pull\u2011request workflows to block unsafe changes.\n\n## [10:34] Use Case 4: Pre\u2011Planning Briefing\n- Before prompting an agent, Bluebox supplies a brief of relevant services, SLAs, and recent changes.\n- Enables \u201cplan before you prompt\u201d methodology.\n\n## [11:35] Human\u2011in\u2011the\u2011Loop and Controlled Automation\n- Bluebox can surface a fix recommendation but requires operator approval.\n- Provides toggle to push or hold changes, ensuring governance.\n\n## [12:05] Driving Automation Safely\n- With context, agents can automate repetitive tasks while respecting system boundaries.\n- Reduces toil without increasing risk.\n\n## [13:07] Benefits Summary Table\n| Benefit | Description |\n|---|---|\n| Reduced Hallucinations | Agents receive full context, lowering false outputs. |\n| Faster Feedback Loops | Local testing mirrors production, catching bugs early. |\n| Safer Deployments | Change impact analysis prevents cascading failures. |\n| Measurable ROI | Value tied to system health and business metrics. |\n| Governance | Human\u2011in\u2011the\u2011loop checkpoints enforce policy. |\n\n## [14:09] Getting Started with Bluebox\n- Visit bluebugs.ai and request preview access.\n- Install the Bluebox sidecar in your Kubernetes or VM environment.\n- Connect to your observability stack (Dynatrace, Prometheus, etc.).\n- Register your AI agents/LLM endpoints to receive context envelopes.\n- Configure policies for auto\u2011fix vs manual approval.\n\n## [14:40] Closing Thoughts\n- The goal is to ship code you trust to production.\n- Context transforms agents from blind executors to knowledgeable partners.\n- Encourages audience to try the preview and provide feedback.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-YNT7Plf9KIg");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=YNT7Plf9KIg" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-jJQoVkd5yLg">
             <div class="card-header">
                 <h2>Why We Deleted Our MCP Server and Rebuilt It — Abhi Arya, Reducto</h2>
