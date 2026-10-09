@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-3wj6sgbi1YA">
+            <div class="card-header">
+                <h2>Designing CLIs for Agents, Not Humans — Pedro Lopez, Airbyte</h2>
+                <span class="date">2026-10-09</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-3wj6sgbi1YA"></div>
+            <script>
+                (function() {
+                    const md = "# Designing CLIs for Agents, Not Humans \u2013 Pedro Lopez (Airbyte)\n\n## 0. Introduction\n- Brief bio of Pedro Lopez, role at Airbyte.\n- Motivation: rise of AI agents, automation pipelines, need for machine\u2011friendly CLIs.\n\n## 1. Problems with Human\u2011Centric CLIs\n- Interactive prompts, help text, colorized output.\n- Variable localization, pagination (less/more).\n- Lack of stable schema; output changes with version.\n- Error reporting via stderr stack traces.\n\n## 2. Agent\u2011Centric Design Principles\n- Deterministic output.\n- Machine\u2011parsable format (JSON, Protobuf, etc.).\n- Versioned contracts.\n- Minimal side\u2011effects, idempotency.\n- Clear error envelopes.\n\n## 3. Implementation Strategies\n### 3.1 Flag\u2011Based Agent Mode\n```bash\nmycli --agent --format json <subcommand> [args]\n```\n- Disables ANSI colors, turns off paging.\n- Switches logger to JSON lines.\n\n### 3.2 Schema\u2011First Approach\n- Define JSON Schema for each command's output.\n- Store schemas in `schemas/` directory.\n- Use `ajv` or similar validator in CI.\n\n### 3.3 Subcommand Mapping\n| Human CLI | Agent\u2011Oriented Subcommand |\n|-----------|---------------------------|\n| `mycli sync --config cfg.yaml` | `mycli agent sync --config cfg.yaml` |\n| `mycli list --type connectors` | `mycli agent list --type connectors` |\n\n### 3.4 Error Handling\n- Standard error envelope:\n```json\n{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Missing required field: name\",\n    \"details\": [{ \"field\": \"name\", \"issue\": \"required\" }]\n  }\n}\n```\n- Exit code non\u2011zero, but stderr contains only JSON error.\n\n### 3.5 Testing & CI\n- Unit tests assert JSON output matches schema.\n- Contract tests using `dredd` or `pact`.\n- Generate OpenAPI spec from schemas for SDK generation.\n\n## 4. Example Architecture (Airbyte)\n- Show how Airbyte's CLI (`abcli`) uses agent mode for orchestration platforms (Kubernetes, Airflow).\n- Diagram: Agent \u2192 CLI (JSON) \u2192 Core Services \u2192 Metadata DB.\n\n## 5. Best Practices Checklist\n- [ ] Disable colors and pagination when `AGENT_MODE=1`.\n- [ ] Version output schema via semantic versioning in a header (`X-CLI-Schema-Version`).\n- [ ] Provide `--schema` flag to return the JSON Schema itself.\n- [ ] Log structured logs (JSON lines) to stdout; reserve stderr for agent errors.\n- [ ] Document agent contract in a dedicated `AGENT.md`.\n- [ ] Monitor agent\u2011specific latency and error rates.\n\n## 6. Conclusion\n- Treat CLI as a service interface.\n- Benefits: higher automation reliability, clearer separation of concerns, easier integration with AI agents.\n- Call to action: audit existing CLIs for agent readiness, adopt schema\u2011first design.";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-3wj6sgbi1YA");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=3wj6sgbi1YA" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-9WiBJRO84yY">
             <div class="card-header">
                 <h2>Building on the Codex Harness — Dominik Kundel, OpenAI</h2>
