@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-Emo5FGGY-wM">
+            <div class="card-header">
+                <h2>Why 80% Reliability Isn't Good Enough — Felipe Blanes, Amazon AGI Lab</h2>
+                <span class="date">2026-10-09</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-Emo5FGGY-wM"></div>
+            <script>
+                (function() {
+                    const md = "# Why 80% Reliability Isn't Good Enough \u2013 Deep Dive\n\n## 1. Introduction\n- Speaker: Felipe Blanes, Amazon AGI Lab.\n- Context: Work on Nova, a browser\u2011agent tool, from research preview to AWS service.\n- Role: Customer enablement \u2013 gathering problems, feeding back into product.\n\n## 2. The Benchmark Illusion\n- Teams optimise on public or synthetic benchmarks.\n- After shipping, customers encounter unexpected failures.\n- Static evals create a false sense of safety; you can only hope they reflect real usage.\n\n## 3. Why Static Evals Fail\n- **Definition**: Evals that never change after creation.\n- Process: Requirements \u2192 Build \u2192 Run static evals \u2192 Optimise \u2192 Ship \u2192 Hope.\n- Gap: No feedback loop from actual customer behaviour.\n\n## 4. The Eval Flywheel \u2013 Closing the Customer Loop\nThe flywheel consists of four repeating stages:\n\n### 4.1 Define Success (Customer\u2011Centric)\n- Success is **what the customer thinks** is a successful outcome, not internal metrics.\n- Example: For a browser agent, success might be completing a purchase without manual intervention.\n\n### 4.2 Capture Signals\n- **Instrumentation**: Metrics, logs, latency, error rates, success/failure traces.\n- **Direct Engagement**: Schedule meetings, visit customers, ask open\u2011ended questions.\n- **Important Note**: Data alone can be misleading; conversations reveal intent.\n\n### 4.3 Diagnose Gaps\nCollect signals and categorise into three actionable buckets:\n1. **Model Inputs** \u2013 Where the model is failing (e.g., wrong action selection).\n2. **Engineering Inputs** \u2013 Gaps in infrastructure, tooling, or performance that need fixing.\n3. **Product Inputs** \u2013 Misunderstandings about what the product does or positioning.\n\n### 4.4 Feed into Decisions\n- Prioritise items across science (model improvements), engineering (bug fixes, scalability), and product (feature clarification, documentation).\n- Assign owners, set timelines, and track impact on the defined success metric.\n\n### 4.5 Repeat\n- Run the flywheel as fast as possible; each cycle should make evals \u201csmarter\u201d.\n\n## 5. Key Learnings from Customer Engagement\n\n### 5.1 The Trust Cliff\n- At ~80% reliability customers feel they must monitor and manually correct the agent \u2192 perceived extra work.\n- Around 90%+ reliability, reliability becomes a binary trust decision: \u201cI can trust it\u201d vs. \u201cI cannot\u201d. \n- Implication: Aim for the trust threshold, not just incremental benchmark gains.\n\n### 5.2 Eval Transparency\n- Be explicit with customers about three things:\n  1. **What works** (current reliability/success rate).\n  2. **What you are improving** (ongoing investments).\n  3. **What is out of scope** (limitations you will not support).\n- Transparency builds more trust than hiding gaps or over\u2011promising on benchmarks.\n\n### 5.3 Unexpected Use Cases Reveal Future Features\n- **Amazon Leo (satellite internet)**: Needed trajectory caching to reduce inference cost; fallback to model on cache miss.\n- **Herz (car rental)**: Mixed technical QA team \u2192 required a non\u2011technical UI for broader adoption.\n- **Sol (RPA)**: Needed flexible actuation stack to automate diverse enterprise processes.\n- These insights drove product roadmap items that were never imagined from internal brainstorming.\n\n## 6. Principles for a Successful Eval Flywheel\n1. **Derive eval scenarios from production data, not imagination** \u2013 Use real customer traces as the seed for evals; synthetic data is only a bootstrap.\n2. **Categorise gaps into actionable areas** \u2013 Separate product, engineering, and research issues; prioritise each bucket for the appropriate team.\n3. **Share capabilities honestly** \u2013 Transparency about limitations builds trust faster than any benchmark score.\n4. **Run the flywheel as fast as you can** \u2013 Faster cycles yield weekly improvements in eval smarts; stagnation indicates stale evals.\n\n## 7. Evaluating the Flywheel\u2019s Health\n- **Signal**: Evals should get smarter every week (new scenarios, higher correlation with customer success).\n- **Warning**: If evals stop improving, they have become stale; revisit signal capture and gap diagnosis.\n\n## 8. Take\u2011Home Messages\n1. **Evals must reflect what customers care about**, not what you assume they care about.\n2. **Evals are not a one\u2011time artifact**; they are a continuously evolving flywheel that must keep pace with the customer journey.\n\n## 9. Conclusion\n- By embedding customer feedback directly into the evaluation loop, teams move from hopeful benchmarking to measurable trust.\n- The trust cliff shows that reliability thresholds matter more than incremental benchmark gains.\n- Transparency and rapid iteration turn evals into a competitive advantage, enabling the creation of agents that truly earn customer reliance.\n\n---\n*End of deep\u2011dive.*";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-Emo5FGGY-wM");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=Emo5FGGY-wM" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-3XI90A3ENSg">
             <div class="card-header">
                 <h2>How a Remote Company Builds AI Fluency — Em Shreve, Automattic</h2>
