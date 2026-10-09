@@ -395,6 +395,33 @@
 
     <main>
 
+        <article class="card" id="video-9WiBJRO84yY">
+            <div class="card-header">
+                <h2>Building on the Codex Harness — Dominik Kundel, OpenAI</h2>
+                <span class="date">2026-10-09</span>
+            </div>
+            
+            <div class="newsletter-content markdown-body" id="content-9WiBJRO84yY"></div>
+            <script>
+                (function() {
+                    const md = "# Building on the Codex Harness \u2013 Deep Dive\n\n## 0. Introduction & Motivation\nDominik Kundel (OpenAI Developer Experience) opens by asking who has built their own agent harness and who finds it intimidating. He promises to show how the **Codex harness** can be leveraged via its **app server** to build custom interfaces quickly, safely, and even fun\u2011wise (e.g., inside a Doom game).\n\n## 1. Codex Harness & App Server Overview\n- The **Codex harness** is the core agent runtime that executes model calls, manages threads, handles file\u2011system sandboxing, and runs tools.\n- The **app server** is a thin, open\u2011source (Apache\u202f2) JSON\u2011RPC wrapper around that harness.\n- It is the same binary shipped inside the **Codex CLI**, the **Codex desktop app**, VS\u202fCode extension, JetBrains plugins, and even Cloud\u202fCode.\n- Because it\u2019s open source, you can fork, modify, and ship your own version.\n- The server works with any model exposing a **Responses\u2011API\u2011compatible** endpoint (OpenAI, LM\u202fStudio, Ollama, etc.).\n\n## 2. Protocol Mechanics (JSON\u2011RPC)\n- Communication follows JSON\u2011RPC 2.0: a client sends a request object (`{jsonrpc:\"2.0\", id:<num>, method:\"...\", params:{...}}`) and receives a response or error.\n- The server is **bidirectional**: it also pushes **events** (notifications) to the client as the harness progresses (thread start, delta streams, tool calls, file\u2011search results, etc.).\n- Dominik built an **inspector** that sits between the real Codex app and the app server, logging every message in real time.\n\n## 3. Event Inspector Demonstration\n- Sample events observed:\n  - `thread.created` \u2013 includes initial configuration, working directory.\n  - `thread.delta` \u2013 streaming assistant output (code, text).\n  - `tool.call` \u2013 name and arguments of a tool invocation.\n  - `tool.result` \u2013 output returned to the model.\n  - `file.search.start` / `file.search.result` \u2013 metadata about retrieved snippets.\n  - `session.update` \u2013 changes to model, temperature, etc.\n- The inspector shows that **everything** the harness does is exposed via the app server, making it possible to replicate or extend any Codex feature.\n\n## 4. Extending the Agent\n### 4.1 Developer Instructions\n- Instead of replacing the system prompt, you **append** custom instructions via the `developer_instructions` field.\n- This preserves the model\u2011specific tuning that OpenAI has applied while allowing you to inject project\u2011specific rules, style guides, or domain knowledge.\n- Example request:\n```json\n{\n  \"method\": \"agent.configure\",\n  \"params\": {\n    \"developer_instructions\": \"You are a helpful assistant that prefers functional programming style.\"\n  }\n}\n```\n\n### 4.2 Dynamic Tools & Deferred Loading\n- Tools are exposed through the `tools.list` and `tools.call` methods.\n- You can register a tool at any time; its definition includes `name`, `description`, and `parameters` (JSON Schema).\n- **Deferred loading**: mark a tool with `";
+                    const processedMd = md.replace(/\\/g, '\\\\');
+                    const element = document.getElementById("content-9WiBJRO84yY");
+                    element.innerHTML = marked.parse(processedMd);
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([element]);
+                    }
+                })();
+            </script>
+            
+            <a href="https://youtube.com/watch?v=9WiBJRO84yY" target="_blank" class="youtube-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </article>
+        
         <article class="card" id="video-E3KbFLAGD6A">
             <div class="card-header">
                 <h2>Stop Prompting — Greg Pstrucha, Sentry</h2>
